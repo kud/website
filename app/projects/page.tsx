@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { getProjects, type Project } from "@/lib/projects"
+import { ParallaxOrbs } from "@/components/parallax-orbs"
 import styles from "./page.module.css"
 
 export const metadata: Metadata = {
   title: "Projects — Erwann Mest",
   description:
-    "Open-source command-line tools, MCP servers, and developer utilities by Erwann Mest.",
+    "Open-source command-line tools, MCP servers, and terminal design systems designed and maintained by Erwann Mest (kud).",
 }
 
 type Category = {
@@ -15,7 +16,7 @@ type Category = {
   match: (project: Project) => boolean
 }
 
-// Ordered, first-match-wins; the last entry is the catch-all.
+// Match order (catch-all last); display order is controlled separately.
 const CATEGORIES: Category[] = [
   { name: "MCP Servers", key: "mcp", match: (p) => p.slug.startsWith("mcp-") },
   {
@@ -31,6 +32,8 @@ const CATEGORIES: Category[] = [
   { name: "CLIs & Tools", key: "cli", match: () => true },
 ]
 
+const DISPLAY_ORDER = ["cli", "ui", "mcp", "claude"]
+
 const groupByCategory = (projects: Project[]) => {
   const used = new Set<string>()
   return CATEGORIES.map((category) => {
@@ -39,8 +42,13 @@ const groupByCategory = (projects: Project[]) => {
     )
     items.forEach((project) => used.add(project.slug))
     return { ...category, items }
-  }).filter((category) => category.items.length > 0)
+  })
+    .filter((category) => category.items.length > 0)
+    .sort((a, b) => DISPLAY_ORDER.indexOf(a.key) - DISPLAY_ORDER.indexOf(b.key))
 }
+
+const AVATAR =
+  "https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=240"
 
 const ProjectsIndex = async () => {
   const projects = await getProjects()
@@ -49,14 +57,43 @@ const ProjectsIndex = async () => {
   return (
     <main className={styles.page}>
       <header className={styles.hero}>
-        <Link href="/" className={styles.back}>
-          ← kud.io
-        </Link>
-        <h1 className={styles.title}>Projects</h1>
-        <p className={styles.subtitle}>
-          Open-source CLIs, MCP servers, and developer tools
-          {projects.length > 0 ? ` — ${projects.length} and counting` : ""}.
-        </p>
+        <ParallaxOrbs />
+        <div className={styles.heroInner}>
+          <Link href="/" className={styles.back}>
+            ← kud.io
+          </Link>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={AVATAR}
+            alt="Erwann Mest"
+            width={76}
+            height={76}
+            className={styles.avatar}
+          />
+          <h1 className={styles.title}>Projects</h1>
+          <p className={styles.intro}>
+            Open-source tools I design and maintain — command-line apps, MCP
+            servers, and terminal design systems. I&apos;m{" "}
+            <strong>Erwann Mest</strong> (kud), a Lead Engineer in London who
+            cares about developer experience and the craft of polished tools.
+          </p>
+          <div className={styles.social}>
+            <a href="http://github.kud.io/" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href="http://linkedin.kud.io/" target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a href="https://bsky.kud.io" target="_blank" rel="noreferrer">
+              Bluesky
+            </a>
+          </div>
+          {projects.length > 0 ? (
+            <p className={styles.count}>
+              {projects.length} open-source projects · always shipping
+            </p>
+          ) : null}
+        </div>
       </header>
 
       {groups.length === 0 ? (
@@ -73,7 +110,7 @@ const ProjectsIndex = async () => {
             <h2 className={styles.sectionTitle}>
               <span className={styles.dot} />
               {group.name}
-              <span className={styles.count}>{group.items.length}</span>
+              <span className={styles.count2}>{group.items.length}</span>
             </h2>
             <ul className={styles.grid}>
               {group.items.map((project) => (

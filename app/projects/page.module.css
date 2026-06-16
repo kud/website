@@ -7,6 +7,7 @@
   --primary-light: #a78bfa;
   --text: #e2e8f0;
   --muted: #8892a4;
+  --dim: #3d4560;
   --accent: var(--primary);
 
   position: relative;
@@ -17,33 +18,28 @@
   overflow: hidden;
 }
 
-.page::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 520px;
-  pointer-events: none;
-  background:
-    radial-gradient(
-      620px 320px at 50% -60px,
-      rgba(124, 58, 237, 0.25),
-      transparent 70%
-    ),
-    linear-gradient(180deg, rgba(124, 58, 237, 0.04), transparent);
-}
-
+/* Hero ----------------------------------------------------------------------*/
 .hero {
   position: relative;
-  max-width: 1040px;
-  margin: 0 auto;
-  padding: 96px 0 56px;
+  margin: 0 -24px 8px;
+  padding: 88px 24px 64px;
+  overflow: hidden;
   text-align: center;
 }
 
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
 .back {
+  display: inline-block;
+  margin-bottom: 28px;
   color: var(--muted);
-  text-decoration: none;
   font-size: 14px;
+  text-decoration: none;
   transition: color 0.18s;
 }
 
@@ -51,23 +47,68 @@
   color: var(--text);
 }
 
+.avatar {
+  display: block;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  box-shadow:
+    0 0 0 4px rgba(124, 58, 237, 0.12),
+    0 16px 36px -16px rgba(0, 0, 0, 0.7);
+}
+
 .title {
-  font-size: 72px;
+  font-size: clamp(52px, 8vw, 76px);
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin: 24px 0 14px;
+  line-height: 1.02;
+  margin: 0 0 18px;
   background: linear-gradient(135deg, #f1f5f9 0%, #a78bfa 55%, #7c3aed 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.subtitle {
+.intro {
+  max-width: 600px;
+  margin: 0 auto;
   color: var(--muted);
-  font-size: 19px;
-  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
 }
 
+.intro strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.social {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  margin: 28px 0 0;
+}
+
+.social a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.social a:hover {
+  color: var(--primary-light);
+}
+
+.count {
+  margin: 26px 0 0;
+  font-size: 13px;
+  color: var(--dim);
+  letter-spacing: 0.02em;
+}
+
+/* Sections ------------------------------------------------------------------*/
 .section {
   position: relative;
   max-width: 1040px;
@@ -108,7 +149,7 @@
   box-shadow: 0 0 12px var(--accent);
 }
 
-.count {
+.count2 {
   color: var(--muted);
   font-weight: 500;
   letter-spacing: normal;
