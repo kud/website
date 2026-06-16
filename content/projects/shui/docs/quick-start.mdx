@@ -1,0 +1,85 @@
+---
+title: Quick Start
+description: Install shui and print your first styled message in seconds.
+---
+
+```zsh
+git clone https://github.com/kud/shui ~/.shui
+source ~/.shui/shui.zsh
+
+shui message success "Deployment complete"
+shui message error   "Build failed"
+shui message warning "Deprecated flag used"
+shui message info    "Running in dry-run mode"
+shui message muted   "Skipped (already up-to-date)"
+```
+
+```console
+✅ Deployment complete
+❌ Build failed
+⚠️ Deprecated flag used
+ℹ️ Running in dry-run mode
+   Skipped (already up-to-date)
+```
+
+## Importing in a script
+
+Source shui at the top of any Zsh script:
+
+```zsh
+#!/usr/bin/env zsh
+source "${0:A:h}/lib/shui/shui.zsh"
+```
+
+`${0:A:h}` is the Zsh idiom for the absolute directory of the current script —
+the path resolves correctly regardless of where you call the script from.
+
+To select a theme before loading:
+
+```zsh
+SHUI_THEME=minimal SHUI_ICONS=emoji source shui.zsh
+```
+
+## Installation
+
+### Manually
+
+```zsh
+git clone https://github.com/kud/shui ~/.shui
+```
+
+### As a project submodule (recommended for scripts)
+
+```zsh
+git submodule add https://github.com/kud/shui lib/shui
+```
+
+### Antidote
+
+Add `kud/shui` to your `.zsh_plugins.txt`, then `antidote load`.
+
+### Zinit
+
+```zsh
+zinit light kud/shui
+```
+
+### Oh My Zsh
+
+```zsh
+git clone https://github.com/kud/shui ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/shui
+```
+
+Then add `shui` to the `plugins` array in `~/.zshrc`.
+
+### Zplug
+
+```zsh
+zplug "kud/shui"
+```
+
+## Requirements
+
+- Zsh 5.0+
+- A [Nerd Font](https://www.nerdfonts.com/) for the `default` and `minimal`
+  themes — or use `SHUI_ICONS=emoji` or `SHUI_ICONS=none`.

@@ -1,0 +1,92 @@
+---
+title: Progress & Prompts
+description: Progress bars, spinners, loaders, animations, and interactive prompts.
+---
+
+## Progress
+
+Adds a newline by default. Use `--inline` for loop-based updates.
+
+```zsh
+shui progress 50 100
+shui progress 50 100 --width=30 --label="Downloading "
+
+for i in {1..100}; do
+  shui progress $i 100 --inline
+  sleep 0.05
+done
+echo
+```
+
+```console
+████████████████████░░░░░░░░░░░░░░░░░░░░ 50%
+Downloading ██████████░░░░░░░░░░░░░░░░░░░░ 50%
+```
+
+Pass `--iterm` (or `--iterm=<state>`) to also update the native macOS progress
+indicator in iTerm2 — `normal`, `success`, `warning`, `error`,
+`indeterminate`, or `clear`. No-op in other terminals.
+
+## Spinner
+
+Runs a command in the background with a spinner. Exits with the command's exit
+code, and in iTerm2 emits an indeterminate badge while running.
+
+```zsh
+shui spinner "Installing…" -- brew install ripgrep
+
+shui spinner \
+  --success="Installed!" \
+  --fail="Installation failed" \
+  "Installing…" -- npm install
+```
+
+## Loader
+
+Indeterminate loading indicator — loops for a fixed duration then clears the
+line. Use when you can't wrap a command in `spinner`.
+
+```zsh
+shui loader "Installing packages"
+shui loader --duration=10 "Building"
+shui loader --style=pulse "Connecting"
+```
+
+| Style     | Description                        |
+| --------- | ---------------------------------- |
+| `dots`    | Cycling dot trail — `.` `..` `...` |
+| `pulse`   | Bold/dim alternating text          |
+| `spinner` | Braille spinner character          |
+
+## Animation
+
+One-shot text effects — play once and exit.
+
+```zsh
+shui typewriter "Deploying to production…"
+shui typewriter --delay=0.05 --color=success "Done!"
+
+shui fade-in "Welcome"
+shui fade-in --steps=10 "Welcome"
+```
+
+## Interactive
+
+Prompt the user for confirmation, a selection, or free-form input.
+
+```zsh
+# Confirm — exits 0 for yes, 1 for no
+shui confirm "Deploy to production?"
+
+# Select — numbered list, prints the chosen option to stdout
+choice=$(shui select "Pick a profile:" work personal staging)
+
+# Radio — ↑↓ to move, Enter to confirm
+env=$(shui radio "Target environment:" development staging production)
+
+# Multiselect — Space to toggle, Enter to confirm
+choices=$(shui multiselect "Which packages?" brew npm cargo)
+
+# Input — prints the entered value to stdout
+name=$(shui input --default="world" "Your name:")
+```

@@ -1,0 +1,73 @@
+---
+title: Theming
+description: Built-in themes, icon sets, custom themes, and the token reference.
+---
+
+## Built-in themes
+
+| Theme     | Description                                  |
+| --------- | -------------------------------------------- |
+| `default` | 256-colour with automatic 16-colour fallback |
+| `minimal` | Clean 16-colour ANSI palette                 |
+| `plain`   | No colour — text and ASCII icons only        |
+
+```zsh
+SHUI_THEME=minimal source shui.zsh
+# or export it so all scripts pick it up
+export SHUI_THEME=minimal
+```
+
+### NO_COLOR
+
+shui respects the [NO_COLOR](https://no-color.org/) convention. When `$NO_COLOR`
+is set, inline components fall back to ASCII and no colour codes are emitted.
+
+## Icon sets
+
+| Set       | Requires  | Description                              |
+| --------- | --------- | ---------------------------------------- |
+| `nerd`    | Nerd Font | Rich glyphicons _(default)_              |
+| `emoji`   | Nothing   | Unicode emoji, works everywhere          |
+| `none`    | Nothing   | No icons — text only                     |
+| `unicode` | Nothing   | Base layer — always loaded automatically |
+
+```zsh
+SHUI_ICONS=emoji source shui.zsh
+SHUI_THEME=plain SHUI_ICONS=none source shui.zsh   # fully plain
+```
+
+## Custom themes
+
+Generate a new theme pre-filled with all tokens:
+
+```zsh
+shui theme create mytheme
+# → src/themes/mytheme.zsh
+```
+
+A custom theme sources `default.zsh` first — only override the tokens you want:
+
+```zsh
+# src/themes/mytheme.zsh
+source "${SHUI_DIR}/src/themes/default.zsh"
+
+SHUI_COLOR_PRIMARY=$(_shui_color "38;5;135" "0;35")  # purple
+SHUI_COLOR_ACCENT=$(_shui_color  "38;5;135" "0;35")
+```
+
+```zsh
+shui theme list       # list available themes
+shui theme validate   # check all required tokens are defined
+```
+
+## Token reference
+
+| Token                                                        | Purpose                  |
+| ------------------------------------------------------------ | ------------------------ |
+| `SHUI_RESET`                                                 | Reset all styles         |
+| `SHUI_BOLD` `SHUI_DIM` `SHUI_ITALIC` `SHUI_UNDERLINE`        | Text styles              |
+| `SHUI_COLOR_PRIMARY`                                         | Primary accent colour    |
+| `SHUI_COLOR_SUCCESS` `SHUI_COLOR_WARNING` `SHUI_COLOR_ERROR` | Status colours           |
+| `SHUI_COLOR_INFO` `SHUI_COLOR_MUTED` `SHUI_COLOR_ACCENT`     | Info / muted / accent    |
+| `SHUI_BG_SUCCESS` … `SHUI_BG_MUTED`                          | Badge background colours |
+| `SHUI_ICON_SUCCESS` `SHUI_ICON_ERROR` …                      | Status & UI icons        |

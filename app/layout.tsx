@@ -28,7 +28,6 @@ export const metadata: Metadata = {
     "Erwann Mest — Senior Software Engineer specialised in Front-end / JavaScript",
   description:
     "My name is Erwann Mest and I am a Senior Software Engineer specialised in Front-end / JavaScript. I currently live in London and work in the Music Industry!",
-  icons: { icon: "/favicon.png" },
   openGraph: {
     type: "website",
     url: "https://kud.io",

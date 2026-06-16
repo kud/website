@@ -157,7 +157,8 @@ const syncRepoDocs = async (slug) => {
       `https://api.github.com/repos/${OWNER}/${slug}/git/trees/HEAD?recursive=1`,
     )
     const docFiles = (tree.tree ?? []).filter(
-      (node) => node.type === "blob" && /^docs\/.+\.mdx?$/.test(node.path),
+      (node) =>
+        node.type === "blob" && /^docs\/.+\.(mdx?|json)$/.test(node.path),
     )
     for (const file of docFiles) {
       const text = await rawFile(slug, file.path)

@@ -1,0 +1,146 @@
+---
+title: Components
+description: Messages, text, layout, badges, pills, boxes, and tables.
+---
+
+## Messages
+
+`shui message` is the preferred unified API for inline messages.
+
+```zsh
+shui message <type> <text>
+```
+
+| Type      | Output                       |
+| --------- | ---------------------------- |
+| `success` | Icon + success-coloured text |
+| `error`   | Icon + error-coloured text   |
+| `warning` | Icon + warning-coloured text |
+| `info`    | Icon + info-coloured text    |
+| `muted`   | Italic dimmed text, no icon  |
+
+```zsh
+shui message success "Deployed to production"
+shui message error   "Connection refused"
+shui message warning "API key expires in 3 days"
+```
+
+```console
+✅ Deployed to production
+❌ Connection refused
+⚠️ API key expires in 3 days
+```
+
+The top-level shorthands `shui success`, `shui error`, `shui warning`, and
+`shui info` remain available for quick one-liners.
+
+## Text
+
+Inline text formatting and semantic colour helpers.
+
+```zsh
+shui bold      "Bold text"
+shui dim       "Dimmed text"
+shui italic    "Italic text"
+shui underline "Underlined text"
+
+shui text --color=success "Success colour"
+shui text --color=muted   "Muted colour"
+```
+
+Available colour types: `success` `error` `warning` `info` `primary` `muted`
+`accent`.
+
+## Layout
+
+Structure your script output with sections, headings, and spacing.
+
+```zsh
+shui section    "Setup"
+shui subtitle   "Installing packages"
+shui subsection "npm dependencies"
+shui divider
+shui spacer
+```
+
+## Screen
+
+Renders a section header, runs a command, then prints elapsed time. Returns the
+command's exit code.
+
+```zsh
+shui screen "Building" -- npm run build
+```
+
+## Timer
+
+Lightweight per-step timing.
+
+```zsh
+shui timer-start
+mise plugins update
+shui timer-end "Plugin index update"
+```
+
+```console
+⏱ Plugin index update · 2s
+```
+
+## Badge
+
+Solid background inline label. Writes to stdout **without a newline** — use
+inside `$(...)`.
+
+```zsh
+echo "Version: $(shui badge success v2.0)"
+echo "Build:   $(shui badge error FAIL)  $(shui badge success PASS)"
+```
+
+Available types: `success` `error` `warning` `info` `primary` `muted`.
+
+## Pill
+
+Rounded-edge inline tag. Also writes without a newline.
+
+```zsh
+echo "Status: $(shui pill warning beta)"
+shui pill 135 "custom"   # any 256-colour code (0–255)
+```
+
+## Box
+
+Bordered content block with an optional title.
+
+```zsh
+shui box "Simple content inside a box"
+shui box --title="Summary" "3 installed\n1 skipped\n0 errors"
+```
+
+```console
+┌──────────────── Summary ───────────────────┐
+│  3 installed                               │
+│  1 skipped                                 │
+│  0 errors                                  │
+└────────────────────────────────────────────┘
+```
+
+## Table
+
+Pipe-separated (`|`) rows by default. First argument is the header. Column
+widths adjust automatically.
+
+```zsh
+shui table \
+  "Package|Version|Status" \
+  "node|20.11.0|$(shui badge success OK)" \
+  "python|3.12.0|$(shui badge warning outdated)"
+```
+
+```console
+┌─────────┬──────────┬──────────┐
+│ Package │ Version  │ Status   │
+├─────────┼──────────┼──────────┤
+│ node    │ 20.11.0  │  OK      │
+│ python  │ 3.12.0   │  outdated│
+└─────────┴──────────┴──────────┘
+```
