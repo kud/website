@@ -3,23 +3,6 @@ title: "shui"
 description: "🌊 Fluid terminal UI for Zsh — a design system for the shell"
 ---
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/kud/shui/HEAD/icon.png" width="128" alt="shui" />
-  <h1>shui · 水</h1>
-  <p><strong>Shell UI for Zsh. 水 — fluid by design.</strong></p>
-  <p>
-    <img src="https://img.shields.io/badge/zsh-5.0%2B-blue?style=flat-square" alt="Zsh 5.0+" />
-    <img src="https://img.shields.io/badge/dependencies-none-22C55E?style=flat-square" alt="No dependencies" />
-    <img src="https://img.shields.io/badge/license-MIT-22C55E?style=flat-square" alt="MIT" />
-  </p>
-  <p>
-    <a href="#-features">Features</a> •
-    <a href="#-quick-start">Quick Start</a> •
-    <a href="#-component-reference">Component Reference</a> •
-    <a href="#-development">Development</a>
-  </p>
-</div>
-
 ---
 
 **shui** = Shell UI. 水 = water in Chinese — fluid, effortless, takes the shape of its container.

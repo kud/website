@@ -10,6 +10,7 @@ export type Project = {
   homepage: string | null
   stars: number
   language: string | null
+  license: string | null
   pushedAt: string
 }
 
@@ -21,11 +22,10 @@ type Repo = {
   homepage: string | null
   stargazers_count: number
   language: string | null
+  license: { spdx_id: string | null } | null
   pushed_at: string
 }
 
-// A token lifts the unauthenticated 60 req/hr limit to 5000 and allows private
-// repos; everything still works without one, just rate-limited.
 const ghHeaders = (): HeadersInit => {
   const token = process.env.GITHUB_TOKEN
   return {
@@ -43,10 +43,13 @@ const toProject = (repo: Repo): Project => ({
   homepage: repo.homepage,
   stars: repo.stargazers_count,
   language: repo.language,
+  license:
+    repo.license?.spdx_id && repo.license.spdx_id !== "NOASSERTION"
+      ? repo.license.spdx_id
+      : null,
   pushedAt: repo.pushed_at,
 })
 
-// The showcase guest list: every repo tagged with the `kud-site` topic.
 export const getProjects = async (): Promise<Project[]> => {
   const res = await fetch(
     `https://api.github.com/search/repositories?q=user:${OWNER}+topic:${TOPIC}&sort=updated&per_page=100`,

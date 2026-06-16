@@ -1,0 +1,4 @@
+{
+  "features": [],
+  "install": "/plugin marketplace add kud/claude-plugins  # registers as @kud"
+}

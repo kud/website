@@ -1,0 +1,29 @@
+{
+  "features": [
+    {
+      "title": "Optional auth — read-only without a key; create/update/comment with an API key",
+      "description": ""
+    },
+    {
+      "title": "12 tools covering bugs, comments, history, attachments, products, users, and fields",
+      "description": ""
+    },
+    {
+      "title": "Mozilla-first — defaults to https://bugzilla.mozilla.org/rest, configurable via env var",
+      "description": ""
+    },
+    {
+      "title": "Powerful search — filter by product, component, status, severity, assignee, or quicksearch syntax",
+      "description": ""
+    },
+    {
+      "title": "Full discussion flow — read comments, post replies, attach work-time logs",
+      "description": ""
+    },
+    {
+      "title": "Attachment listing — inspect patches and test files linked to any bug",
+      "description": ""
+    }
+  ],
+  "install": "# Run directly without installing\nnpx @kud/mcp-bugzilla\n\n# Or clone and build locally\ngit clone https://github.com/kud/mcp-bugzilla.git\ncd mcp-bugzilla\nnpm install && npm run build"
+}

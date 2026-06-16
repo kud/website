@@ -1,24 +1,20 @@
-.page {
+.hero,
+.section,
+.ctaSection {
   --bg: #08080f;
   --surface: #0e0e1a;
   --surface-2: #141428;
-  --surface-3: #1a1a35;
   --border: #1e1e38;
   --border-dim: #141428;
   --primary: #7c3aed;
   --primary-light: #a78bfa;
   --text: #e2e8f0;
   --muted: #8892a4;
+  --prod: #34d399;
   --mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, monospace;
-
-  position: relative;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
 }
 
-@keyframes fadeUp {
+@keyframes kitFadeUp {
   from {
     opacity: 0;
     transform: translateY(18px);
@@ -29,7 +25,7 @@
   }
 }
 
-@keyframes pulse {
+@keyframes kitPulse {
   0%,
   100% {
     opacity: 1;
@@ -45,7 +41,6 @@
 .hero {
   position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
   text-align: center;
   padding: 100px 24px 88px;
@@ -66,7 +61,6 @@
 .heroGrid {
   position: absolute;
   inset: 0;
-  z-index: 0;
   background-image:
     linear-gradient(var(--border-dim) 1px, transparent 1px),
     linear-gradient(90deg, var(--border-dim) 1px, transparent 1px);
@@ -81,25 +75,11 @@
   max-width: 760px;
 }
 
-.back {
-  display: inline-block;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 14px;
-  margin-bottom: 28px;
-  transition: color 0.18s;
-}
-
-.back:hover {
-  color: var(--text);
-}
-
 .badge,
 .title,
 .tagline,
-.actions,
-.stats {
-  animation: fadeUp 0.6s ease both;
+.actions {
+  animation: kitFadeUp 0.6s ease both;
 }
 .title {
   animation-delay: 0.06s;
@@ -109,9 +89,6 @@
 }
 .actions {
   animation-delay: 0.18s;
-}
-.stats {
-  animation-delay: 0.24s;
 }
 
 .badge {
@@ -134,7 +111,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--primary-light);
-  animation: pulse 2s ease-in-out infinite;
+  animation: kitPulse 2s ease-in-out infinite;
 }
 
 .title {
@@ -162,7 +139,6 @@
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin-bottom: 56px;
 }
 
 .primary,
@@ -202,12 +178,14 @@
   background: var(--surface-2);
 }
 
+/* Stats ---------------------------------------------------------------------*/
 .stats {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 40px;
   flex-wrap: wrap;
+  margin-top: 52px;
 }
 
 .stat {
@@ -238,13 +216,7 @@
   margin-top: 4px;
 }
 
-.statDivider {
-  width: 1px;
-  height: 36px;
-  background: var(--border);
-}
-
-/* Sections ------------------------------------------------------------------*/
+/* Section chrome ------------------------------------------------------------*/
 .section {
   position: relative;
   max-width: 1040px;
@@ -276,8 +248,8 @@
   margin: 0;
 }
 
-/* Quick-start terminal ------------------------------------------------------*/
-.terminalWrap {
+/* Terminal ------------------------------------------------------------------*/
+.installWrap {
   max-width: 680px;
   margin: 0 auto;
 }
@@ -311,7 +283,6 @@
 .terminalLabel {
   margin-left: 10px;
   font-size: 12px;
-  letter-spacing: 0.04em;
   color: var(--muted);
   font-family: var(--mono);
 }
@@ -390,11 +361,67 @@
   color: var(--text);
 }
 
-.feature p {
+.featureBody {
   font-size: 14px;
   line-height: 1.6;
   color: var(--muted);
+}
+
+.featureBody :global(p) {
   margin: 0;
+}
+
+/* Showcase (side-by-side command → output) ----------------------------------*/
+.showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.example {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.exampleCommand,
+.exampleOutput {
+  margin: 0;
+  padding: 18px 20px;
+  background: var(--surface);
+  overflow-x: auto;
+}
+
+.exampleOutput {
+  background: var(--bg);
+}
+
+.exampleCommand code,
+.exampleOutput code {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.exampleCommand code {
+  color: #c7d2fe;
+}
+
+.exampleOutput code {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .example {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* CTA -----------------------------------------------------------------------*/
@@ -436,23 +463,4 @@
 .cta:hover {
   background: var(--primary-light);
   transform: translateY(-1px);
-}
-
-.topics {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  padding: 0;
-  margin: 56px 0 0;
-}
-
-.topics li {
-  font-size: 13px;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 5px 13px;
 }

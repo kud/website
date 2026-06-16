@@ -24,6 +24,7 @@
     "fumadocs-mdx": "15.0.12",
     "fumadocs-ui": "16.10.3",
     "next": "16.2.9",
+    "next-mdx-remote": "6.0.0",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "rehype-raw": "7.0.0"

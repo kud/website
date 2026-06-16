@@ -3,19 +3,6 @@ title: "ink-ui"
 description: "Opinionated design-system library for Ink CLIs — pre-styled components and design tokens for a consistent terminal UI."
 ---
 
-<div align="center">
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org/)
-[![npm](https://img.shields.io/badge/npm-%40kud%2Fink--ui-CB3837?style=flat-square&logo=npm&logoColor=white)](https://www.npmjs.com/package/@kud/ink-ui)
-[![MIT](https://img.shields.io/badge/licence-MIT-22C55E?style=flat-square)](./LICENSE)
-
-**Opinionated design-system library for Ink CLIs — pre-styled components and design tokens for a consistent terminal UI.**
-
-[Features](#-features) • [Quick Start](#-quick-start) • [Components](#-components) • [Tokens](#-design-tokens) • [Development](#-development)
-
-</div>
-
 ---
 
 ## ✨ Features

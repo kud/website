@@ -1,0 +1,29 @@
+{
+  "features": [
+    {
+      "title": "Domain Management — List all registered domains with expiry dates and statuses, and renew them for one or more years",
+      "description": ""
+    },
+    {
+      "title": "Full DNS Control — List, create, update, and delete LiveDNS records with support for custom TTLs and all standard record types",
+      "description": ""
+    },
+    {
+      "title": "Permission Doctor — Built-in gandi doctor checks your PAT scopes and shows exactly which commands are unlocked",
+      "description": ""
+    },
+    {
+      "title": "PAT Authentication — Uses Gandi Personal Access Tokens with fine-grained scope control — only grant what you need",
+      "description": ""
+    },
+    {
+      "title": "Rich Terminal UI — Built with Ink and React for spinners, aligned tables, and clean formatted output",
+      "description": ""
+    },
+    {
+      "title": "Zero Config — Set one env var or add one line to a TOML file and you're ready to go",
+      "description": ""
+    }
+  ],
+  "install": "npm install -g @kud/gandi-cli"
+}

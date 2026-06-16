@@ -3,25 +3,6 @@ title: "ai-conventional-commit-cli"
 description: "AI‑assisted, style‑aware Conventional Commit generator & splitter. Opinionated CLI that learns your repo's commit style and produces polished single or multi commits – safely, quickly, repeatably."
 ---
 
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/kud/ai-conventional-commit-cli/HEAD/assets/icon.png" width="160" alt="ai-conventional-commit icon" />
-
-&nbsp;
-
-&nbsp;
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![Node.js](https://img.shields.io/badge/Node.js_%3E%3D20-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
-[![npm](https://img.shields.io/npm/v/%40kud%2Fai-conventional-commit-cli?style=flat-square&color=CB3837&logo=npm&logoColor=white)](https://www.npmjs.com/package/@kud/ai-conventional-commit-cli)
-[![MIT](https://img.shields.io/badge/MIT-22C55E?style=flat-square)](LICENSE)
-
-**Opinionated, style-aware AI assistant for crafting and splitting git commits. Provider-agnostic — supports OpenCode-routed models, direct Claude CLI, and direct Anthropic API.**
-
-[Features](#-features) • [Quick Start](#-quick-start) • [CLI Reference](#-cli-reference) • [Configuration](#-configuration) • [Development](#-development)
-
-</div>
-
 ---
 
 ## ✨ Features

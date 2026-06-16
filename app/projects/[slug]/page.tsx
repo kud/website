@@ -1,10 +1,14 @@
+import { Fragment } from "react"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { DocsBody } from "fumadocs-ui/layouts/docs/page"
-import { getProject, getProjects } from "@/lib/projects"
-import { getProjectReadme, projectHasExtraDocs } from "@/lib/source"
-import { getMDXComponents } from "@/components/mdx"
+import { MDXRemote } from "next-mdx-remote/rsc"
+import { getProject, getProjects, type Project } from "@/lib/projects"
+import { getLanding } from "@/lib/landing"
+import { getLandingMdx } from "@/lib/landings"
+import { landingComponents } from "@/components/landing-kit"
+import { Reveal } from "@/components/reveal"
+import { CopyButton } from "@/components/copy-button"
 import styles from "./page.module.css"
 
 export const generateStaticParams = async () =>
@@ -31,6 +35,139 @@ const formatDate = (iso: string) =>
     day: "numeric",
   })
 
+// Auto landing — built from README extraction when a repo has no landing.mdx.
+const AutoLanding = ({ project }: { project: Project }) => {
+  const { features, install } = getLanding(project.slug)
+  const stats = [
+    project.language ? { value: project.language, label: "Language" } : null,
+    project.stars > 0 ? { value: `★ ${project.stars}`, label: "Stars" } : null,
+    project.license ? { value: project.license, label: "License" } : null,
+    { value: formatDate(project.pushedAt), label: "Updated" },
+  ].filter((stat): stat is { value: string; label: string } => stat !== null)
+
+  return (
+    <>
+      <section className={styles.hero}>
+        <div className={styles.heroGrid} />
+        <div className={styles.heroContent}>
+          <Link href="/projects" className={styles.back}>
+            ← Projects
+          </Link>
+          <div className={styles.badge}>
+            <span className={styles.badgeDot} />
+            {project.license ? `${project.license} · ` : ""}Open source
+          </div>
+          <h1 className={styles.title}>{project.name}</h1>
+          {project.description ? (
+            <p className={styles.tagline}>{project.description}</p>
+          ) : null}
+          <div className={styles.actions}>
+            <Link
+              href={`/projects/${project.slug}/docs`}
+              className={styles.primary}
+            >
+              Documentation →
+            </Link>
+            <a
+              href={project.repoUrl}
+              className={styles.secondary}
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub ↗
+            </a>
+            {project.homepage ? (
+              <a
+                href={project.homepage}
+                className={styles.secondary}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Website ↗
+              </a>
+            ) : null}
+          </div>
+          <div className={styles.stats}>
+            {stats.map((stat, index) => (
+              <Fragment key={stat.label}>
+                {index > 0 ? <span className={styles.statDivider} /> : null}
+                <div className={styles.stat}>
+                  <div className={styles.statValue}>{stat.value}</div>
+                  <div className={styles.statLabel}>{stat.label}</div>
+                </div>
+              </Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {install ? (
+        <section className={styles.section}>
+          <Reveal className={styles.sectionHeader}>
+            <span className={styles.eyebrow}>Quick start</span>
+            <h2 className={styles.sectionTitle}>Up and running in seconds</h2>
+          </Reveal>
+          <Reveal className={styles.terminalWrap}>
+            <div className={styles.terminal}>
+              <div className={styles.terminalBar}>
+                <span className={styles.tdot} />
+                <span className={styles.tdot} />
+                <span className={styles.tdot} />
+                <span className={styles.terminalLabel}>terminal</span>
+                <CopyButton text={install} className={styles.copy} />
+              </div>
+              <pre className={styles.terminalBody}>
+                <code>{install}</code>
+              </pre>
+            </div>
+          </Reveal>
+        </section>
+      ) : null}
+
+      {features.length > 0 ? (
+        <section className={styles.section}>
+          <Reveal className={styles.sectionHeader}>
+            <span className={styles.eyebrow}>Features</span>
+            <h2 className={styles.sectionTitle}>Everything you need</h2>
+          </Reveal>
+          <div className={styles.features}>
+            {features.map((feature, index) => (
+              <Reveal
+                key={feature.title}
+                delay={index * 60}
+                className={styles.feature}
+              >
+                <span className={styles.featureMark} />
+                <h3>{feature.title}</h3>
+                {feature.description ? <p>{feature.description}</p> : null}
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className={styles.ctaSection}>
+        <Reveal>
+          <h2 className={styles.ctaTitle}>Dive into the docs</h2>
+          <p className={styles.ctaSub}>
+            Full reference, examples, and configuration.
+          </p>
+          <Link href={`/projects/${project.slug}/docs`} className={styles.cta}>
+            Open documentation →
+          </Link>
+        </Reveal>
+        {project.topics.length > 0 ? (
+          <ul className={styles.topics}>
+            {project.topics.map((topic) => (
+              <li key={topic}>{topic}</li>
+            ))}
+          </ul>
+        ) : null}
+      </section>
+    </>
+  )
+}
+
 const ProjectLanding = async ({
   params,
 }: {
@@ -40,79 +177,19 @@ const ProjectLanding = async ({
   const project = await getProject(slug)
   if (!project) notFound()
 
-  const readme = getProjectReadme(slug)
-  const Presentation = readme?.data.body
-  const hasExtraDocs = projectHasExtraDocs(slug)
+  const authored = getLandingMdx(slug)
 
   return (
     <main className={styles.page}>
-      <div className={styles.hero}>
-        <Link href="/projects" className={styles.back}>
-          ← Projects
-        </Link>
-
-        <h1 className={styles.title}>{project.name}</h1>
-        {project.description ? (
-          <p className={styles.tagline}>{project.description}</p>
-        ) : null}
-
-        <div className={styles.actions}>
-          {hasExtraDocs ? (
-            <Link href={`/projects/${slug}/docs`} className={styles.primary}>
-              Read the docs →
-            </Link>
-          ) : null}
-          <a
-            href={project.repoUrl}
-            className={styles.secondary}
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub ↗
-          </a>
-          {project.homepage ? (
-            <a
-              href={project.homepage}
-              className={styles.secondary}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Website ↗
-            </a>
-          ) : null}
-        </div>
-
-        <div className={styles.stats}>
-          {project.language ? (
-            <span className={styles.stat}>
-              <span className={styles.statDot} />
-              {project.language}
-            </span>
-          ) : null}
-          {project.stars > 0 ? (
-            <span className={styles.stat}>★ {project.stars} stars</span>
-          ) : null}
-          <span className={styles.stat}>
-            Updated {formatDate(project.pushedAt)}
-          </span>
-        </div>
-
-        {project.topics.length > 0 ? (
-          <ul className={styles.topics}>
-            {project.topics.map((topic) => (
-              <li key={topic}>{topic}</li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-
-      {Presentation ? (
-        <article className={`${styles.presentation} dark`}>
-          <DocsBody>
-            <Presentation components={getMDXComponents()} />
-          </DocsBody>
-        </article>
-      ) : null}
+      {authored ? (
+        <MDXRemote
+          source={authored}
+          components={landingComponents}
+          options={{ parseFrontmatter: true }}
+        />
+      ) : (
+        <AutoLanding project={project} />
+      )}
     </main>
   )
 }

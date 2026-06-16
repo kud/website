@@ -4,10 +4,6 @@ description: "CLI tool for pCloud file operations — list, restore from trash a
 ---
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/kud/pcloud-cli/HEAD/assets/logo.png" width="80" alt="pCloud CLI logo" />
-</div>
-
-<div align="center">
 
 # pcloud-cli
 

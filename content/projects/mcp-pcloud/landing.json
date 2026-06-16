@@ -1,0 +1,29 @@
+{
+  "features": [
+    {
+      "title": "Bearer token — reads from ~/.config/pcloud/tokens.json or env var",
+      "description": ""
+    },
+    {
+      "title": "4 tools covering trash management and file rewind/recovery",
+      "description": ""
+    },
+    {
+      "title": "Built on TypeScript + MCP SDK 1.27",
+      "description": ""
+    },
+    {
+      "title": "List and restore files from trash",
+      "description": ""
+    },
+    {
+      "title": "Browse version history and recover older file versions",
+      "description": ""
+    },
+    {
+      "title": "Respects pCloud's dynamic API hostname (EU/US routing)",
+      "description": ""
+    }
+  ],
+  "install": "npx @kud/mcp-pcloud"
+}

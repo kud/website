@@ -3,25 +3,6 @@ title: "gpuswitch-cli"
 description: "Switch between integrated, discrete, and auto GPU on Intel Macs via pmset"
 ---
 
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/kud/gpuswitch-cli/HEAD/assets/icon.png" width="160" alt="gpuswitch icon" />
-
-&nbsp;
-
-&nbsp;
-
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=node.js&logoColor=white)
-![npm](https://img.shields.io/badge/npm-%40kud%2Fgpuswitch--cli-CB3837?style=flat-square&logo=npm&logoColor=white)
-![Licence](https://img.shields.io/badge/licence-MIT-22C55E?style=flat-square)
-
-**Switch between integrated, discrete, and auto GPU on Intel Macs via pmset**
-
-[Features](#-features) • [Quick Start](#-quick-start) • [CLI Reference](#-cli-reference) • [Development](#-development)
-
-</div>
-
 ---
 
 ## 🌟 Features

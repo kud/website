@@ -1,0 +1,83 @@
+---
+title: shui
+---
+
+<Hero
+  badge="MIT · Zero dependencies"
+  title="shui · 水"
+  tagline="A fluid terminal UI for Zsh — semantic components, a token-based theme engine, and one consistent API."
+>
+  <Action href="/projects/shui/docs" primary>
+    Documentation →
+  </Action>
+  <Action href="https://github.com/kud/shui">GitHub ↗</Action>
+</Hero>
+
+<Stats>
+  <Stat value="20+" label="Components" />
+  <Stat value="3" label="Themes" />
+  <Stat value="0" label="Dependencies" />
+  <Stat value="MIT" label="License" />
+</Stats>
+
+<Section eyebrow="Quick start" title="Up and running in seconds">
+  <Install command={`git clone https://github.com/kud/shui ~/.shui
+source ~/.shui/shui.zsh
+
+shui message success "Deployment complete"`} />
+
+</Section>
+
+<Section eyebrow="Features" title="Built for real shell scripts">
+  <Features>
+    <Feature title="Unified message API">
+      One consistent command for success, error, warning, info, and muted
+      messages.
+    </Feature>
+    <Feature title="Token-based themes">
+      Swap colours, icons, and styles via environment variables without touching
+      component code.
+    </Feature>
+    <Feature title="Inline components">
+      Badges and pills write to stdout without a newline, composing naturally
+      inside command substitutions.
+    </Feature>
+    <Feature title="Interactive prompts">
+      Confirm, select, radio, and input build polished interactive layers with
+      sensible defaults.
+    </Feature>
+    <Feature title="Zero dependencies">
+      A single source file, pure Zsh — no npm, no brew, nothing to install.
+    </Feature>
+    <Feature title="NO_COLOR aware">
+      Respects the NO_COLOR standard and strips styling in constrained
+      environments.
+    </Feature>
+  </Features>
+</Section>
+
+<Section eyebrow="Examples" title="See it in your terminal">
+  <Showcase>
+    <Example
+      command={`shui message success "Deployment complete"
+shui message error   "Build failed"
+shui message warning "Deprecated flag used"`}
+    >{`✅ Deployment complete
+❌ Build failed
+⚠️  Deprecated flag used`}</Example>
+    <Example
+      command={`shui badge success "PASS"
+shui badge info "v1.2.4"`}
+    >{`  PASS    v1.2.4 `}</Example>
+    <Example
+      command={`shui progress 60 100`}
+    >{`████████████░░░░░░░░  60%`}</Example>
+  </Showcase>
+</Section>
+
+<CTA
+  href="/projects/shui/docs"
+  title="Ready to make your scripts beautiful?"
+  sub="Full component reference, theming guide, and configuration."
+  label="Read the documentation →"
+/>
