@@ -47,8 +47,18 @@ export const getProjectDocsTree = (slug: string): Root => {
   return { name: docsFolder.name, children }
 }
 
-// A project gets a "Documentation" link only when it has synced docs content.
-export const projectHasDocs = (slug: string): boolean =>
+// The project's README, synced to docs/index — rendered as the landing's
+// product presentation.
+export const getProjectReadme = (slug: string) => source.getPage([slug, "docs"])
+
+// True only when a project ships docs beyond the README index (a real docs/
+// folder), which is when the landing should offer a "Read the docs" link.
+export const projectHasExtraDocs = (slug: string): boolean =>
   source
     .getPages()
-    .some((page) => page.slugs[0] === slug && page.slugs[1] === "docs")
+    .some(
+      (page) =>
+        page.slugs[0] === slug &&
+        page.slugs[1] === "docs" &&
+        page.slugs.length > 2,
+    )

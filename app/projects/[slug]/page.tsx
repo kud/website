@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { DocsBody } from "fumadocs-ui/layouts/docs/page"
 import { getProject, getProjects } from "@/lib/projects"
-import { projectHasDocs } from "@/lib/source"
+import { getProjectReadme, projectHasExtraDocs } from "@/lib/source"
+import { getMDXComponents } from "@/components/mdx"
 import styles from "./page.module.css"
 
 export const generateStaticParams = async () =>
@@ -38,7 +40,9 @@ const ProjectLanding = async ({
   const project = await getProject(slug)
   if (!project) notFound()
 
-  const hasDocs = projectHasDocs(slug)
+  const readme = getProjectReadme(slug)
+  const Presentation = readme?.data.body
+  const hasExtraDocs = projectHasExtraDocs(slug)
 
   return (
     <main className={styles.page}>
@@ -53,7 +57,7 @@ const ProjectLanding = async ({
         ) : null}
 
         <div className={styles.actions}>
-          {hasDocs ? (
+          {hasExtraDocs ? (
             <Link href={`/projects/${slug}/docs`} className={styles.primary}>
               Read the docs →
             </Link>
@@ -101,6 +105,14 @@ const ProjectLanding = async ({
           </ul>
         ) : null}
       </div>
+
+      {Presentation ? (
+        <article className={`${styles.presentation} dark`}>
+          <DocsBody>
+            <Presentation components={getMDXComponents()} />
+          </DocsBody>
+        </article>
+      ) : null}
     </main>
   )
 }
