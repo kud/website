@@ -1,0 +1,141 @@
+---
+title: "gpuswitch-cli"
+description: "Switch between integrated, discrete, and auto GPU on Intel Macs via pmset"
+---
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/kud/gpuswitch-cli/HEAD/assets/icon.png" width="160" alt="gpuswitch icon" />
+
+&nbsp;
+
+&nbsp;
+
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=node.js&logoColor=white)
+![npm](https://img.shields.io/badge/npm-%40kud%2Fgpuswitch--cli-CB3837?style=flat-square&logo=npm&logoColor=white)
+![Licence](https://img.shields.io/badge/licence-MIT-22C55E?style=flat-square)
+
+**Switch between integrated, discrete, and auto GPU on Intel Macs via pmset**
+
+[Features](#-features) • [Quick Start](#-quick-start) • [CLI Reference](#-cli-reference) • [Development](#-development)
+
+</div>
+
+---
+
+## 🌟 Features
+
+- 🖥 **Integrated GPU Mode** — force the Intel iGPU for maximum battery life on long unplugged sessions
+- ⚡ **Discrete GPU Mode** — activate the dedicated dGPU for full graphics performance when you need it
+- 🤖 **Auto Mode** — restore macOS default behaviour, letting the system switch GPUs dynamically
+- 🎨 **Interactive TUI** — arrow-key picker built with Ink/React, shows your current mode at a glance
+- 🔋 **Headless Subcommands** — scriptable `integrated|discrete|auto|status` for shell scripts and Raycast
+- 🛠 **Zero Config** — thin wrapper around `pmset`, no daemons, no background processes, no setup
+- 📦 **Typed & Modern** — strict TypeScript, ESM-only, built with tsup
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 20+
+- macOS on an Intel Mac with both integrated and discrete GPU (e.g. MacBook Pro 2019 or earlier)
+
+### 1. Install
+
+```bash
+npm install -g @kud/gpuswitch-cli
+```
+
+### 2. Use it
+
+```bash
+# Interactive TUI — pick a mode with arrow keys
+gpuswitch
+
+# Or go straight to a mode
+gpuswitch integrated   # save battery
+gpuswitch discrete     # full power
+gpuswitch auto         # let macOS decide
+gpuswitch status       # see what's active
+```
+
+> Switching GPU mode requires `sudo` — you will be prompted for your password.
+
+---
+
+## 📖 CLI Reference
+
+| Command                | Description                            |
+| ---------------------- | -------------------------------------- |
+| `gpuswitch`            | Open interactive TUI mode (↑↓ + enter) |
+| `gpuswitch integrated` | Switch to integrated GPU only          |
+| `gpuswitch discrete`   | Switch to discrete GPU only            |
+| `gpuswitch auto`       | Let macOS manage GPU switching         |
+| `gpuswitch status`     | Print the current GPU mode             |
+| `gpuswitch --help`     | Show usage                             |
+
+---
+
+## 🔧 Development
+
+**Project Structure**
+
+```
+gpuswitch-cli/
+├── src/
+│   ├── gpu.ts        ← pmset read/write logic
+│   ├── app.tsx       ← Ink interactive TUI
+│   └── index.tsx     ← entry point (headless or TUI)
+├── dist/
+├── package.json
+├── tsconfig.json
+└── eslint.config.js
+```
+
+**Scripts**
+
+| Script                | Description                   |
+| --------------------- | ----------------------------- |
+| `npm run dev`         | Run from source with tsx      |
+| `npm run build`       | Compile TypeScript to `dist/` |
+| `npm run build:watch` | Watch mode with auto-rebuild  |
+| `npm run typecheck`   | Type-check without emitting   |
+| `npm run lint`        | Run ESLint                    |
+| `npm run format`      | Format with Prettier          |
+
+**Workflow**
+
+```bash
+git clone https://github.com/kud/gpuswitch-cli.git
+cd gpuswitch-cli
+npm install
+npm run build
+node dist/index.js
+```
+
+---
+
+## 🏗 Tech Stack
+
+| Component   | Details                    |
+| ----------- | -------------------------- |
+| Runtime     | Node.js ≥ 20               |
+| Language    | TypeScript 5.x (ESM)       |
+| TUI         | Ink 7.x + React 19         |
+| Build       | tsup                       |
+| Linting     | ESLint + Prettier          |
+| GPU control | `pmset` (macOS built-in)   |
+| Package     | npm · `@kud/gpuswitch-cli` |
+
+---
+
+<div align="center">
+
+MIT © [kud](https://github.com/kud) — Made with ❤️ for Intel Mac users
+
+⭐ Star this repo if it saves your battery · [↑ Back to top](#)
+
+</div>

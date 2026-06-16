@@ -2,14 +2,16 @@
 // content/projects/<slug>/docs/, where Fumadocs indexes it. The README becomes
 // the docs index; an optional docs/ folder in the repo adds deeper pages.
 // Runs as part of `npm run build`. Never fails the build — a network/auth
-// hiccup just leaves the existing content in place.
-import { mkdir, writeFile, rm } from "node:fs/promises"
+// hiccup just leaves the existing (committed) content in place.
+import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 
 const OWNER = "kud"
 const TOPIC = "kud-site"
 const CONTENT_DIR = "content/projects"
 
+// A token lifts the unauthenticated 60 req/hr limit to 5000; the sync also
+// works fine without one for a small number of repos.
 const token = process.env.GITHUB_TOKEN
 const headers = {
   Accept: "application/vnd.github+json",
@@ -39,6 +41,36 @@ const frontmatter = (title, description) =>
 // The title lives in frontmatter, so drop a leading H1 to avoid duplication.
 const stripLeadingH1 = (markdown) => markdown.replace(/^\s*#\s+.+\n+/, "")
 
+// A README rendered on kud.io must resolve its repo-relative links/images to
+// absolute GitHub URLs: images/assets to raw.githubusercontent.com, other
+// links to the repo's blob view. `new URL` handles ./ and ../ correctly.
+const RELATIVE = /^(?!https?:|\/\/|\/|#|mailto:|tel:|data:)/i
+
+const rewriteLinks = (markdown, slug, srcDir) => {
+  const rawBase = `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${srcDir}`
+  const blobBase = `https://github.com/${OWNER}/${slug}/blob/HEAD/${srcDir}`
+  const absolute = (rel, base) => {
+    try {
+      return new URL(rel, base).href
+    } catch {
+      return rel
+    }
+  }
+  return markdown
+    .replace(/(!\[[^\]]*\]\()([^)\s]+)(\))/g, (match, pre, url, post) =>
+      RELATIVE.test(url) ? `${pre}${absolute(url, rawBase)}${post}` : match,
+    )
+    .replace(/(?<!!)(\[[^\]]*\]\()([^)\s]+)(\))/g, (match, pre, url, post) =>
+      RELATIVE.test(url) ? `${pre}${absolute(url, blobBase)}${post}` : match,
+    )
+    .replace(/(\ssrc=")([^"]+)(")/g, (match, pre, url, post) =>
+      RELATIVE.test(url) ? `${pre}${absolute(url, rawBase)}${post}` : match,
+    )
+    .replace(/(\shref=")([^"]+)(")/g, (match, pre, url, post) =>
+      RELATIVE.test(url) ? `${pre}${absolute(url, blobBase)}${post}` : match,
+    )
+}
+
 const writeDoc = async (slug, relPath, body) => {
   const file = join(CONTENT_DIR, slug, "docs", relPath)
   await mkdir(dirname(file), { recursive: true })
@@ -50,10 +82,11 @@ const syncRepo = async (repo) => {
 
   const readme = await rawFile(slug, "README.md")
   if (readme) {
+    const body = rewriteLinks(stripLeadingH1(readme), slug, "")
     await writeDoc(
       slug,
       "index.md",
-      frontmatter(repo.name, repo.description) + stripLeadingH1(readme),
+      frontmatter(repo.name, repo.description) + body,
     )
   }
 
@@ -66,7 +99,13 @@ const syncRepo = async (repo) => {
     )
     for (const file of docFiles) {
       const text = await rawFile(slug, file.path)
-      if (text) await writeDoc(slug, file.path.replace(/^docs\//, ""), text)
+      if (!text) continue
+      const srcDir = `${dirname(file.path)}/`
+      await writeDoc(
+        slug,
+        file.path.replace(/^docs\//, ""),
+        rewriteLinks(text, slug, srcDir),
+      )
     }
   } catch {
     // No docs/ folder — a README-only project, which is fine.
@@ -88,7 +127,6 @@ const main = async () => {
     return
   }
 
-  await rm(CONTENT_DIR, { recursive: true, force: true })
   const synced = []
   for (const repo of repos) synced.push(await syncRepo(repo))
   console.log(`[sync] synced ${synced.length} project(s): ${synced.join(", ")}`)

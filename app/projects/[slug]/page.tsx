@@ -22,6 +22,13 @@ export const generateMetadata = async ({
   }
 }
 
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  })
+
 const ProjectLanding = async ({
   params,
 }: {
@@ -35,48 +42,65 @@ const ProjectLanding = async ({
 
   return (
     <main className={styles.page}>
-      <Link href="/projects" className={styles.back}>
-        ← Projects
-      </Link>
+      <div className={styles.hero}>
+        <Link href="/projects" className={styles.back}>
+          ← Projects
+        </Link>
 
-      <h1 className={styles.title}>{project.name}</h1>
-      {project.description ? (
-        <p className={styles.tagline}>{project.description}</p>
-      ) : null}
-
-      <div className={styles.actions}>
-        {hasDocs ? (
-          <Link href={`/projects/${slug}/docs`} className={styles.primary}>
-            Documentation →
-          </Link>
+        <h1 className={styles.title}>{project.name}</h1>
+        {project.description ? (
+          <p className={styles.tagline}>{project.description}</p>
         ) : null}
-        <a
-          href={project.repoUrl}
-          className={styles.secondary}
-          target="_blank"
-          rel="noreferrer"
-        >
-          GitHub
-        </a>
-        {project.homepage ? (
+
+        <div className={styles.actions}>
+          {hasDocs ? (
+            <Link href={`/projects/${slug}/docs`} className={styles.primary}>
+              Read the docs →
+            </Link>
+          ) : null}
           <a
-            href={project.homepage}
+            href={project.repoUrl}
             className={styles.secondary}
             target="_blank"
             rel="noreferrer"
           >
-            Website
+            GitHub ↗
           </a>
+          {project.homepage ? (
+            <a
+              href={project.homepage}
+              className={styles.secondary}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Website ↗
+            </a>
+          ) : null}
+        </div>
+
+        <div className={styles.stats}>
+          {project.language ? (
+            <span className={styles.stat}>
+              <span className={styles.statDot} />
+              {project.language}
+            </span>
+          ) : null}
+          {project.stars > 0 ? (
+            <span className={styles.stat}>★ {project.stars} stars</span>
+          ) : null}
+          <span className={styles.stat}>
+            Updated {formatDate(project.pushedAt)}
+          </span>
+        </div>
+
+        {project.topics.length > 0 ? (
+          <ul className={styles.topics}>
+            {project.topics.map((topic) => (
+              <li key={topic}>{topic}</li>
+            ))}
+          </ul>
         ) : null}
       </div>
-
-      {project.topics.length > 0 ? (
-        <ul className={styles.topics}>
-          {project.topics.map((topic) => (
-            <li key={topic}>{topic}</li>
-          ))}
-        </ul>
-      ) : null}
     </main>
   )
 }
