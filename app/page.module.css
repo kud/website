@@ -1,0 +1,165 @@
+/* Faithful port of the original Parcel profile. The original used a
+   62.5% root font-size (1rem = 10px); to avoid shifting Fumadocs' own rem
+   sizing, every value below is the equivalent in pixels. */
+
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  color: #333;
+  background: #fff;
+  font-family: var(--font-roboto), Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.gorgeous {
+  flex: 1 1 40%;
+  background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=1024");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.content {
+  flex: 1 1 60%;
+  max-height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.contentWrapper {
+  max-width: 700px;
+  padding: 20px 50px;
+  margin: auto;
+}
+
+.contentWrapper a {
+  text-decoration: none;
+  color: #222;
+  position: relative;
+  font-weight: 600;
+}
+
+.contentWrapper a::after {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: #222;
+  content: "";
+  opacity: 0;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+  transform: translateY(5px);
+}
+
+.contentWrapper a:hover::after,
+.contentWrapper a:focus::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.heading {
+  font-family: var(--font-lusitana), serif;
+  color: #2e2e2e;
+  text-align: center;
+  font-size: 30px;
+  line-height: 1.3;
+  margin-bottom: 70px;
+  padding: 0 30px;
+}
+
+.heading::first-letter {
+  font-weight: 600;
+}
+
+.heading a {
+  color: #ed4545;
+}
+
+.heading a::after {
+  background: #ed4545;
+  height: 2px;
+}
+
+.keywords {
+  font-family: var(--font-open-sans), sans-serif;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  margin: 50px 0 0;
+  text-align: center;
+}
+
+.links li {
+  display: inline-block;
+  margin: 5px;
+}
+
+.links li a {
+  background: #151515;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 46px;
+  height: 46px;
+  position: relative;
+  border-radius: 50%;
+  color: #fff;
+  border: 1px solid #000;
+  transition: all 0.4s ease;
+}
+
+.links li a::after {
+  display: none;
+}
+
+.links li a svg {
+  display: block;
+  width: 30px;
+  height: 30px;
+  fill: #fff;
+}
+
+.links li a:hover {
+  background: #fff;
+}
+
+.links li a:hover svg {
+  fill: #000;
+}
+
+@media (max-width: 839px) {
+  .wrapper {
+    display: block;
+  }
+
+  .gorgeous {
+    width: 100%;
+    height: 280px;
+  }
+
+  .content {
+    display: block;
+    max-height: none;
+  }
+}
+
+@media (max-width: 379px) {
+  .contentWrapper {
+    padding: 10px;
+  }
+
+  .heading {
+    font-size: 27px;
+  }
+}

@@ -3,30 +3,37 @@
   "version": "4.0.0",
   "author": "Erwann Mest",
   "license": "MIT",
+  "private": true,
+  "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kud/kud.github.io.git"
+    "url": "https://github.com/kud/website.git"
   },
-  "source": "src/index.html",
   "scripts": {
-    "clean": "rm -rf dist",
-    "predev": "npm run clean",
-    "dev": "parcel",
-    "prebuild": "npm run clean",
-    "build": "parcel build"
+    "dev": "next dev",
+    "build": "node scripts/sync-content.js && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "sync": "node scripts/sync-content.js"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "devDependencies": {
-    "@babel/core": "7.28.5",
-    "@babel/node": "7.28.0",
-    "@babel/plugin-proposal-class-properties": "7.18.6",
-    "@babel/plugin-proposal-object-rest-spread": "7.20.7",
-    "@parcel/babel-preset-env": "2.16.3",
-    "parcel": "2.16.3"
-  },
   "dependencies": {
-    "normalize.css": "8.0.1"
+    "fumadocs-core": "16.10.3",
+    "fumadocs-mdx": "15.0.12",
+    "fumadocs-ui": "16.10.3",
+    "next": "16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.1",
+    "@types/mdx": "2.0.14",
+    "@types/node": "25.9.3",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "tailwindcss": "4.3.1",
+    "typescript": "6.0.3"
   }
 }

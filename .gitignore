@@ -1,4 +1,15 @@
 /node_modules
-/dist
-/.cache
-/.parcel-cache
+
+# next.js
+/.next
+/out
+/build
+
+# fumadocs generated source
+/.source
+
+# misc
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+.DS_Store
