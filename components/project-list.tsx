@@ -32,27 +32,27 @@ const SORTS: Record<
   },
 }
 
-export const ProjectList = ({ groups }: { groups: Group[] }) => {
-  const [sort, setSort] = useState<SortKey>("updated")
-  const [open, setOpen] = useState(false)
-  const [query, setQuery] = useState("")
-  const [category, setCategory] = useState<string | null>(null)
-  const [lang, setLang] = useState<string | null>(null)
-  const [activeTags, setActiveTags] = useState<string[]>([])
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const compare = SORTS[sort].fn
+type Option = { value: string | null; label: string }
 
-  const toggleTag = (tag: string) =>
-    setActiveTags((current) =>
-      current.includes(tag)
-        ? current.filter((value) => value !== tag)
-        : [...current, tag],
-    )
+// A self-contained select dropdown (used for both Type and Sort).
+const Dropdown = ({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string
+  value: string | null
+  options: Option[]
+  onChange: (value: string | null) => void
+}) => {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!open) return
     const onPointerDown = (event: MouseEvent) => {
-      if (!dropdownRef.current?.contains(event.target as Node)) setOpen(false)
+      if (!ref.current?.contains(event.target as Node)) setOpen(false)
     }
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false)
@@ -64,6 +64,66 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
       document.removeEventListener("keydown", onKeyDown)
     }
   }, [open])
+
+  const current = options.find((option) => option.value === value) ?? options[0]
+
+  return (
+    <div className={styles.sortGroup}>
+      <span className={styles.filterLabel}>{label}</span>
+      <div className={styles.dropdown} ref={ref}>
+        <button
+          type="button"
+          className={styles.trigger}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          onClick={() => setOpen((state) => !state)}
+        >
+          {current.label}
+          <span className={styles.chevron} aria-hidden />
+        </button>
+        {open ? (
+          <ul className={styles.menu} role="listbox">
+            {options.map((option) => (
+              <li key={option.label}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={option.value === value}
+                  data-active={option.value === value}
+                  className={styles.option}
+                  onClick={() => {
+                    onChange(option.value)
+                    setOpen(false)
+                  }}
+                >
+                  <span className={styles.check} aria-hidden>
+                    {option.value === value ? "✓" : ""}
+                  </span>
+                  {option.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+export const ProjectList = ({ groups }: { groups: Group[] }) => {
+  const [sort, setSort] = useState<SortKey>("updated")
+  const [query, setQuery] = useState("")
+  const [category, setCategory] = useState<string | null>(null)
+  const [lang, setLang] = useState<string | null>(null)
+  const [activeTags, setActiveTags] = useState<string[]>([])
+  const compare = SORTS[sort].fn
+
+  const toggleTag = (tag: string) =>
+    setActiveTags((current) =>
+      current.includes(tag)
+        ? current.filter((value) => value !== tag)
+        : [...current, tag],
+    )
 
   // Languages ordered by how many projects use them, so the common ones lead.
   const languages = useMemo(() => {
@@ -109,6 +169,17 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
     }))
     .filter((group) => group.items.length > 0)
 
+  const categoryOptions: Option[] = [
+    { value: null, label: "All types" },
+    ...groups.map((group) => ({ value: group.key, label: group.name })),
+  ]
+  const sortOptions: Option[] = (Object.keys(SORTS) as SortKey[]).map(
+    (key) => ({
+      value: key,
+      label: SORTS[key].label,
+    }),
+  )
+
   return (
     <>
       <div className={styles.toolbar}>
@@ -120,75 +191,21 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
           onChange={(event) => setQuery(event.target.value)}
           aria-label="Search projects"
         />
-        <div className={styles.sortGroup}>
-          <span className={styles.filterLabel}>Sort</span>
-          <div className={styles.dropdown} ref={dropdownRef}>
-            <button
-              type="button"
-              className={styles.trigger}
-              aria-haspopup="listbox"
-              aria-expanded={open}
-              onClick={() => setOpen((value) => !value)}
-            >
-              {SORTS[sort].label}
-              <span className={styles.chevron} aria-hidden />
-            </button>
-            {open ? (
-              <ul className={styles.menu} role="listbox">
-                {(Object.keys(SORTS) as SortKey[]).map((key) => (
-                  <li key={key}>
-                    <button
-                      type="button"
-                      role="option"
-                      aria-selected={key === sort}
-                      data-active={key === sort}
-                      className={styles.option}
-                      onClick={() => {
-                        setSort(key)
-                        setOpen(false)
-                      }}
-                    >
-                      <span className={styles.check} aria-hidden>
-                        {key === sort ? "✓" : ""}
-                      </span>
-                      {SORTS[key].label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        </div>
+        <Dropdown
+          label="Type"
+          value={category}
+          options={categoryOptions}
+          onChange={setCategory}
+        />
+        <Dropdown
+          label="Sort"
+          value={sort}
+          options={sortOptions}
+          onChange={(value) => setSort((value ?? "updated") as SortKey)}
+        />
       </div>
 
       <div className={styles.filters}>
-        <div className={styles.filterGroup}>
-          <span className={styles.filterLabel}>Type</span>
-          <div className={styles.chips}>
-            <button
-              type="button"
-              className={styles.chip}
-              data-active={category === null}
-              onClick={() => setCategory(null)}
-            >
-              All
-            </button>
-            {groups.map((group) => (
-              <button
-                key={group.key}
-                type="button"
-                className={styles.chip}
-                data-active={category === group.key}
-                onClick={() =>
-                  setCategory(category === group.key ? null : group.key)
-                }
-              >
-                {group.name}
-              </button>
-            ))}
-          </div>
-        </div>
-
         <div className={styles.filterGroup}>
           <span className={styles.filterLabel}>Lang</span>
           <div className={styles.chips}>
