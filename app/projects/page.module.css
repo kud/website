@@ -18,6 +18,12 @@
   overflow: hidden;
 }
 
+@media (max-width: 720px) {
+  .page {
+    padding: 0 16px 72px;
+  }
+}
+
 /* Hero ----------------------------------------------------------------------*/
 .hero {
   position: relative;
@@ -25,6 +31,13 @@
   padding: 88px 24px 64px;
   overflow: hidden;
   text-align: center;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    margin: 0 -16px 8px;
+    padding: 64px 16px 48px;
+  }
 }
 
 .heroInner {
