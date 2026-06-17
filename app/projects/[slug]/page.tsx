@@ -76,16 +76,6 @@ const AutoLanding = ({ project }: { project: Project }) => {
             >
               GitHub ↗
             </a>
-            {project.homepage ? (
-              <a
-                href={project.homepage}
-                className={styles.secondary}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Website ↗
-              </a>
-            ) : null}
           </div>
           <div className={styles.stats}>
             {stats.map((stat, index) => (
@@ -106,6 +96,9 @@ const AutoLanding = ({ project }: { project: Project }) => {
           <Reveal className={styles.sectionHeader}>
             <span className={styles.eyebrow}>Quick start</span>
             <h2 className={styles.sectionTitle}>Up and running in seconds</h2>
+            <p className={styles.sectionLead}>
+              Install {project.name} with the command below.
+            </p>
           </Reveal>
           <Reveal className={styles.terminalWrap}>
             <div className={styles.terminal}>

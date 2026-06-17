@@ -141,6 +141,23 @@ const buildLanding = (readme) => {
   }
 }
 
+// When the README has no install snippet, derive a sensible one from
+// package.json so every landing still shows how to get the project running.
+const fallbackInstall = (pkgRaw, slug, repoUrl) => {
+  try {
+    const pkg = JSON.parse(pkgRaw)
+    if (pkg.engines?.vscode && pkg.publisher && pkg.name) {
+      return `code --install-extension ${pkg.publisher}.${pkg.name}`
+    }
+    if (pkg.name) {
+      return pkg.bin ? `npm install -g ${pkg.name}` : `npm install ${pkg.name}`
+    }
+  } catch {
+    // No/invalid package.json — fall through to the clone instructions.
+  }
+  return `git clone ${repoUrl}\ncd ${slug}`
+}
+
 // -----------------------------------------------------------------------------
 
 const writeDoc = async (slug, relPath, body) => {
@@ -162,9 +179,10 @@ const getTree = async (slug) => {
 }
 
 // Convention: a repo opts into a logo with an icon.svg/icon.png (or logo.*) at
-// the repo root or under assets/. Detected straight from the tree — no extra
-// API call. When several match, prefer .svg, then "icon" over "logo".
-const ICON = /^(assets\/)?(icon|logo)\.(svg|png)$/i
+// the repo root, under assets/, or under images/ (the standard VS Code icon
+// path). Detected straight from the tree — no extra API call. When several
+// match, prefer .svg, then "icon" over "logo".
+const ICON = /^(assets\/|images\/)?(icon|logo)\.(svg|png)$/i
 
 const iconRank = (path) =>
   (/\.svg$/i.test(path) ? 0 : 2) + (/(^|\/)icon\./i.test(path) ? 0 : 1)
@@ -205,23 +223,34 @@ const syncRepo = async (repo) => {
   const icon = findIcon(slug, tree)
 
   const readme = await rawFile(slug, "README.md")
-  if (readme) {
-    const cleaned = stripLeadingCenteredHero(stripLeadingH1(readme))
-    // README is the docs first page only when the repo ships no docs/index.
-    if (!hasDocsIndex) {
-      await writeDoc(
-        slug,
-        "index.md",
-        frontmatter(repo.name, repo.description) +
-          rewriteLinks(cleaned, slug, ""),
-      )
-    }
-    // The landing always extracts its hero/features/install from the README.
-    await writeFile(
-      join(CONTENT_DIR, slug, "landing.json"),
-      JSON.stringify(buildLanding(cleaned), null, 2),
+  const cleaned = readme
+    ? stripLeadingCenteredHero(stripLeadingH1(readme))
+    : null
+  // README is the docs first page only when the repo ships no docs/index.
+  if (cleaned && !hasDocsIndex) {
+    await writeDoc(
+      slug,
+      "index.md",
+      frontmatter(repo.name, repo.description) +
+        rewriteLinks(cleaned, slug, ""),
     )
   }
+
+  // The landing extracts features/install from the README; when no install
+  // snippet is present, fall back to a package.json-derived command so every
+  // landing always shows how to install the project.
+  const landingData = cleaned
+    ? buildLanding(cleaned)
+    : { features: [], install: null }
+  if (!landingData.install) {
+    const pkgRaw = await rawFile(slug, "package.json")
+    landingData.install = fallbackInstall(pkgRaw, slug, repo.html_url)
+  }
+  await mkdir(join(CONTENT_DIR, slug), { recursive: true })
+  await writeFile(
+    join(CONTENT_DIR, slug, "landing.json"),
+    JSON.stringify(landingData, null, 2),
+  )
 
   // An authored landing.mdx in the repo overrides the auto landing; it uses the
   // website's component kit (<Hero>, <Showcase>…) and evolves with the project

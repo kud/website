@@ -12,7 +12,19 @@
 
   position: relative;
   min-height: 100vh;
-  background: var(--bg);
+  background-color: var(--bg);
+  /* Blueprint graph paper: bold major lines every 140px over a fine 28px grid,
+     kept very faint so it reads as a backdrop, not a foreground. */
+  background-image:
+    linear-gradient(rgba(99, 140, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 140, 230, 0.035) 1px, transparent 1px),
+    linear-gradient(rgba(99, 140, 230, 0.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 140, 230, 0.014) 1px, transparent 1px);
+  background-size:
+    140px 140px,
+    140px 140px,
+    28px 28px,
+    28px 28px;
   color: var(--text);
   padding: 0 24px 96px;
   overflow: hidden;
@@ -31,12 +43,41 @@
   padding: 88px 24px 64px;
   overflow: hidden;
   text-align: center;
+  background:
+    radial-gradient(
+      ellipse 50% 60% at 22% 0%,
+      rgba(124, 58, 237, 0.22),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 45% 55% at 80% 10%,
+      rgba(59, 130, 246, 0.16),
+      transparent 70%
+    );
 }
 
 @media (max-width: 720px) {
   .hero {
     margin: 0 -16px 8px;
     padding: 64px 16px 48px;
+  }
+}
+
+.blueprint {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  width: min(600px, 92vw);
+  height: auto;
+  transform: translateX(-50%);
+  z-index: 0;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .blueprint {
+    display: none;
   }
 }
 
@@ -48,8 +89,13 @@
 }
 
 .back {
-  display: inline-block;
-  margin-bottom: 28px;
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--muted);
   font-size: 14px;
   text-decoration: none;
@@ -58,6 +104,13 @@
 
 .back:hover {
   color: var(--text);
+}
+
+@media (max-width: 720px) {
+  .back {
+    top: 18px;
+    left: 18px;
+  }
 }
 
 .avatar {

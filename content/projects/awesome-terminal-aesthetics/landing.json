@@ -1,4 +1,4 @@
 {
   "features": [],
-  "install": null
+  "install": "git clone https://github.com/kud/awesome-terminal-aesthetics\ncd awesome-terminal-aesthetics"
 }

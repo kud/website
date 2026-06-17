@@ -288,6 +288,14 @@
   margin: 0;
 }
 
+.sectionLead {
+  margin: 14px auto 0;
+  max-width: 460px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 /* Quick-start terminal ------------------------------------------------------*/
 .terminalWrap {
   max-width: 680px;

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { getProjects, type Project } from "@/lib/projects"
 import { getIcons } from "@/lib/icons"
-import { ParallaxOrbs } from "@/components/parallax-orbs"
+import { Blueprint } from "@/components/blueprint"
 import { ProjectList } from "@/components/project-list"
 import styles from "./page.module.css"
 
@@ -95,11 +95,11 @@ const ProjectsIndex = async () => {
   return (
     <main className={styles.page}>
       <header className={styles.hero}>
-        <ParallaxOrbs />
+        <Blueprint className={styles.blueprint} />
+        <Link href="/" className={styles.back}>
+          ← kud.io
+        </Link>
         <div className={styles.heroInner}>
-          <Link href="/" className={styles.back}>
-            ← kud.io
-          </Link>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={AVATAR}
