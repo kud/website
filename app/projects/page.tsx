@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { getProjects, type Project } from "@/lib/projects"
 import { ParallaxOrbs } from "@/components/parallax-orbs"
+import { ProjectList } from "@/components/project-list"
 import styles from "./page.module.css"
 
 export const metadata: Metadata = {
@@ -95,42 +96,7 @@ const ProjectsIndex = async () => {
           No projects tagged <code>kud-site</code> yet.
         </p>
       ) : (
-        groups.map((group) => (
-          <section
-            key={group.key}
-            className={styles.section}
-            data-cat={group.key}
-          >
-            <h2 className={styles.sectionTitle}>
-              <span className={styles.dot} />
-              {group.name}
-              <span className={styles.count2}>{group.items.length}</span>
-            </h2>
-            <ul className={styles.grid}>
-              {group.items.map((project) => (
-                <li key={project.slug}>
-                  <Link
-                    href={`/projects/${project.slug}`}
-                    className={styles.card}
-                  >
-                    <h3 className={styles.cardTitle}>{project.name}</h3>
-                    {project.description ? (
-                      <p className={styles.cardDesc}>{project.description}</p>
-                    ) : null}
-                    <div className={styles.meta}>
-                      {project.language ? (
-                        <span className={styles.lang}>{project.language}</span>
-                      ) : null}
-                      {project.stars > 0 ? (
-                        <span className={styles.stars}>★ {project.stars}</span>
-                      ) : null}
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))
+        <ProjectList groups={groups} />
       )}
     </main>
   )
