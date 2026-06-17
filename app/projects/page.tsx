@@ -18,8 +18,9 @@ const CATEGORY_META: Record<string, { name: string; order: number }> = {
   mcp: { name: "MCP Servers", order: 1 },
   claude: { name: "Claude Code", order: 2 },
   ui: { name: "UI & Design Systems", order: 3 },
-  vscode: { name: "VS Code", order: 4 },
-  other: { name: "Lists & Resources", order: 5 },
+  vscode: { name: "VS Code Extensions", order: 4 },
+  theme: { name: "VS Code Themes", order: 5 },
+  other: { name: "Lists & Resources", order: 6 },
 }
 
 const labelFor = (key: string) =>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import type { Project } from "@/lib/projects"
 import styles from "./project-list.module.css"
@@ -29,25 +29,66 @@ const SORTS: Record<
 
 export const ProjectList = ({ groups }: { groups: Group[] }) => {
   const [sort, setSort] = useState<SortKey>("updated")
+  const [open, setOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const compare = SORTS[sort].fn
+
+  useEffect(() => {
+    if (!open) return
+    const onPointerDown = (event: MouseEvent) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) setOpen(false)
+    }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false)
+    }
+    document.addEventListener("mousedown", onPointerDown)
+    document.addEventListener("keydown", onKeyDown)
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown)
+      document.removeEventListener("keydown", onKeyDown)
+    }
+  }, [open])
 
   return (
     <>
       <div className={styles.toolbar}>
-        <label className={styles.sortLabel}>
-          Sort by
-          <select
-            className={styles.select}
-            value={sort}
-            onChange={(event) => setSort(event.target.value as SortKey)}
+        <span className={styles.sortLabel}>Sort by</span>
+        <div className={styles.dropdown} ref={dropdownRef}>
+          <button
+            type="button"
+            className={styles.trigger}
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            onClick={() => setOpen((value) => !value)}
           >
-            {Object.entries(SORTS).map(([key, { label }]) => (
-              <option key={key} value={key}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </label>
+            {SORTS[sort].label}
+            <span className={styles.chevron} aria-hidden />
+          </button>
+          {open ? (
+            <ul className={styles.menu} role="listbox">
+              {(Object.keys(SORTS) as SortKey[]).map((key) => (
+                <li key={key}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={key === sort}
+                    data-active={key === sort}
+                    className={styles.option}
+                    onClick={() => {
+                      setSort(key)
+                      setOpen(false)
+                    }}
+                  >
+                    <span className={styles.check} aria-hidden>
+                      {key === sort ? "✓" : ""}
+                    </span>
+                    {SORTS[key].label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
       </div>
 
       {groups.map((group) => {
@@ -73,11 +114,11 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
                   <div className={styles.rowHead}>
                     <span className={styles.rowName}>{project.name}</span>
                     <span className={styles.rowMeta}>
-                      {project.language ? (
-                        <span className={styles.lang}>{project.language}</span>
-                      ) : null}
                       {project.stars > 0 ? (
                         <span className={styles.stars}>★ {project.stars}</span>
+                      ) : null}
+                      {project.language ? (
+                        <span className={styles.lang}>{project.language}</span>
                       ) : null}
                     </span>
                   </div>

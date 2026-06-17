@@ -3,13 +3,12 @@
   max-width: 1040px;
   margin: 12px auto 0;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 12px;
 }
 
 .sortLabel {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -17,34 +16,109 @@
   color: var(--muted);
 }
 
-.select {
-  appearance: none;
+.dropdown {
+  position: relative;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 180px;
+  justify-content: space-between;
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: 9px;
-  padding: 7px 30px 7px 12px;
+  padding: 8px 14px;
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
-  letter-spacing: normal;
-  text-transform: none;
   cursor: pointer;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
-    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-  background-position:
-    right 14px center,
-    right 9px center;
-  background-size:
-    5px 5px,
-    5px 5px;
-  background-repeat: no-repeat;
-  transition: border-color 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
-.select:hover {
+.trigger:hover,
+.trigger[aria-expanded="true"] {
   border-color: var(--primary);
+  background: var(--surface-2);
+}
+
+.chevron {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid var(--muted);
+  border-bottom: 1.5px solid var(--muted);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.18s;
+}
+
+.trigger[aria-expanded="true"] .chevron {
+  transform: translateY(1px) rotate(225deg);
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  right: 0;
+  z-index: 30;
+  min-width: 210px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 20px 48px -20px rgba(0, 0, 0, 0.85);
+  animation: menuIn 0.14s ease both;
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.12s,
+    color 0.12s;
+}
+
+.option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+}
+
+.option[data-active="true"] {
+  color: var(--text);
+}
+
+.check {
+  width: 13px;
+  flex-shrink: 0;
+  color: var(--primary-light);
+  font-size: 11px;
 }
 
 /* Sections ------------------------------------------------------------------*/
@@ -71,6 +145,9 @@
 .section[data-cat="vscode"] {
   --accent: #22d3ee;
 }
+.section[data-cat="theme"] {
+  --accent: #ec4899;
+}
 .section[data-cat="other"] {
   --accent: #8892a4;
 }
@@ -78,24 +155,25 @@
 .sectionTitle {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  font-weight: 600;
+  gap: 12px;
+  font-size: 19px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--text);
-  margin: 0 0 16px;
+  margin: 0 0 20px;
 }
 
 .dot {
-  width: 9px;
-  height: 9px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 12px var(--accent);
+  box-shadow: 0 0 14px var(--accent);
 }
 
 .count {
+  font-size: 15px;
   color: var(--muted);
   font-weight: 500;
   letter-spacing: normal;
@@ -140,8 +218,8 @@
 .row {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 15px 18px;
+  gap: 7px;
+  padding: 18px 22px;
   background: var(--surface);
   text-decoration: none;
   color: inherit;
@@ -160,7 +238,7 @@
 }
 
 .rowName {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
   transition: color 0.15s;
@@ -173,22 +251,29 @@
 .rowMeta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   white-space: nowrap;
+}
+
+.lang {
+  display: inline-flex;
+  align-items: center;
+  min-width: 78px;
+  justify-content: flex-end;
 }
 
 .lang::before {
   content: "●";
   color: var(--accent);
-  margin-right: 5px;
+  margin-right: 6px;
 }
 
 .rowDesc {
   margin: 0;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--muted);
   display: -webkit-box;
