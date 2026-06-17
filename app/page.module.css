@@ -2,8 +2,8 @@
 .hero {
   display: flex;
   min-height: 100vh;
-  background: #fff;
-  color: #1a1a1a;
+  background: #fdfbf8;
+  color: #1f1813;
   font-family: var(--font-roboto), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -25,7 +25,7 @@
 
 .inner {
   width: 100%;
-  max-width: 560px;
+  max-width: 640px;
   margin: auto;
   padding: 72px 56px;
 }
@@ -105,7 +105,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #8a8a93;
+  color: #8d847a;
 }
 
 .eyebrow::before {
@@ -123,7 +123,7 @@
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1;
-  color: #111;
+  color: #1a1512;
 }
 
 .tagline {
@@ -131,14 +131,14 @@
   font-size: clamp(19px, 2.4vw, 23px);
   font-weight: 500;
   line-height: 1.35;
-  color: #2c2c34;
+  color: #2d2822;
 }
 
 .bio {
   margin: 0 0 18px;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.75;
-  color: #55555f;
+  color: #574f47;
 }
 
 .focus {
@@ -153,9 +153,9 @@
 .focus li {
   font-size: 12.5px;
   font-weight: 500;
-  color: #55555f;
-  background: #f3f3f6;
-  border: 1px solid #e7e7ee;
+  color: #574f47;
+  background: #f6f2ec;
+  border: 1px solid #ebe4da;
   border-radius: 999px;
   padding: 5px 12px;
 }
@@ -164,22 +164,22 @@
   margin: 0 0 34px;
   font-size: 15px;
   line-height: 1.7;
-  color: #80808a;
+  color: #857c72;
 }
 
 .bio a,
 .personal a {
-  color: #1a1a1a;
+  color: #1f1813;
   font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid #d8d8de;
+  border-bottom: 1px solid #ddd5ca;
   transition:
     color 0.18s,
     border-color 0.18s;
 }
 
 .personal a {
-  color: #55555f;
+  color: #574f47;
 }
 
 .bio a:hover,
@@ -225,9 +225,9 @@
 }
 
 .secondary {
-  background: #fff;
-  color: #1a1a1a;
-  border: 1px solid #e2e2e8;
+  background: #fdfbf8;
+  color: #1f1813;
+  border: 1px solid #e7e0d6;
 }
 
 .secondary:hover {
@@ -251,8 +251,8 @@
   width: 40px;
   height: 40px;
   border-radius: 11px;
-  color: #8a8a93;
-  border: 1px solid #ececf1;
+  color: #8d847a;
+  border: 1px solid #eee7dd;
   transition:
     color 0.18s,
     border-color 0.18s,
@@ -276,7 +276,7 @@
   font-size: 13px;
   font-weight: 500;
   letter-spacing: 0.03em;
-  color: #a0a0a8;
+  color: #a39a8e;
   text-decoration: none;
   transition: color 0.18s;
 }
@@ -312,9 +312,9 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #fafafb;
-  border-top: 1px solid #ededf1;
-  color: #1a1a1a;
+  background: #faf7f2;
+  border-top: 1px solid #ece5db;
+  color: #1f1813;
   font-family: var(--font-roboto), system-ui, sans-serif;
   padding: 96px 28px;
 }
@@ -334,7 +334,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #8a8a93;
+  color: #8d847a;
 }
 
 .timelineEyebrow::before {
@@ -350,14 +350,14 @@
   font-size: clamp(30px, 4vw, 40px);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #111;
+  color: #1a1512;
 }
 
 .track {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-left: 2px solid #e6e6ec;
+  border-left: 2px solid #e8e1d6;
 }
 
 .entry {
@@ -377,7 +377,7 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: #fafafb;
+  background: #faf7f2;
   border: 2px solid #c2703d;
 }
 

@@ -36,6 +36,7 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
   const [sort, setSort] = useState<SortKey>("updated")
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState("")
+  const [category, setCategory] = useState<string | null>(null)
   const [lang, setLang] = useState<string | null>(null)
   const [activeTags, setActiveTags] = useState<string[]>([])
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -101,6 +102,7 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
         .includes(needle))
 
   const visibleGroups = groups
+    .filter((group) => !category || group.key === category)
     .map((group) => ({
       ...group,
       items: [...group.items].filter(matches).sort(compare),
@@ -160,6 +162,33 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
       </div>
 
       <div className={styles.filters}>
+        <div className={styles.filterGroup}>
+          <span className={styles.filterLabel}>Type</span>
+          <div className={styles.chips}>
+            <button
+              type="button"
+              className={styles.chip}
+              data-active={category === null}
+              onClick={() => setCategory(null)}
+            >
+              All
+            </button>
+            {groups.map((group) => (
+              <button
+                key={group.key}
+                type="button"
+                className={styles.chip}
+                data-active={category === group.key}
+                onClick={() =>
+                  setCategory(category === group.key ? null : group.key)
+                }
+              >
+                {group.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className={styles.filterGroup}>
           <span className={styles.filterLabel}>Lang</span>
           <div className={styles.chips}>
