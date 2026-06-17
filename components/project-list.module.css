@@ -115,7 +115,7 @@
 }
 
 .tagChip[data-active="true"] {
-  background: rgba(147, 51, 234, 0.16);
+  background: rgba(194, 112, 61, 0.16);
   border-style: solid;
   border-color: var(--primary);
   color: var(--primary-light);
@@ -264,7 +264,7 @@
   --accent: #4f74ec;
 }
 .section[data-cat="claude"] {
-  --accent: #c084fc;
+  --accent: #e0a87e;
 }
 .section[data-cat="ui"] {
   --accent: #10b981;
