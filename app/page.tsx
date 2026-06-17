@@ -29,7 +29,7 @@ const experience = [
     role: "Senior Software Engineer",
     org: "The Orchard",
     place: "London",
-    note: "Front-end architecture, performance, and UX for the analytics & metrics platform used by labels and artists.",
+    note: "Front-end architecture, performance, and UX for the analytics & metrics platform used by labels, artists, and internal teams.",
   },
   {
     period: "2017 — 2022",

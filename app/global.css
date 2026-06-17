@@ -26,6 +26,11 @@
   --color-fd-ring: #7c3aed;
 }
 
+::selection {
+  background: #7c3aed;
+  color: #fff;
+}
+
 html {
   scroll-behavior: smooth;
 }
