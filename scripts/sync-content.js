@@ -178,14 +178,15 @@ const getTree = async (slug) => {
   }
 }
 
-// Convention: a repo opts into a logo with an icon.svg/icon.png (or logo.*) at
-// the repo root, under assets/, or under images/ (the standard VS Code icon
-// path). Detected straight from the tree — no extra API call. When several
-// match, prefer .svg, then "icon" over "logo".
-const ICON = /^(assets\/|images\/)?(icon|logo)\.(svg|png)$/i
+// Convention (see REPO-CONVENTIONS.md): a repo opts into a logo with
+// icon.svg/icon.png at the repo root, under assets/, or under images/ (the
+// standard VS Code packaging path). Detected straight from the tree — no extra
+// API call. `logo.*` and other names are intentionally NOT matched: a single
+// canonical filename keeps logos consistent. When both formats exist, prefer
+// the .svg.
+const ICON = /^(assets\/|images\/)?icon\.(svg|png)$/i
 
-const iconRank = (path) =>
-  (/\.svg$/i.test(path) ? 0 : 2) + (/(^|\/)icon\./i.test(path) ? 0 : 1)
+const iconRank = (path) => (/\.svg$/i.test(path) ? 0 : 1)
 
 const findIcon = (slug, tree) => {
   const icons = tree
