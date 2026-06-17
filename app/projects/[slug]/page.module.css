@@ -82,9 +82,13 @@
 }
 
 .back {
-  display: block;
-  width: fit-content;
-  margin: 0 auto 28px;
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--muted);
   text-decoration: none;
   font-size: 14px;
@@ -93,6 +97,13 @@
 
 .back:hover {
   color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .back {
+    top: 18px;
+    left: 18px;
+  }
 }
 
 .badge,

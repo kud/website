@@ -49,10 +49,10 @@ const AutoLanding = ({ project }: { project: Project }) => {
     <>
       <section className={styles.hero}>
         <div className={styles.heroGrid} />
+        <Link href="/projects" className={styles.back}>
+          ← Projects
+        </Link>
         <div className={styles.heroContent}>
-          <Link href="/projects" className={styles.back}>
-            ← Projects
-          </Link>
           <div className={styles.badge}>
             <span className={styles.badgeDot} />
             {project.license ? `${project.license} · ` : ""}Open source

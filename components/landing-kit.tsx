@@ -19,10 +19,10 @@ export const Hero = ({
 }) => (
   <section className={styles.hero}>
     <div className={styles.heroGrid} />
+    <Link href="/projects" className={styles.back}>
+      ← Projects
+    </Link>
     <div className={styles.heroContent}>
-      <Link href="/projects" className={styles.back}>
-        ← Projects
-      </Link>
       {badge ? (
         <div className={styles.badge}>
           <span className={styles.badgeDot} />
