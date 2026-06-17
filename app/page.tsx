@@ -64,7 +64,9 @@ const Home = () => (
 
       <div className={styles.content}>
         <div className={styles.inner}>
-          <p className={styles.eyebrow}>Software Engineer · Technical Lead</p>
+          <p className={styles.eyebrow}>
+            Systems Thinking · Product-Minded · AI-Assisted
+          </p>
 
           <h1 className={styles.name}>Erwann Mest</h1>
 
@@ -73,10 +75,15 @@ const Home = () => (
           </p>
 
           <p className={styles.bio}>
-            Mobile &amp; front-end engineer with 18 years of experience, working
-            at the intersection of engineering, product thinking, and developer
-            experience. Currently Senior Engineer / Tech Lead on the mobile team
-            at{" "}
+            Engineer with 18 years of experience at the intersection of
+            engineering, product thinking, and developer experience. I reduce
+            friction, surface the right technical decisions at the right moment,
+            and help teams move through complexity — thinking in workflows,
+            interfaces, and the connections between engineers, systems, and
+            product intent. Right now I&apos;m deep in AI-assisted engineering,
+            exploring how agent-based workflows and orchestration reshape how we
+            build, review, and ship software — currently Senior Engineer / Tech
+            Lead on the mobile team at{" "}
             <a
               href="https://www.sonymusic.com/"
               target="_blank"
@@ -84,10 +91,16 @@ const Home = () => (
             >
               Sony Music
             </a>{" "}
-            in London — and deep in AI-assisted engineering, exploring how
-            agent-based workflows reshape how we build, review, and ship
-            software.
+            in London.
           </p>
+
+          <ul className={styles.focus}>
+            <li>Systems thinking</li>
+            <li>Workflow orchestration</li>
+            <li>AI-assisted engineering</li>
+            <li>Developer experience</li>
+            <li>Product-minded leadership</li>
+          </ul>
 
           <p className={styles.personal}>
             Off the clock: a{" "}

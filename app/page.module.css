@@ -73,17 +73,20 @@
 .bio {
   animation-delay: 0.29s;
 }
-.personal {
+.focus {
   animation-delay: 0.36s;
 }
-.actions {
+.personal {
   animation-delay: 0.43s;
 }
-.socials {
+.actions {
   animation-delay: 0.5s;
 }
-.scrollHint {
+.socials {
   animation-delay: 0.57s;
+}
+.scrollHint {
+  animation-delay: 0.64s;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -136,6 +139,25 @@
   font-size: 16px;
   line-height: 1.75;
   color: #55555f;
+}
+
+.focus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 30px;
+}
+
+.focus li {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #55555f;
+  background: #f3f3f6;
+  border: 1px solid #e7e7ee;
+  border-radius: 999px;
+  padding: 5px 12px;
 }
 
 .personal {
