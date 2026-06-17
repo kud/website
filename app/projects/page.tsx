@@ -11,16 +11,54 @@ export const metadata: Metadata = {
     "Open-source command-line tools, MCP servers, and terminal design systems designed and maintained by Erwann Mest (kud).",
 }
 
-// Display names + order for each `kud-site-<key>` topic. Membership is driven
-// entirely by the repo topics on GitHub — this map only labels and orders them.
-const CATEGORY_META: Record<string, { name: string; order: number }> = {
-  cli: { name: "CLIs & Tools", order: 0 },
-  mcp: { name: "MCP Servers", order: 1 },
-  claude: { name: "Claude Code", order: 2 },
-  ui: { name: "UI & Design Systems", order: 3 },
-  vscode: { name: "VS Code Extensions", order: 4 },
-  theme: { name: "VS Code Themes", order: 5 },
-  other: { name: "Lists & Resources", order: 6 },
+// Label, ordering, and an orienting one-liner for each `kud-site-<key>` topic.
+// Membership is driven entirely by the repo topics on GitHub — this map only
+// labels, orders, and describes the groups.
+const CATEGORY_META: Record<
+  string,
+  { name: string; order: number; blurb: string }
+> = {
+  cli: {
+    name: "CLIs & Tools",
+    order: 0,
+    blurb:
+      "Command-line tools I reach for daily — for files, git, cloud APIs, and the macOS desktop.",
+  },
+  mcp: {
+    name: "MCP Servers",
+    order: 1,
+    blurb:
+      "Model Context Protocol servers that connect Claude and other AI assistants to the tools you already use.",
+  },
+  claude: {
+    name: "Claude Code",
+    order: 2,
+    blurb:
+      "Companions for Claude Code — session managers, live dashboards, and curated plugin collections.",
+  },
+  ui: {
+    name: "UI & Design Systems",
+    order: 3,
+    blurb:
+      "Design systems and component libraries for building polished, consistent terminal interfaces.",
+  },
+  vscode: {
+    name: "VS Code Extensions",
+    order: 4,
+    blurb:
+      "Extensions that bring code review and AI workflows directly into VS Code.",
+  },
+  theme: {
+    name: "VS Code Themes",
+    order: 5,
+    blurb: "Colour schemes for VS Code, tuned for long sessions in the dark.",
+  },
+  other: {
+    name: "Lists & Resources",
+    order: 6,
+    blurb:
+      "Curated lists and references for people who love a beautiful terminal.",
+  },
 }
 
 const labelFor = (key: string) =>
@@ -32,6 +70,7 @@ const groupByCategory = (projects: Project[]) => {
     .map((key) => ({
       key,
       name: labelFor(key),
+      blurb: CATEGORY_META[key]?.blurb ?? null,
       items: projects.filter((project) => project.category === key),
     }))
     .sort(
