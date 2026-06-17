@@ -1,4 +1,5 @@
-.wrapper {
+/* Hero ----------------------------------------------------------------------*/
+.hero {
   display: flex;
   min-height: 100vh;
   background: #fff;
@@ -10,7 +11,7 @@
 
 .photo {
   flex: 1 1 42%;
-  background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=1024");
+  background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=2056");
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -18,8 +19,6 @@
 
 .content {
   flex: 1 1 58%;
-  max-height: 100vh;
-  overflow-y: auto;
   display: flex;
   align-items: center;
 }
@@ -31,7 +30,6 @@
   padding: 72px 56px;
 }
 
-/* Header --------------------------------------------------------------------*/
 .eyebrow {
   display: flex;
   align-items: center;
@@ -70,7 +68,6 @@
   color: #2c2c34;
 }
 
-/* Body ----------------------------------------------------------------------*/
 .bio {
   margin: 0 0 18px;
   font-size: 16px;
@@ -85,7 +82,8 @@
   color: #80808a;
 }
 
-.bio a {
+.bio a,
+.personal a {
   color: #1a1a1a;
   font-weight: 600;
   text-decoration: none;
@@ -95,7 +93,12 @@
     border-color 0.18s;
 }
 
-.bio a:hover {
+.personal a {
+  color: #55555f;
+}
+
+.bio a:hover,
+.personal a:hover {
   color: #7c3aed;
   border-color: #7c3aed;
 }
@@ -182,9 +185,149 @@
   height: 18px;
 }
 
+.scrollHint {
+  display: inline-block;
+  margin-top: 38px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: #a0a0a8;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.scrollHint:hover {
+  color: #7c3aed;
+}
+
+/* Timeline ------------------------------------------------------------------*/
+.timeline {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #fafafb;
+  border-top: 1px solid #ededf1;
+  color: #1a1a1a;
+  font-family: var(--font-roboto), system-ui, sans-serif;
+  padding: 96px 28px;
+}
+
+.timelineInner {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.timelineEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #8a8a93;
+}
+
+.timelineEyebrow::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7c3aed;
+}
+
+.timelineTitle {
+  margin: 0 0 44px;
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #111;
+}
+
+.track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 2px solid #e6e6ec;
+}
+
+.entry {
+  position: relative;
+  padding: 0 0 38px 30px;
+}
+
+.entry:last-child {
+  padding-bottom: 0;
+}
+
+.entry::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fafafb;
+  border: 2px solid #7c3aed;
+}
+
+.entryPeriod {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #9a9aa3;
+  margin-bottom: 5px;
+}
+
+.entryRole {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #16161c;
+}
+
+.entryOrg {
+  margin: 0 0 9px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #44444c;
+}
+
+.entryPlace {
+  color: #9a9aa3;
+  font-weight: 500;
+}
+
+.entryNote {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #6a6a74;
+}
+
+.timelineLink {
+  display: inline-block;
+  margin-top: 12px;
+  margin-left: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7c3aed;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.18s;
+}
+
+.timelineLink:hover {
+  border-color: #7c3aed;
+}
+
 /* Responsive ----------------------------------------------------------------*/
 @media (max-width: 860px) {
-  .wrapper {
+  .hero {
     flex-direction: column;
   }
 
@@ -194,11 +337,11 @@
     height: 300px;
   }
 
-  .content {
-    max-height: none;
-  }
-
   .inner {
     padding: 48px 28px 64px;
+  }
+
+  .timeline {
+    padding: 64px 24px 80px;
   }
 }
