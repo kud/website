@@ -123,12 +123,12 @@ const ProjectsIndex = async () => {
             cares about developer experience and the craft of polished tools.
           </p>
           <div className={styles.social}>
-            <a href="http://github.kud.io/" target="_blank" rel="noreferrer">
+            <a href="https://github.kud.io/" target="_blank" rel="noreferrer">
               <GitHubIcon />
               GitHub
             </a>
             <span className={styles.sep}>·</span>
-            <a href="http://linkedin.kud.io/" target="_blank" rel="noreferrer">
+            <a href="https://linkedin.kud.io/" target="_blank" rel="noreferrer">
               <LinkedInIcon />
               LinkedIn
             </a>

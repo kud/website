@@ -64,3 +64,46 @@ html {
     transition: none;
   }
 }
+
+/* Cross-route theme transition --------------------------------------------- */
+/* Home (warm light) and /projects (dark) are visually very different, so a
+   hard cut between them jars. next-view-transitions wraps these navigations in
+   the View Transitions API; this cross-fades the old page out while the new one
+   fades + eases in, smoothing the theme swap. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: vt-fade-in;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

@@ -1,4 +1,4 @@
-import Link from "next/link"
+import { Link } from "next-view-transitions"
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -9,10 +9,14 @@ import {
 import styles from "./page.module.css"
 
 const socials = [
-  { label: "GitHub", href: "http://github.kud.io/", Icon: GitHubIcon },
-  { label: "LinkedIn", href: "http://linkedin.kud.io/", Icon: LinkedInIcon },
+  { label: "GitHub", href: "https://github.kud.io/", Icon: GitHubIcon },
+  { label: "LinkedIn", href: "https://linkedin.kud.io/", Icon: LinkedInIcon },
   { label: "Bluesky", href: "https://bsky.kud.io", Icon: BlueskyIcon },
-  { label: "Instagram", href: "http://instagram.kud.io/", Icon: InstagramIcon },
+  {
+    label: "Instagram",
+    href: "https://instagram.kud.io/",
+    Icon: InstagramIcon,
+  },
   { label: "Email", href: "mailto:m+site@kud.io", Icon: MailIcon },
 ]
 
@@ -21,6 +25,7 @@ const experience = [
     period: "2022 — Present",
     role: "Senior Software Engineer / Tech Lead",
     org: "Sony Music · Mobile Team",
+    url: "https://www.sonymusic.com/",
     place: "London",
     note: "Mobile architecture, AI-assisted engineering workflows, and developer experience across product, design, and engineering.",
   },
@@ -28,6 +33,7 @@ const experience = [
     period: "2022 — 2023",
     role: "Senior Software Engineer",
     org: "The Orchard",
+    url: "https://www.theorchard.com/",
     place: "London",
     note: "Front-end architecture, performance, and UX for the analytics & metrics platform used by labels, artists, and internal teams.",
   },
@@ -35,6 +41,7 @@ const experience = [
     period: "2017 — 2022",
     role: "Lead Front-end Developer",
     org: "Contexte",
+    url: "https://www.contexte.com/",
     place: "Paris",
     note: "Built a PWA from scratch and a company-wide design system for an online public-policy media.",
   },
@@ -42,6 +49,7 @@ const experience = [
     period: "2020 — 2022",
     role: "Front-end Trainer",
     org: "EEMI",
+    url: "https://www.eemi.com/",
     place: "Paris",
     note: "Taught front-end culture and Next.js to students training to become lead developers and CTOs.",
   },
@@ -49,10 +57,16 @@ const experience = [
     period: "2013 — 2022",
     role: "Web Trainer",
     org: "ESG Executive Education",
+    url: "https://www.esg.fr/",
     place: "Paris",
     note: "Taught the web, HTML and CSS to career-changers — from zero to their own static site.",
   },
 ]
+
+// Recomputed on every build so the headline figure never goes stale. kud's
+// professional web career began in 2008 (→ 18 years in 2026).
+const CAREER_START_YEAR = 2008
+const yearsOfExperience = new Date().getFullYear() - CAREER_START_YEAR
 
 const isExternal = (href: string) => href.startsWith("http")
 
@@ -82,8 +96,9 @@ const Home = () => (
             and the engineers building it. That&apos;s why I love optimising and
             automating workflows. What I love most is architecting and designing
             the solution, then delegating its execution to AI in a deliberate,
-            fine-tuned way — turning years of experience into skills and agents
-            that keep getting sharper. Currently on the mobile team at{" "}
+            fine-tuned way — turning {yearsOfExperience} years of experience
+            into skills and agents that keep getting sharper. Currently on the
+            mobile team at{" "}
             <a
               href="https://www.sonymusic.com/"
               target="_blank"
@@ -136,7 +151,7 @@ const Home = () => (
               <span aria-hidden>→</span>
             </Link>
             <a
-              href="http://linkedin.kud.io/"
+              href="https://linkedin.kud.io/"
               target="_blank"
               rel="noreferrer"
               className={styles.secondary}
@@ -183,7 +198,14 @@ const Home = () => (
               <div className={styles.entryPeriod}>{item.period}</div>
               <h3 className={styles.entryRole}>{item.role}</h3>
               <p className={styles.entryOrg}>
-                {item.org}{" "}
+                <a
+                  className={styles.entryOrgLink}
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.org}
+                </a>{" "}
                 <span className={styles.entryPlace}>· {item.place}</span>
               </p>
               <p className={styles.entryNote}>{item.note}</p>
@@ -193,7 +215,7 @@ const Home = () => (
 
         <a
           className={styles.timelineLink}
-          href="http://linkedin.kud.io/"
+          href="https://linkedin.kud.io/"
           target="_blank"
           rel="noreferrer"
         >

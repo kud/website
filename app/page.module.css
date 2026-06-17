@@ -426,6 +426,18 @@
   color: #44444c;
 }
 
+/* The company name links out, but reads as plain text until hovered — keeps the
+   timeline's calm look while still being clickable. */
+.entryOrgLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.18s;
+}
+
+.entryOrgLink:hover {
+  color: #c2703d;
+}
+
 .entryPlace {
   color: #9a9aa3;
   font-weight: 500;
