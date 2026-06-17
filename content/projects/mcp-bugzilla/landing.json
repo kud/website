@@ -1,29 +1,4 @@
 {
-  "features": [
-    {
-      "title": "Optional auth — read-only without a key; create/update/comment with an API key",
-      "description": ""
-    },
-    {
-      "title": "12 tools covering bugs, comments, history, attachments, products, users, and fields",
-      "description": ""
-    },
-    {
-      "title": "Mozilla-first — defaults to https://bugzilla.mozilla.org/rest, configurable via env var",
-      "description": ""
-    },
-    {
-      "title": "Powerful search — filter by product, component, status, severity, assignee, or quicksearch syntax",
-      "description": ""
-    },
-    {
-      "title": "Full discussion flow — read comments, post replies, attach work-time logs",
-      "description": ""
-    },
-    {
-      "title": "Attachment listing — inspect patches and test files linked to any bug",
-      "description": ""
-    }
-  ],
-  "install": "{\n  \"mcpServers\": {\n    \"mcp-bugzilla\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@kud/mcp-bugzilla\"],\n      \"env\": {\n        \"MCP_BUGZILLA_API_KEY\": \"your-api-key-here\"\n      }\n    }\n  }\n}"
+  "features": [],
+  "install": "npx @kud/mcp-bugzilla"
 }

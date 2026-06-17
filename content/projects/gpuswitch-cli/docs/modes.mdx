@@ -1,0 +1,57 @@
+---
+title: GPU Modes
+description: The three GPU modes — integrated, discrete, and auto — and what each one does under the hood.
+---
+
+gpuswitch exposes three modes, each mapping to a single `pmset gpuswitch` value.
+Under the hood the tool runs `sudo pmset -a gpuswitch <value>`, so switching
+always prompts for your password.
+
+| Mode         | `pmset` value | What it does                                |
+| ------------ | ------------- | ------------------------------------------- |
+| `integrated` | `0`           | Force the integrated Intel GPU only         |
+| `discrete`   | `1`           | Force the discrete dedicated GPU only       |
+| `auto`       | `2`           | Let macOS switch GPUs dynamically (default) |
+
+## Integrated
+
+```bash
+gpuswitch integrated
+```
+
+Forces the Intel integrated GPU. The discrete GPU is powered down, which is the
+biggest single win for battery life on long unplugged sessions. Use this when
+you're working untethered and don't need GPU-heavy graphics.
+
+## Discrete
+
+```bash
+gpuswitch discrete
+```
+
+Forces the dedicated discrete GPU on permanently for full graphics performance.
+Use this for gaming, rendering, or driving external displays where you want
+maximum throughput and don't mind the extra power draw and heat.
+
+## Auto
+
+```bash
+gpuswitch auto
+```
+
+Restores the macOS default — the system switches between the integrated and
+discrete GPUs dynamically based on what apps demand. This is the factory
+behaviour; switch back to it when you no longer want a forced mode.
+
+## Checking the current mode
+
+```bash
+gpuswitch status
+```
+
+Prints the active mode by reading `pmset -g` and parsing the `gpuswitch` line.
+If the setting can't be read (for example on a Mac without switchable graphics),
+it reports `unknown`.
+
+> A mode change applies immediately and persists across reboots until you switch
+> again. Some applications may need a restart to pick up the new GPU.

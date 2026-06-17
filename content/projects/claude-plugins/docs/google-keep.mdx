@@ -1,0 +1,37 @@
+---
+title: google-keep
+description: Read and write your Google Keep notes from Claude — capture thoughts, manage checklists, and search your notes by label, colour, or text.
+---
+
+The **google-keep** plugin wraps the
+[kud/mcp-google-keep](https://github.com/kud/mcp-google-keep) MCP server (Python,
+run via `uvx`). Read and write your Google Keep notes from Claude: capture
+thoughts, manage checklists, and search your notes by label, colour, or text.
+
+## What it bundles
+
+| Skill           | Trigger                | What it does                            |
+| --------------- | ---------------------- | --------------------------------------- |
+| `/keep-capture` | `/keep-capture <text>` | Quickly save a thought or note to Keep  |
+| `/keep-todo`    | `/keep-todo <list>`    | View and manage a Google Keep checklist |
+
+## Install
+
+```
+/plugin install google-keep@kud --scope user
+```
+
+This plugin runs through `uvx`, so make sure [uv](https://docs.astral.sh/uv/) is
+installed.
+
+## Configuration
+
+Authenticate with Google Keep once via the bundled setup command:
+
+```
+mcp-google-keep-setup
+```
+
+## Links
+
+- GitHub: [kud/mcp-google-keep](https://github.com/kud/mcp-google-keep)

@@ -1,0 +1,50 @@
+---
+title: Troubleshooting
+description: Resolve server startup, authentication, and connectivity issues with the GetStream Feeds MCP server.
+---
+
+## Server not showing
+
+- Ensure `MCP_GETSTREAM_API_KEY` and `MCP_GETSTREAM_SECRET` are set in the MCP
+  config's `env` block.
+- Confirm `dist/index.js` exists — run `npm run build` if it is missing.
+- Check the MCP config JSON is valid (no trailing commas).
+
+## Authentication errors
+
+- Verify the API key and secret belong to the same GetStream app.
+- Confirm you are using a server-side secret, not a user token. The SDK signs
+  requests with the secret; a user token will be rejected.
+
+## Verify connectivity
+
+Check that the credentials connect before wiring up the MCP client:
+
+```bash
+node -e "
+import('getstream').then(({ connect }) => {
+  const client = connect(process.env.MCP_GETSTREAM_API_KEY, process.env.MCP_GETSTREAM_SECRET);
+  console.log('Connected:', client.baseURL);
+});
+"
+```
+
+## Check the logs
+
+```
+macOS:   ~/Library/Logs/Claude/mcp-server-getstream-feeds.log
+Windows: %APPDATA%\Claude\logs\mcp-server-getstream-feeds.log
+```
+
+Inspect the registered server from Claude Code:
+
+```bash
+claude mcp get getstream-feeds
+```
+
+## Security best practices
+
+- Never hardcode API keys or secrets in source files.
+- Never commit `.env` files or credentials to git.
+- Store secrets in environment variables or a secrets manager.
+- Rotate the API secret immediately if it is ever exposed.

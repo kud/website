@@ -1,0 +1,46 @@
+---
+title: Domains
+description: List your registered domains and renew them from the terminal.
+---
+
+The `gandi domain` group manages your registered domains.
+
+## List domains
+
+Show every registered domain with its expiry date and status:
+
+```sh
+gandi domain list
+```
+
+Output is rendered as an aligned table, sorted and formatted for quick scanning.
+
+**Requires:** the **Voir la liste de vos domaines** permission on your token.
+
+## Renew a domain
+
+Renew a domain for one year:
+
+```sh
+gandi domain renew example.com
+```
+
+Renew for a specific number of years with `--duration`:
+
+```sh
+gandi domain renew example.com --duration 3
+```
+
+**Requires:** the **Gérer le renouvellement de vos domaines** permission on your
+token.
+
+## Command reference
+
+| Command                                          | Description                                   |
+| ------------------------------------------------ | --------------------------------------------- |
+| `gandi domain list`                              | List all domains with expiry dates and status |
+| `gandi domain renew <domain>`                    | Renew a domain for 1 year                     |
+| `gandi domain renew <domain> --duration <years>` | Renew for a specified number of years         |
+
+Not sure which commands your token can run? Use
+[`gandi doctor`](/projects/gandi-cli/docs/doctor) to check your scopes.

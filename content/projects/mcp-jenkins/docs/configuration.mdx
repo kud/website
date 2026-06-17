@@ -1,0 +1,106 @@
+---
+title: Configuration
+description: Configuration priority, multiple Jenkins instances, and tool filtering.
+---
+
+## Priority System
+
+The server uses a **2-tier priority system** for configuration (highest to lowest):
+
+1. **CLI Arguments** (Highest Priority)
+   - `--url <url>` - Jenkins server URL
+   - `--user <username>` - Username for Basic auth
+   - `--api-token <token>` - API token for Basic auth
+   - `--bearer-token <token>` - Bearer token for OAuth/token auth
+
+2. **`MCP_JENKINS_*` Environment Variables**
+   - `MCP_JENKINS_URL`
+   - `MCP_JENKINS_USER`
+   - `MCP_JENKINS_API_TOKEN`
+   - `MCP_JENKINS_BEARER_TOKEN`
+
+## Multiple Instances
+
+Connect to more than one Jenkins server in a single MCP entry using comma or pipe-separated values.
+
+**Automatic naming (derived from URL hostname):**
+
+```bash
+export MCP_JENKINS_URL="https://pipeline.yourcompany.com,https://scheduler.yourcompany.com"
+export MCP_JENKINS_USER="your_username,your_username"
+export MCP_JENKINS_API_TOKEN="token1,token2"
+# Instances are automatically named "pipeline" and "scheduler"
+```
+
+**Custom naming with `MCP_JENKINS_INSTANCES`:**
+
+Use `MCP_JENKINS_INSTANCES` when you want explicit names (e.g., the hostname isn't descriptive enough, or both instances share the same host):
+
+```bash
+export MCP_JENKINS_INSTANCES="ci,prod"
+export MCP_JENKINS_URL="https://jenkins.yourcompany.com/ci,https://jenkins.yourcompany.com/prod"
+export MCP_JENKINS_USER="your_username,your_username"
+export MCP_JENKINS_API_TOKEN="token1,token2"
+# Instances are named "ci" and "prod"
+```
+
+The number of values in `MCP_JENKINS_INSTANCES` must match the number of URLs.
+
+Then pass `instance` in tool calls:
+
+```
+"Trigger a build for 'deploy' on the scheduler instance"
+"List jobs on ci"
+```
+
+The first instance is always the default — tools work without `instance` if you only have one server.
+
+> **Note:** Use `|` as the delimiter instead of `,` if any value might contain a comma (e.g., unusual URLs).
+
+## Tool Filtering
+
+Control which tools are exposed to the AI using an allowlist or blocklist.
+
+**Allowlist** — expose only specific tools:
+
+```bash
+export MCP_JENKINS_ALLOW_TOOLS="jenkins_list_jobs,jenkins_get_job_status,jenkins_get_build_status"
+```
+
+**Blocklist** — hide specific tools (all others remain available):
+
+```bash
+export MCP_JENKINS_BLOCK_TOOLS="jenkins_delete_job,jenkins_trigger_build,jenkins_safe_restart"
+```
+
+If both are set, `MCP_JENKINS_ALLOW_TOOLS` takes precedence.
+
+**Read-only monitoring preset** — block all write/destructive tools:
+
+```bash
+export MCP_JENKINS_BLOCK_TOOLS="jenkins_trigger_build,jenkins_stop_build,jenkins_delete_build,jenkins_cancel_queue,jenkins_enable_job,jenkins_disable_job,jenkins_delete_job,jenkins_create_job,jenkins_update_job_config,jenkins_rename_job,jenkins_copy_job,jenkins_toggle_node_offline,jenkins_quiet_down,jenkins_cancel_quiet_down,jenkins_safe_restart,jenkins_replay_build"
+```
+
+## Examples
+
+**All CLI args:**
+
+```bash
+node dist/index.js --url https://jenkins.com --user admin --api-token abc123
+```
+
+**Mixed (CLI overrides env):**
+
+```bash
+MCP_JENKINS_USER=dev_user node dist/index.js --url https://jenkins.com --api-token xyz789
+# Uses: URL from CLI, token from CLI, user from env
+```
+
+## Security Best Practices
+
+- ✅ Use environment variables (never hardcode tokens)
+- ✅ Use bearer tokens over basic auth when possible
+- ✅ Rotate tokens regularly
+- ✅ Use restricted tokens (limit permissions in Jenkins)
+- ✅ Never commit tokens to version control
+- ✅ Protect config files (`claude_desktop_config.json`)

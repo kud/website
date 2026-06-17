@@ -1,0 +1,37 @@
+---
+title: Styles & Gitmoji
+description: Switch between standard Conventional Commits and gitmoji modes, and let the CLI learn your repo's style.
+---
+
+The CLI supports three commit styles out of the box. Set the active style via
+the `AICC_STYLE` environment variable, the `style` config key, or the `--style`
+flag for a single run.
+
+## Gitmoji modes
+
+| Mode           | Example output            | Notes                       |
+| -------------- | ------------------------- | --------------------------- |
+| `standard`     | `feat: add search box`    | No emoji                    |
+| `gitmoji`      | `✨ feat: add search box` | Emoji prefix, type retained |
+| `gitmoji-pure` | `✨: add search box`      | Emoji prefix, type removed  |
+
+## Per-run override
+
+```bash
+AICC_STYLE=gitmoji ai-conventional-commit
+# ✨ feat(ui): add dark mode toggle
+```
+
+Or with the flag:
+
+```bash
+ai-conventional-commit --style gitmoji-pure
+```
+
+## Style learning
+
+Beyond the chosen mode, the CLI builds a style fingerprint from your recent
+commit history — capturing scope conventions, capitalisation, and phrasing — so
+generated messages match the surrounding history rather than a generic template.
+The number of recent commits sampled is controlled by the `styleSamples` config
+key (default `120`).

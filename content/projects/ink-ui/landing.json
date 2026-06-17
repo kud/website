@@ -1,7 +1,7 @@
 {
   "features": [
     {
-      "title": "Five ready-made components — Banner, Header, Badge, Spinner, and Table, all pre-styled and immediately usable",
+      "title": "Five ready-made components — Banner, Header, Badge, Spinner, and Table, pre-styled and immediately usable",
       "description": ""
     },
     {
@@ -9,23 +9,7 @@
       "description": ""
     },
     {
-      "title": "Accent-driven style — a warm #FF8C00 accent colour gives your CLI a distinctive, coherent identity",
-      "description": ""
-    },
-    {
       "title": "ESM only, zero config — ships compiled TypeScript with full type definitions; just import and render",
-      "description": ""
-    },
-    {
-      "title": "Peer-dep friendly — works with any Ink ≥ 4 and React ≥ 18 setup, no version lock-in",
-      "description": ""
-    },
-    {
-      "title": "Composable — every component accepts standard Ink primitives so you can mix them with your own layouts freely",
-      "description": ""
-    },
-    {
-      "title": "Typed throughout — exported types (BadgeVariant, Column, Color, Spacing) make props self-documenting in any IDE",
       "description": ""
     }
   ],

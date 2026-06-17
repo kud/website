@@ -1,0 +1,58 @@
+---
+title: Authentication
+description: Getting a Jenkins API token and choosing between bearer token and basic auth.
+---
+
+## Get Your Jenkins API Token
+
+Follow these steps to create an API token for the MCP server:
+
+### Step 1: Access Security Settings
+
+1. Log in to your Jenkins instance
+2. Click your **username** in the top-right corner
+3. Select **Configure** from the dropdown menu
+4. In the left sidebar, click **Security**
+
+### Step 2: Create API Token
+
+1. Scroll to the **API Token** section
+2. Under "Current token(s)", click the **Add new token** button
+3. Enter a descriptive name (e.g., "Jenkins MCP" or "AI Assistant")
+4. Click **Generate**
+5. **⚠️ IMPORTANT:** Copy the token immediately - it will only be shown once!
+
+### Step 3: Save the Token
+
+Store the token securely - you'll need it for configuration:
+
+- For Bearer Token auth: Use it as `MCP_JENKINS_BEARER_TOKEN`
+- For Basic auth: Use it as `MCP_JENKINS_API_TOKEN` (along with `MCP_JENKINS_USER`)
+
+**Example token format:** `11abcd1234567890abcdef1234567890ab`
+
+> 💡 **Tip:** You can see all your active tokens in the "Current token(s)" list. Each shows when it was created and last used, helping you manage and rotate tokens regularly.
+
+## Bearer Token vs Basic Auth
+
+**Bearer Token (Recommended):**
+
+```bash
+--env MCP_JENKINS_BEARER_TOKEN=your_token
+```
+
+**Basic Auth:**
+
+```bash
+--env MCP_JENKINS_USER=your_username
+--env MCP_JENKINS_API_TOKEN=your_token
+```
+
+## Anonymous Instances
+
+For Jenkins instances with no authentication, pass `--anonymous` (or set
+`MCP_JENKINS_ANONYMOUS=true`) and omit all credentials.
+
+## OAuth Support
+
+This server forwards any `Authorization` header to Jenkins. If your Jenkins uses OAuth (via plugins), just pass the OAuth token as `MCP_JENKINS_BEARER_TOKEN`.

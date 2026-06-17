@@ -1,138 +1,60 @@
 ---
-title: pcloud-cli
-description: CLI tool for pCloud file operations — list, restore from trash and rewind
+title: Introduction
+description: A terminal-first CLI for pCloud — list folders, restore deleted files from trash, and rewind files to an earlier version.
 ---
+
+**pcloud-cli** brings everyday pCloud operations to your terminal. Browse and
+manage files, recover what you deleted from the trash, and roll a file back to a
+previous version — all without leaving the command line.
+
+It authenticates with pCloud over OAuth 2.0, storing a token locally so you only
+log in once. A single `PCLOUD_ACCESS_TOKEN` environment variable lets you bypass
+stored credentials entirely for CI and scripted contexts.
 
 ## Features
 
-- List all files currently in pCloud trash
-- Restore individual files from trash by file ID
-- Browse version history for any file path
-- Restore a specific version to a new destination
-- OAuth 2.0 authentication — browser-based, token stored locally
-- Bypass stored credentials with an environment variable for CI use
+- **Folder operations** — `ls`, `stat`, `mkdir`, `rmdir`, and file copy / move /
+  rename / delete from the terminal.
+- **Trash recovery** — list deleted files and restore them by file ID.
+- **Rewind & revisions** — browse a file's version history and restore an earlier
+  version to any destination.
+- **OAuth 2.0 authentication** — browser-based login; the token is stored locally
+  at `~/.config/pcloud/tokens.json` (mode `0600`). The CLI never sees your
+  password.
+- **CI-friendly** — set `PCLOUD_ACCESS_TOKEN` to skip the credential store
+  entirely.
+- **Regional endpoints** — targets the EU API by default; switch with
+  `PCLOUD_REGION=us`.
 
-## Installation
+## Install
 
 ```bash
 npm install -g @kud/pcloud-cli
 ```
 
-## First-time Setup
+Requires Node.js 20 or newer. The binary is exposed as `pcloud`.
 
-Before running any command you need to authenticate against your pCloud account. This is a one-time step.
+## Quick start
 
-You will need a pCloud OAuth application. Create one at [pcloud.com/oauth2-apps](https://docs.pcloud.com/methods/oauth_2.0/), then expose the credentials:
-
-```bash
-export PCLOUD_CLIENT_ID=your_client_id
-export PCLOUD_CLIENT_SECRET=your_client_secret
-```
-
-Then run:
+Authenticate once, then run any command:
 
 ```bash
 pcloud login
-```
-
-This opens your browser to the pCloud authorisation page. After you approve access, pCloud redirects back to a local callback server on `localhost:3000` and the token is saved to `~/.config/pcloud/tokens.json` (mode `0600`). The CLI never sees your pCloud password.
-
-## Usage
-
-### Authentication
-
-```bash
-pcloud login
-pcloud logout
-```
-
-### Trash
-
-List all files in your pCloud trash:
-
-```bash
-pcloud list-trash
-```
-
-Outputs each file's ID, name, path, size, and deletion time.
-
-Restore a file from trash by its numeric file ID:
-
-```bash
-pcloud restore-trash <fileid>
-```
-
-Example:
-
-```bash
-pcloud restore-trash 12345678
-```
-
-### Rewind
-
-List version history events for a file path:
-
-```bash
-pcloud list-rewind <path>
-```
-
-Example:
-
-```bash
+pcloud ls /
 pcloud list-rewind /Documents/report.pdf
 ```
 
-Restore a specific version to a destination path:
-
-```bash
-pcloud restore-rewind <fileid> <destination>
-```
-
-Example:
-
-```bash
-pcloud restore-rewind 12345678 /Documents/report-restored.pdf
-```
+See [Authentication](/projects/pcloud-cli/docs/authentication) for the one-time
+OAuth setup, then [Trash & restore](/projects/pcloud-cli/docs/trash) and
+[Rewind & versions](/projects/pcloud-cli/docs/rewind) for recovery workflows.
 
 ## Configuration
 
-| Variable               | Required         | Description                                      |
-| ---------------------- | ---------------- | ------------------------------------------------ |
-| `PCLOUD_CLIENT_ID`     | For `login` only | OAuth application client ID                      |
-| `PCLOUD_CLIENT_SECRET` | For `login` only | OAuth application client secret                  |
-| `PCLOUD_ACCESS_TOKEN`  | Optional         | Bypasses `~/.config/pcloud/tokens.json` entirely |
+| Variable               | Required         | Description                                       |
+| ---------------------- | ---------------- | ------------------------------------------------- |
+| `PCLOUD_CLIENT_ID`     | For `login` only | OAuth application client ID                       |
+| `PCLOUD_CLIENT_SECRET` | For `login` only | OAuth application client secret                   |
+| `PCLOUD_ACCESS_TOKEN`  | Optional         | Bypasses `~/.config/pcloud/tokens.json` entirely  |
+| `PCLOUD_REGION`        | Optional         | `eu` (default) or `us` — selects the API endpoint |
 
-When `PCLOUD_ACCESS_TOKEN` is set, no stored credentials are read or written. This is useful in CI or scripted contexts.
-
-## Development
-
-Run directly from source without a build step:
-
-```bash
-npm run dev -- list-trash
-npm run dev -- list-rewind /some/path
-```
-
-Build compiled output to `dist/`:
-
-```bash
-npm run build
-```
-
-## API
-
-The following pCloud API endpoints are used internally:
-
-| Endpoint           | Purpose                                      |
-| ------------------ | -------------------------------------------- |
-| `oauth2_token`     | Exchange authorisation code for access token |
-| `listtrash`        | List files in trash                          |
-| `trash_restore`    | Restore a file from trash                    |
-| `listrewindevents` | List version history for a path              |
-| `file_restore`     | Restore a version to a new path              |
-
-Full pCloud API reference: [docs.pcloud.com](https://docs.pcloud.com)
-
-## Licence
-
-[MIT](https://github.com/kud/pcloud-cli/blob/HEAD/docs/LICENSE)
+When `PCLOUD_ACCESS_TOKEN` is set, no stored credentials are read or written.

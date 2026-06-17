@@ -1,0 +1,65 @@
+---
+title: Authentication
+description: One-time OAuth 2.0 setup — log in through the browser and store a token locally.
+---
+
+Every command needs an authenticated pCloud session. `pcloud login` runs a
+browser-based OAuth 2.0 flow once and stores the resulting token locally; after
+that, commands just work.
+
+## Create an OAuth application
+
+You need a pCloud OAuth application to obtain a client ID and secret. Create one
+from the [pCloud OAuth 2.0 documentation](https://docs.pcloud.com/methods/oauth_2.0/),
+then expose the credentials in your shell or a `.env` file:
+
+```bash
+export PCLOUD_CLIENT_ID=your_client_id
+export PCLOUD_CLIENT_SECRET=your_client_secret
+```
+
+## Log in
+
+```bash
+pcloud login
+```
+
+This opens your browser to the pCloud authorisation page. After you approve
+access, pCloud redirects back to a local callback server and the token is saved
+to `~/.config/pcloud/tokens.json` (mode `0600`). The CLI never sees your pCloud
+password.
+
+Once logged in, confirm the session:
+
+```bash
+pcloud whoami
+```
+
+This prints the account email, plan, and quota usage.
+
+## Log out
+
+Remove the stored credentials at any time:
+
+```bash
+pcloud logout
+```
+
+## Bypassing the credential store
+
+For CI or scripted contexts, set `PCLOUD_ACCESS_TOKEN` directly. When present, no
+stored credentials are read or written and `login` / `logout` are unnecessary:
+
+```bash
+export PCLOUD_ACCESS_TOKEN=your_access_token
+pcloud ls /
+```
+
+## Choosing a region
+
+The CLI targets the EU API (`eapi.pcloud.com`) by default. If your account lives
+on the US infrastructure, set:
+
+```bash
+export PCLOUD_REGION=us
+```

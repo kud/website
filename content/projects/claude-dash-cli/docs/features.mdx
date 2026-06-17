@@ -1,0 +1,22 @@
+---
+title: Features
+description: Live session monitoring, in-terminal permission modals, usage tracking, and session management — all in a single Rust binary.
+---
+
+- **Live session list** — see all running Claude Code agents at a glance,
+  grouped by status (waiting for approval → active → idle → ended).
+- **Permission modals** — review and approve/deny tool permission requests
+  (Edit, Write, Bash) without leaving the terminal.
+- **Usage panel** — today's cost, monthly spend, all-time totals, 7-day cost
+  chart, token breakdown and model breakdown — all pulled from
+  [ccusage](https://github.com/ryoppippi/ccusage).
+- **Usage cache** — usage data is persisted locally so it appears instantly on
+  next launch.
+- **Animated indicators** — braille spinner `⠋⠙⠹⠸⠼⠴⠦⠧` while agents are
+  thinking, plus Nerd Font section icons.
+- **Session management** — rename sessions, launch new Claude sessions (tmux
+  window, iTerm2 tab, or Terminal.app), and clear ended sessions.
+- **Auto-spawns daemon** — `claude-dash daemon` starts automatically on first
+  launch; no separate step needed.
+- **Mouse support** — scroll the agent list with the mouse wheel.
+- **Pure Rust** — single binary, no Node.js or npm required.

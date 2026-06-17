@@ -1,0 +1,40 @@
+---
+title: Tools
+description: The two tools mcp-opencode exposes — query a model and list available models.
+---
+
+mcp-opencode exposes **two tools**: one to send a prompt to a model, and one to
+discover which models are available.
+
+## `query`
+
+Send a prompt to an opencode model and return the response.
+
+| Parameter | Type     | Required | Description                                                             |
+| --------- | -------- | -------- | ----------------------------------------------------------------------- |
+| `prompt`  | `string` | yes      | The prompt to send.                                                     |
+| `model`   | `string` | no       | Model in `provider/model` format. Defaults to `github-copilot/gpt-4.1`. |
+
+Each call creates a temporary opencode session, sends the prompt, returns the
+text response, and deletes the session. If the requested model is blocked by
+your allow/block filters, the call returns an error explaining the model isn't
+allowed — see [Model filtering](/projects/mcp-opencode/docs/model-filtering).
+
+The tool description surfaced to your assistant includes the default model and a
+summary of the active filters, so the assistant always knows what's available.
+
+## `list_models`
+
+List the models available for use.
+
+| Parameter  | Type     | Required | Description                                                            |
+| ---------- | -------- | -------- | ---------------------------------------------------------------------- |
+| `provider` | `string` | no       | Provider name to filter by (e.g. `anthropic`, `openai`). Omit for all. |
+
+Returns one `provider/model` ID per line. The list reflects your opencode
+configuration — exactly what `opencode models` prints in your terminal — passed
+through your allow/block filters. Pass a `provider` to narrow the list to a
+single provider.
+
+If no models match (for example, an unknown provider name), the tool returns a
+clear `No models found` message rather than an empty response.

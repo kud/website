@@ -1,0 +1,41 @@
+---
+title: Interactive TUI
+description: Run gpuswitch with no arguments for an arrow-key picker that shows your current mode and applies a new one on enter.
+---
+
+Run `gpuswitch` with no arguments to open the interactive terminal UI, built
+with Ink and React:
+
+```bash
+gpuswitch
+```
+
+```console
+GPU Mode
+current: auto
+
+❯ integrated  integrated GPU only — best battery life
+  discrete    discrete GPU only — full performance
+  auto        let macOS decide automatically
+
+↑↓ navigate · enter apply · q quit
+```
+
+The picker starts on whatever mode is currently active, so you can see at a
+glance where you are before changing anything.
+
+## Keys
+
+| Key       | Action                            |
+| --------- | --------------------------------- |
+| `↑` / `↓` | Move the selection (wraps around) |
+| `enter`   | Apply the highlighted mode        |
+| `q`       | Quit without changing anything    |
+| `esc`     | Quit without changing anything    |
+
+When you press `enter`, the TUI exits and the selected mode is applied with
+`sudo pmset` — you'll be prompted for your password in the terminal. Pressing
+`q` or `esc` leaves your current mode untouched.
+
+For non-interactive use — shell scripts, aliases, automations — reach for the
+[headless subcommands](/projects/gpuswitch-cli/docs/scripting) instead.

@@ -1,0 +1,83 @@
+---
+title: Tools
+description: Full reference for all 38 Jenkins MCP tools, grouped by area.
+---
+
+The server exposes **38 tools** covering ~95% of Jenkins API operations. Every tool
+accepts an optional `instance` parameter to target a specific Jenkins server when
+[multiple instances](/projects/mcp-jenkins/docs/configuration) are configured.
+
+## 📋 Job Operations (12 tools)
+
+| Tool                         | Description                                       |
+| ---------------------------- | ------------------------------------------------- |
+| `jenkins_list_jobs`          | List all Jenkins jobs                             |
+| `jenkins_search_jobs`        | Search jobs by name                               |
+| `jenkins_get_job_status`     | Get last build status                             |
+| `jenkins_get_job_parameters` | Get parameter definitions for a parameterised job |
+| `jenkins_enable_job`         | Enable a disabled job                             |
+| `jenkins_disable_job`        | Disable a job                                     |
+| `jenkins_delete_job`         | Delete a job (⚠️ permanent)                       |
+| `jenkins_get_job_config`     | Get job XML configuration                         |
+| `jenkins_create_job`         | Create a new job from XML config                  |
+| `jenkins_update_job_config`  | Update an existing job's XML config               |
+| `jenkins_rename_job`         | Rename a job                                      |
+| `jenkins_copy_job`           | Copy/duplicate a job                              |
+
+## 🔨 Build Operations (9 tools)
+
+| Tool                          | Description                |
+| ----------------------------- | -------------------------- |
+| `jenkins_get_build_status`    | Get specific build status  |
+| `jenkins_get_recent_builds`   | Get recent builds (last N) |
+| `jenkins_trigger_build`       | Trigger a new build        |
+| `jenkins_stop_build`          | Stop/abort running build   |
+| `jenkins_delete_build`        | Delete a build             |
+| `jenkins_replay_build`        | Replay a pipeline build    |
+| `jenkins_get_console_log`     | Get build console output   |
+| `jenkins_get_build_changes`   | Get Git commits for build  |
+| `jenkins_get_pipeline_stages` | Get pipeline stage status  |
+
+## 🧪 Testing & Artifacts (3 tools)
+
+| Tool                       | Description                |
+| -------------------------- | -------------------------- |
+| `jenkins_get_test_results` | Get test pass/fail counts  |
+| `jenkins_list_artifacts`   | List build artifacts       |
+| `jenkins_get_artifact`     | Download artifact (base64) |
+
+## 📊 Queue Management (2 tools)
+
+| Tool                   | Description         |
+| ---------------------- | ------------------- |
+| `jenkins_get_queue`    | View pending builds |
+| `jenkins_cancel_queue` | Cancel queued build |
+
+## 🖥️ System & Nodes (8 tools)
+
+| Tool                          | Description                             |
+| ----------------------------- | --------------------------------------- |
+| `jenkins_list_nodes`          | List all agents/nodes                   |
+| `jenkins_get_node`            | Get detailed info on a specific node    |
+| `jenkins_toggle_node_offline` | Toggle a node online/offline            |
+| `jenkins_get_system_info`     | Get Jenkins system info                 |
+| `jenkins_get_version`         | Get Jenkins version                     |
+| `jenkins_get_plugins`         | List installed plugins                  |
+| `jenkins_quiet_down`          | Enable quiet mode (⚠️ requires confirm) |
+| `jenkins_cancel_quiet_down`   | Cancel quiet mode                       |
+
+## 🗂️ Views (2 tools)
+
+| Tool                 | Description                     |
+| -------------------- | ------------------------------- |
+| `jenkins_list_views` | List all views with their jobs  |
+| `jenkins_get_view`   | Get details for a specific view |
+
+## 🔀 Instances & Admin (2 tools)
+
+| Tool                     | Description                                   |
+| ------------------------ | --------------------------------------------- |
+| `jenkins_list_instances` | List all configured instances with their URLs |
+| `jenkins_safe_restart`   | Safely restart Jenkins (⚠️ requires confirm)  |
+
+**Total: 38 tools** covering ~95% of Jenkins API operations.

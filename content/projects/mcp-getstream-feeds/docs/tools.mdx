@@ -1,0 +1,87 @@
+---
+title: Tools
+description: The five MCP tools for inspecting and mutating GetStream feed subscriptions, followers, and activities.
+---
+
+The server registers **five tools** covering the slice of the GetStream Feeds
+API needed to debug push notification delivery.
+
+## Feed subscriptions
+
+| Tool                       | Description                                                       |
+| -------------------------- | ----------------------------------------------------------------- |
+| `getstream_feed_following` | Get what feeds a specific feed follows (its subscriptions)        |
+| `getstream_feed_followers` | Get who follows a specific feed (its subscribers)                 |
+| `getstream_feed_follow`    | Subscribe a feed to another feed _(requires `confirm: true`)_     |
+| `getstream_feed_unfollow`  | Unsubscribe a feed from another feed _(requires `confirm: true`)_ |
+
+## Feed activities
+
+| Tool                        | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| `getstream_feed_activities` | Get recent activities on a feed with timestamps and payloads |
+
+## Reference
+
+### `getstream_feed_following`
+
+Get what feeds a specific feed follows — i.e. what it is subscribed to.
+
+| Parameter   | Type     | Default | Description                     |
+| ----------- | -------- | ------- | ------------------------------- |
+| `feed_slug` | `string` | —       | Feed slug (e.g. `notification`) |
+| `feed_id`   | `string` | —       | Feed ID (e.g. `user_123`)       |
+| `limit`     | `number` | `100`   | Max number of results to return |
+
+### `getstream_feed_followers`
+
+Get the followers of a specific feed — i.e. who is subscribed to it.
+
+| Parameter   | Type     | Default | Description                      |
+| ----------- | -------- | ------- | -------------------------------- |
+| `feed_slug` | `string` | —       | Feed slug (e.g. `timeline`)      |
+| `feed_id`   | `string` | —       | Feed ID (e.g. `timeline_global`) |
+| `limit`     | `number` | `100`   | Max number of results to return  |
+| `offset`    | `number` | `0`     | Pagination offset (max 999)      |
+
+### `getstream_feed_activities`
+
+Get recent activities on a feed with timestamps and payloads.
+
+| Parameter   | Type     | Default | Description                        |
+| ----------- | -------- | ------- | ---------------------------------- |
+| `feed_slug` | `string` | —       | Feed slug                          |
+| `feed_id`   | `string` | —       | Feed ID                            |
+| `limit`     | `number` | `10`    | Max number of activities to return |
+
+### `getstream_feed_follow`
+
+Subscribe a feed to another feed (create a follow relationship). Guarded by a
+safety gate — it returns an error unless `confirm` is `true`.
+
+| Parameter          | Type      | Default | Description                       |
+| ------------------ | --------- | ------- | --------------------------------- |
+| `source_feed_slug` | `string`  | —       | Slug of the feed that will follow |
+| `source_feed_id`   | `string`  | —       | ID of the feed that will follow   |
+| `target_feed_slug` | `string`  | —       | Slug of the feed to be followed   |
+| `target_feed_id`   | `string`  | —       | ID of the feed to be followed     |
+| `confirm`          | `boolean` | `false` | Must be `true` to execute         |
+
+### `getstream_feed_unfollow`
+
+Unsubscribe a feed from another feed (remove a follow relationship). Guarded by
+the same safety gate — `confirm` must be `true`.
+
+| Parameter          | Type      | Default | Description                         |
+| ------------------ | --------- | ------- | ----------------------------------- |
+| `source_feed_slug` | `string`  | —       | Slug of the feed that will unfollow |
+| `source_feed_id`   | `string`  | —       | ID of the feed that will unfollow   |
+| `target_feed_slug` | `string`  | —       | Slug of the feed to unfollow from   |
+| `target_feed_id`   | `string`  | —       | ID of the feed to unfollow from     |
+| `confirm`          | `boolean` | `false` | Must be `true` to execute           |
+
+## Safety gates
+
+Both mutation tools refuse to act without an explicit `confirm: true`. Calling
+them without it returns an error and performs no change — a deliberate guard
+against accidental follow-graph edits.

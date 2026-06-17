@@ -1,0 +1,78 @@
+---
+title: Providers & Models
+description: Route through OpenCode-supported models, the Claude CLI with no API key, or the Anthropic SDK directly.
+---
+
+The CLI is provider-agnostic. A model string takes the form `provider/name`, and
+the provider prefix selects which adapter handles the request.
+
+## Supported providers
+
+| Provider                       | Example model strings                                      | Auth                        |
+| ------------------------------ | ---------------------------------------------------------- | --------------------------- |
+| OpenCode (any supported model) | `github-copilot/claude-sonnet-4.6`, `opencode/big-pickle`  | OpenCode session            |
+| Claude CLI (no API key needed) | `claude/sonnet`, `claude/opus`, `claude/haiku`             | Claude Code auth            |
+| Anthropic SDK (direct API)     | `anthropic/claude-sonnet-4-6`, `anthropic/claude-opus-4-7` | `ANTHROPIC_API_KEY` env var |
+
+## Picking a model
+
+List, pick, and persist your preferred model interactively:
+
+```bash
+ai-conventional-commit models
+```
+
+Override the model for a single run:
+
+```bash
+ai-conventional-commit --model claude/sonnet
+```
+
+## Configuration
+
+Configuration is resolved via [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig)
+in the following precedence order (later wins):
+
+1. Built-in defaults (`github-copilot/claude-sonnet-4.6`)
+2. `OPENCODE_FREE_MODEL` env var
+3. Global config — `~/.config/ai-conventional-commit-cli/aicc.json`
+4. Project config — `.aiccrc` / `.aiccrc.json` at the repo root
+5. Environment variables (`AICC_*`)
+6. CLI flags (`--model`, `--style`, …)
+
+### Config file example
+
+```json
+{
+  "model": "github-copilot/claude-sonnet-4.6",
+  "privacy": "low",
+  "style": "gitmoji",
+  "styleSamples": 120,
+  "maxTokens": 512,
+  "maxFileLines": 1000,
+  "skipFilePatterns": ["**/package-lock.json", "**/dist/**", "**/*.d.ts"],
+  "plugins": ["./src/plugins/my-plugin.ts"]
+}
+```
+
+### Environment variables
+
+| Variable            | Default                            | Description                                                         |
+| ------------------- | ---------------------------------- | ------------------------------------------------------------------- |
+| `AICC_MODEL`        | `github-copilot/claude-sonnet-4.6` | Model string, e.g. `claude/sonnet` or `anthropic/claude-sonnet-4-6` |
+| `AICC_STYLE`        | `standard`                         | Commit style: `standard`, `gitmoji`, or `gitmoji-pure`              |
+| `AICC_PRIVACY`      | `low`                              | Diff detail level sent to the model                                 |
+| `AICC_YES`          | —                                  | Set to `true` to skip all confirmation prompts                      |
+| `AICC_DEBUG`        | —                                  | Enable verbose provider logs                                        |
+| `AICC_MAX_TOKENS`   | `512`                              | Token limit for model responses                                     |
+| `ANTHROPIC_API_KEY` | —                                  | Required when using `anthropic/*` models                            |
+
+## OpenCode MCP behaviour
+
+On startup, all MCP servers from your global OpenCode config are automatically
+disconnected for the duration of this tool's process. This keeps the model's
+tool count within provider limits (GitHub Copilot caps at 128), removes MCP
+initialisation latency, and lets the model focus entirely on commit generation.
+Your global OpenCode setup is unaffected.
+
+Run with `AICC_DEBUG=true` to see which MCP servers were disconnected.

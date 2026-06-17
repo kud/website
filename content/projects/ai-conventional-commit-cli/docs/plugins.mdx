@@ -1,0 +1,55 @@
+---
+title: Plugins
+description: Register custom transform and validate hooks to enforce team conventions or post-process commit candidates.
+---
+
+Plugins run in two phases over the list of commit candidates, letting you
+normalise, enrich, or block messages before they are committed.
+
+```ts
+interface PluginContext {
+  cwd: string;
+  env: NodeJS.ProcessEnv;
+}
+
+interface Plugin {
+  name: string;
+  transformCandidates?(
+    candidates: CommitCandidate[],
+    ctx: PluginContext,
+  ): CommitCandidate[] | Promise<CommitCandidate[]>;
+  validateCandidate?(
+    candidate: CommitCandidate,
+    ctx: PluginContext,
+  ): string | string[] | void | Promise<string | string[] | void>;
+}
+```
+
+- `transformCandidates` — runs once over the full candidate list; use it for
+  normalisation or enrichment.
+- `validateCandidate` — runs per chosen candidate before the commit executes;
+  return a string to block with an error message.
+
+## Example — scope normaliser
+
+```ts
+export default {
+  name: 'scope-normaliser',
+  transformCandidates(candidates) {
+    return candidates.map((c) => ({
+      ...c,
+      title: c.title.replace('(UI)', '(ui)'),
+    }));
+  },
+};
+```
+
+## Registering plugins
+
+Add plugin paths to the `plugins` array in your `.aiccrc`:
+
+```json
+{
+  "plugins": ["./src/plugins/scope-normaliser.ts"]
+}
+```

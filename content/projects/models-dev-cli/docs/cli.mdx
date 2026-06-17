@@ -1,0 +1,41 @@
+---
+title: CLI Usage
+description: Non-interactive flags for scripting — search, filter, sort, JSON output — plus the output columns reference.
+---
+
+Pass any flag to skip the TUI and get a non-interactive result. Combine flags to
+filter, sort, and shape the output for pipelines.
+
+```bash
+models-dev --search claude
+models-dev --provider openai --sort input-cost
+models-dev --tool --reasoning
+models-dev --provider anthropic --compact
+models-dev --search grok --json
+```
+
+## Flags
+
+- `--search <term>`: substring match on name/id
+- `--provider <name>`: provider id or display name (case-insensitive)
+- `--tool`: only models with tool calling
+- `--reasoning`: only models with reasoning capability
+- `--sort <field>`: one of `input-cost`, `output-cost`, `provider` (the TUI
+  exposes additional sorts)
+- `--json`: emit raw JSON for the resulting models
+- `--compact`: print `provider:model:name:id` per line
+- `--ui <mode>`: `blessed | table | auto` (default)
+
+## Output Columns
+
+Shown in both the non-interactive table and the interactive list view when
+applicable:
+
+- Provider, Model, Provider ID, Model ID
+- Tool, Reason (reasoning capability)
+- Modalities (input/output)
+- Costs (input/output/cache read/cache write; per 1M tokens)
+- Limits (context, output tokens)
+- Temperature flag, Weight openness, Knowledge cutoff, Release, Updated
+
+Missing numeric/cost fields render as `-`.

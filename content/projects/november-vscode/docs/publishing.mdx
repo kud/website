@@ -1,0 +1,50 @@
+---
+title: Publishing
+description: How November is packaged and released to the VS Code Marketplace.
+---
+
+## Tooling
+
+Packaging uses [`@vscode/vsce`](https://github.com/microsoft/vscode-vsce), wired
+up through the `scripts` in `package.json`.
+
+## Package locally
+
+Build a `.vsix` into `build/` for local testing:
+
+```sh
+npm run package
+```
+
+Install the freshly built `.vsix` into your local VS Code:
+
+```sh
+npm run install-ext
+```
+
+Check which files will be bundled:
+
+```sh
+npm run ls
+```
+
+## Release
+
+The release scripts bump the version, commit, tag, and push in one step:
+
+```sh
+npm run release:patch   # bumps patch (x.x.N)
+npm run release:minor   # bumps minor (x.N.0)
+npm run release:major   # bumps major (N.0.0)
+```
+
+## Marketplace upload
+
+Package and open the publisher management page on the Marketplace:
+
+```sh
+npm run marketplace
+```
+
+The extension is published under the `kud` publisher, as
+`kud.november-vscode`.

@@ -1,0 +1,47 @@
+---
+title: Installation
+description: Install gandi-cli globally and verify your setup.
+---
+
+## Requirements
+
+| Component | Version           |
+| --------- | ----------------- |
+| Node.js   | ≥ 20              |
+| npm       | bundled with Node |
+
+## Global install
+
+```sh
+npm install -g @kud/gandi-cli
+```
+
+This adds the `gandi` command to your `PATH`:
+
+```sh
+gandi --help
+```
+
+## Authenticate
+
+gandi-cli needs a Gandi **Personal Access Token (PAT)** to talk to the API.
+Export it before running any command:
+
+```sh
+export GANDI_API_KEY="your-token-here"
+```
+
+See [Authentication](/projects/gandi-cli/docs/authentication) for how to create
+a token with the right scopes and how to store it in a config file instead.
+
+## Verify
+
+Confirm the token works and see which commands are unlocked:
+
+```sh
+gandi doctor
+```
+
+If `gandi doctor` reports your token info and scopes, you're ready to
+[manage domains](/projects/gandi-cli/docs/domains) and
+[DNS records](/projects/gandi-cli/docs/dns).

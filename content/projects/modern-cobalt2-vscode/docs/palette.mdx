@@ -1,0 +1,41 @@
+---
+title: Palette
+description: The core UI and syntax colours of Modern Cobalt2, with the real hex values read from the theme JSON.
+---
+
+## UI vs syntax lineage
+
+Modern Cobalt2 is built in two layers, and they come from different families. The README once described the syntax as both Cobalt2 and Palenight; reading the actual `themes/cobalt2.json` resolves that contradiction.
+
+- **The UI (workbench) is Cobalt2-style.** Every major surface — editor, sidebar, activity bar and status bar — uses the deep navy `#062335`, and the one bright accent is the golden `#ffc600` cursor. That flat-navy-plus-gold look is the Cobalt2 signature.
+- **The syntax (token) colours are Palenight-derived.** The `tokenColors` use the canonical Material/Palenight palette rather than Cobalt2's original brighter syntax colours: green strings `#C3E88D`, purple keywords `#c792ea`, blue functions `#82AAFF`, orange numbers `#F78C6C` and muted comments `#697098`.
+
+So the accurate description is: **a Cobalt2-style navy UI with Palenight-derived syntax.**
+
+## Core UI colours
+
+| Role            | Hex       |
+| --------------- | --------- |
+| Background      | `#062335` |
+| Widget / input  | `#0d2a38` |
+| Border          | `#324858` |
+| Selection base  | `#1d3546` |
+| Main text       | `#d6dadd` |
+| Secondary text  | `#abb5c7` |
+| Accent (cursor) | `#ffc600` |
+
+## Key syntax tokens
+
+| Token              | Hex       |
+| ------------------ | --------- |
+| Comments           | `#697098` |
+| Strings            | `#C3E88D` |
+| Numbers / escapes  | `#F78C6C` |
+| Keywords / storage | `#c792ea` |
+| Functions          | `#82AAFF` |
+| Variables          | `#82AAFF` |
+| Parameters         | `#7986E7` |
+| HTML/JSX tags      | `#ff5572` |
+| Attributes / types | `#c49a3c` |
+
+All values above are read directly from `themes/cobalt2.json`.

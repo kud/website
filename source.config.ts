@@ -1,4 +1,5 @@
 import { defineDocs, defineConfig } from "fumadocs-mdx/config"
+import { rehypeCodeDefaultOptions } from "fumadocs-core/mdx-plugins"
 import rehypeRaw from "rehype-raw"
 
 // Per-project documentation is synced from each repo's markdown into
@@ -22,6 +23,14 @@ const MDX_NODES = [
 
 export default defineConfig({
   mdxOptions: {
+    // Docs are synced from 30+ community repos, so a fence may carry a language
+    // Shiki has no grammar for (e.g. ```sudoers). Without a fallback that's a
+    // hard build error; fall back to plain text so one stray tag can't fail the
+    // whole static build.
+    rehypeCodeOptions: {
+      ...rehypeCodeDefaultOptions,
+      fallbackLanguage: "text",
+    },
     rehypePlugins: (plugins) => [
       [rehypeRaw, { passThrough: MDX_NODES }],
       ...plugins,

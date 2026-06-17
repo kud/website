@@ -1,0 +1,11 @@
+{
+  "title": "gandi-cli",
+  "pages": [
+    "index",
+    "installation",
+    "domains",
+    "dns",
+    "doctor",
+    "authentication"
+  ]
+}

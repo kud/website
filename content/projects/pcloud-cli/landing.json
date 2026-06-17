@@ -1,29 +1,4 @@
 {
-  "features": [
-    {
-      "title": "List all files currently in pCloud trash",
-      "description": ""
-    },
-    {
-      "title": "Restore individual files from trash by file ID",
-      "description": ""
-    },
-    {
-      "title": "Browse version history for any file path",
-      "description": ""
-    },
-    {
-      "title": "Restore a specific version to a new destination",
-      "description": ""
-    },
-    {
-      "title": "OAuth 2.0 authentication — browser-based, token stored locally",
-      "description": ""
-    },
-    {
-      "title": "Bypass stored credentials with an environment variable for CI use",
-      "description": ""
-    }
-  ],
+  "features": [],
   "install": "npm install -g @kud/pcloud-cli"
 }

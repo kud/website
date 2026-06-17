@@ -1,0 +1,63 @@
+---
+title: Troubleshooting
+description: Authentication, security, and common fixes for mcp-bugzilla.
+---
+
+## Authentication
+
+API key authentication is **optional for reads** and **required for writes**
+(creating bugs, posting comments, uploading attachments, and tagging comments).
+
+1. Log in to [bugzilla.mozilla.org](https://bugzilla.mozilla.org)
+2. Go to
+   [Preferences → API Keys](https://bugzilla.mozilla.org/userprefs.cgi?tab=apikey)
+3. Click **Generate a new API key** and give it a description
+4. Copy the key and set it as `MCP_BUGZILLA_API_KEY`
+
+Verify your key:
+
+```bash
+curl -H "X-BUGZILLA-API-KEY: your-key" \
+  https://bugzilla.mozilla.org/rest/whoami
+```
+
+You can also override the Bugzilla instance with `MCP_BUGZILLA_BASE_URL` (useful
+for self-hosted installations). It defaults to
+`https://bugzilla.mozilla.org/rest`.
+
+When no key is set, the server starts in read-only mode and write tools return a
+clear error instead of failing silently.
+
+## Security best practices
+
+- ✅ Set `MCP_BUGZILLA_API_KEY` as an environment variable — never hardcode it.
+- ✅ Never commit your API key to version control.
+- ✅ Protect your shell profile or secrets manager where the key is stored.
+- ✅ Rotate your key at
+  [Bugzilla preferences](https://bugzilla.mozilla.org/userprefs.cgi?tab=apikey)
+  if it is ever exposed.
+
+## Server not showing
+
+- Ensure Node.js 20+ is installed: `node --version`
+- Check the server key includes the `mcp-` prefix in your config
+- Restart Claude Desktop / reload your editor after config changes
+- Run `claude mcp get mcp-bugzilla` to verify the registration
+
+## Authentication errors
+
+Test your key directly:
+
+```bash
+curl -H "X-BUGZILLA-API-KEY: your-key" \
+  https://bugzilla.mozilla.org/rest/whoami
+```
+
+A `401`/`403` means the key is missing, mistyped, or revoked. Generate a fresh
+key and update your config.
+
+## Checking logs
+
+- **macOS:** `~/Library/Logs/Claude/mcp-server-mcp-bugzilla.log`
+- **Windows:** `%APPDATA%\Claude\logs\mcp-server-mcp-bugzilla.log`
+- **Claude Code:** `claude mcp get mcp-bugzilla`

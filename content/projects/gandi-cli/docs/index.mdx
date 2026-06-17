@@ -1,42 +1,58 @@
 ---
-title: gandi-cli
-description: Modern CLI for the Gandi v5 REST API
+title: Introduction
+description: A modern CLI for the Gandi v5 REST API — manage your domains and LiveDNS records from the terminal.
 ---
 
-## 🌟 Features
+**gandi-cli** brings your Gandi domains and LiveDNS records to the terminal. It
+talks to the **Gandi v5 REST API** using Personal Access Tokens, with a rich
+Ink-powered UI for spinners, aligned tables, and clean formatted output.
 
-- 🌐 **Domain Management** — List all registered domains with expiry dates and statuses, and renew them for one or more years
-- 🔧 **Full DNS Control** — List, create, update, and delete LiveDNS records with support for custom TTLs and all standard record types
-- 🩺 **Permission Doctor** — Built-in `gandi doctor` checks your PAT scopes and shows exactly which commands are unlocked
-- 🔐 **PAT Authentication** — Uses Gandi Personal Access Tokens with fine-grained scope control — only grant what you need
-- ⚡ **Rich Terminal UI** — Built with Ink and React for spinners, aligned tables, and clean formatted output
-- 📦 **Zero Config** — Set one env var or add one line to a TOML file and you're ready to go
+One global install, one token, and you're managing domains and DNS without ever
+opening the Gandi dashboard.
 
----
+## Features
 
-## 🚀 Quick Start
+- 🌐 **Domain management** — list all registered domains with expiry dates and
+  statuses, and renew them for one or more years.
+- 🔧 **Full DNS control** — list, create, update, and delete LiveDNS records with
+  support for custom TTLs and all standard record types.
+- 🩺 **Permission doctor** — built-in `gandi doctor` checks your PAT scopes and
+  shows exactly which commands are unlocked.
+- 🔐 **PAT authentication** — uses Gandi Personal Access Tokens with fine-grained
+  scope control, so you only grant what you need.
+- ⚡ **Rich terminal UI** — built with Ink and React for spinners, aligned tables,
+  and clean formatted output.
+- 📦 **Zero config** — set one env var or add one line to a TOML file and you're
+  ready to go.
 
-### 1. Install
+## Install
 
 ```sh
 npm install -g @kud/gandi-cli
 ```
 
-### 2. Authenticate
+This adds the `gandi` command to your `PATH`. See
+[Installation](/projects/gandi-cli/docs/installation) for requirements and
+alternatives.
 
-Generate a **Personal Access Token** at **gandi.net → Account → Partage → Créer un jeton d'accès personnel** then export it:
+## Quick start
+
+### 1. Authenticate
+
+Generate a **Personal Access Token** at **gandi.net → Account → Partage → Créer
+un jeton d'accès personnel**, then export it:
 
 ```sh
 export GANDI_API_KEY="your-token-here"
 ```
 
-### 3. Check permissions
+### 2. Check permissions
 
 ```sh
 gandi doctor
 ```
 
-```
+```console
 Gandi CLI
 Expires in 29 days · 1 entity
 
@@ -45,7 +61,7 @@ Expires in 29 days · 1 entity
 ✓  domain:tech   gandi dns list / set / delete
 ```
 
-### 4. Manage domains and DNS
+### 3. Manage domains and DNS
 
 ```sh
 gandi domain list
@@ -55,109 +71,10 @@ gandi dns set example.com A www 1.2.3.4 --ttl 300
 gandi dns delete example.com A www
 ```
 
----
+## Next steps
 
-## 📖 CLI Reference
-
-| Command                                                        | Description                                   |
-| -------------------------------------------------------------- | --------------------------------------------- |
-| `gandi doctor`                                                 | Check token info and permissions              |
-| `gandi domain list`                                            | List all domains with expiry dates and status |
-| `gandi domain renew <domain>`                                  | Renew a domain for 1 year                     |
-| `gandi domain renew <domain> --duration <years>`               | Renew for a specified number of years         |
-| `gandi dns list <domain>`                                      | List all DNS records for a domain             |
-| `gandi dns set <domain> <type> <name> <value>`                 | Create or replace a DNS record                |
-| `gandi dns set <domain> <type> <name> <value> --ttl <seconds>` | Set with a custom TTL in seconds              |
-| `gandi dns delete <domain> <type> <name>`                      | Delete a DNS record                           |
-
----
-
-## 🔧 Development
-
-**Project Structure**
-
-```
-gandi-cli/
-├── src/
-│   ├── commands/
-│   │   ├── doctor.tsx
-│   │   ├── domain-list.tsx
-│   │   ├── domain-renew.tsx
-│   │   ├── dns-list.tsx
-│   │   ├── dns-set.tsx
-│   │   └── dns-delete.tsx
-│   ├── components/
-│   │   ├── error.tsx
-│   │   ├── spinner-action.tsx
-│   │   └── table.tsx
-│   ├── lib/
-│   │   ├── api.ts
-│   │   └── config.ts
-│   ├── types/
-│   │   └── gandi.ts
-│   └── index.tsx
-├── dist/
-├── package.json
-└── README.md
-```
-
-**Scripts**
-
-| Script          | Description                                  |
-| --------------- | -------------------------------------------- |
-| `npm run build` | Compile TypeScript to `dist/`                |
-| `npm run dev`   | Run directly with tsx — no build step needed |
-| `npm run start` | Run compiled output from `dist/`             |
-
-**Workflow**
-
-```sh
-git clone https://github.com/kud/gandi-cli.git
-cd gandi-cli
-npm install
-npm run dev -- doctor
-```
-
----
-
-## 🔒 Authentication
-
-gandi-cli uses **Personal Access Tokens (PATs)** — not legacy API keys.
-
-Generate a token at **gandi.net → Account → Partage → Créer un jeton d'accès personnel** with only the permissions you need:
-
-| Permission                                      | Required for                        |
-| ----------------------------------------------- | ----------------------------------- |
-| Voir la liste de vos domaines                   | `gandi domain list`                 |
-| Gérer le renouvellement de vos domaines         | `gandi domain renew`                |
-| Accéder aux enregistrements DNS de vos domaines | `gandi dns list`                    |
-| Gérer les enregistrements DNS de vos domaines   | `gandi dns set`, `gandi dns delete` |
-
-**Via environment variable** (takes precedence):
-
-```sh
-export GANDI_API_KEY="your-token-here"
-```
-
-**Via config file** (`~/.config/gandi/config.toml`):
-
-```toml
-api_key = "your-token-here"
-```
-
-- ✅ Only grant permissions each command actually needs
-- ✅ Set an expiry date on the token
-- ✅ Use `gandi doctor` to verify scopes before running commands
-
----
-
-## 🏗 Tech Stack
-
-| Component     | Details                |
-| ------------- | ---------------------- |
-| Runtime       | Node.js ≥ 20           |
-| Language      | TypeScript 5.x (ESM)   |
-| Terminal UI   | Ink 7 + React 19       |
-| CLI Framework | Commander.js 12        |
-| Config        | smol-toml              |
-| Package       | npm · `@kud/gandi-cli` |
+- [Domains](/projects/gandi-cli/docs/domains) — list and renew your domains.
+- [DNS](/projects/gandi-cli/docs/dns) — manage LiveDNS records.
+- [Doctor](/projects/gandi-cli/docs/doctor) — inspect token info and scopes.
+- [Authentication](/projects/gandi-cli/docs/authentication) — tokens, scopes,
+  and config.

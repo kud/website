@@ -1,0 +1,79 @@
+---
+title: am-i-admin-cli
+description: A tiny macOS CLI that tells you — in plain language or as a raw boolean — whether your user is a member of the admin group.
+---
+
+**am-i-admin** answers one question: are you an admin on this macOS machine?
+
+Run it and it inspects the local `admin` group membership for your current user,
+then prints a friendly, colourful verdict. Need something a script can consume?
+The `--raw` flag swaps the prose for a bare `true` / `false`.
+
+No configuration, no flags to memorise — a single command with one optional
+switch.
+
+## Install
+
+Install globally from npm:
+
+```sh
+npm install -g @kud/am-i-admin-cli
+```
+
+This adds the `am-i-admin` command to your `PATH`.
+
+## Usage
+
+Run the command with no arguments for a human-readable answer:
+
+```sh
+am-i-admin
+```
+
+```text
+✓ erwann, you are an admin on this computer. 👑
+```
+
+If you are not in the admin group, you'll see a gentler message instead:
+
+```text
+✗ erwann, you are sadly not an admin on this computer. 🥹
+```
+
+## Raw boolean mode
+
+Pass `--raw` to get a plain boolean with no colour or decoration — ideal for
+piping into shell conditionals or other tooling:
+
+```sh
+am-i-admin --raw
+```
+
+```text
+true
+```
+
+It prints `true` when your user belongs to the admin group and `false`
+otherwise.
+
+```sh
+if [ "$(am-i-admin --raw)" = "true" ]; then
+  echo "Running with admin privileges"
+fi
+```
+
+## How it works & exit behaviour
+
+Under the hood the tool reads the local directory service:
+
+```sh
+dscl . -read /Groups/admin GroupMembership
+```
+
+and checks whether your `$USER` appears in the returned membership list. Because
+it inspects group membership directly, it works without `sudo` and makes no
+changes to your system.
+
+If the lookup fails for any reason, the error is reported on stderr as
+`An error occurred: <message>`. The command is macOS-only, since `dscl` is
+specific to macOS.

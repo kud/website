@@ -1,0 +1,27 @@
+---
+title: Troubleshooting
+description: Fixes for terminal quirks — iTerm2 Setulc/terminfo crashes, falling back to table mode, and disabling colour.
+---
+
+## iTerm2 Setulc/terminfo error
+
+Running in iTerm2 and seeing a Setulc/terminfo error? The CLI auto-detects
+iTerm2 / `xterm-256color` and avoids `tput`, which prevents the crash.
+
+If you still hit issues:
+
+```bash
+# simplest workaround
+TERM=xterm npx -p @kud/models-dev-cli models-dev
+
+# fall back to table UI
+models-dev --ui table
+```
+
+## Disabling colour
+
+No colour output desired? Set `NO_COLOR=1`:
+
+```bash
+NO_COLOR=1 models-dev
+```

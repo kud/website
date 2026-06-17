@@ -1,0 +1,509 @@
+---
+title: Installation
+description: Per-client setup guides for Claude Code, Claude Desktop, Cursor, VSCode, JetBrains, and more.
+---
+
+## Installation Options
+
+**Option 1: Via npm (recommended)** — no installation needed, just use `npx` in your MCP config:
+
+```bash
+npx --yes @kud/mcp-jenkins@latest
+```
+
+**Option 2: Local installation:**
+
+```bash
+git clone https://github.com/kud/mcp-jenkins.git
+cd mcp-jenkins
+npm install
+npm run build
+```
+
+## Choose your environment
+
+- [Claude Code CLI](#claude-code-cli) - Command line interface
+- [Claude Code Web](#claude-code-web) - Browser-based Claude
+- [Claude Desktop](#claude-desktop) - Desktop application
+- [VSCode](#vscode) - With Cline, Claude Dev, Continue
+- [Cursor](#cursor) - AI-first IDE
+- [Windsurf](#windsurf) - AI-powered code editor
+- [GitHub Copilot](#github-copilot) - In VSCode or standalone
+- [GitHub Copilot CLI](#github-copilot-cli) - Terminal tool
+- [JetBrains IDEs](#all-jetbrains-ides) - IntelliJ, WebStorm, PyCharm, GoLand, etc.
+
+## 🎯 Claude Code CLI
+
+**For:** Claude AI via command line interface
+
+**Via npm with env vars (recommended):**
+
+```bash
+claude mcp add --transport stdio --scope user jenkins \
+  --env MCP_JENKINS_URL=https://pipeline.yourcompany.com \
+  --env MCP_JENKINS_USER=your_username \
+  --env MCP_JENKINS_API_TOKEN=your_api_token \
+  -- npx --yes @kud/mcp-jenkins@latest
+```
+
+**Via npm with CLI args:**
+
+```bash
+claude mcp add --transport stdio --scope user jenkins \
+  -- npx --yes @kud/mcp-jenkins@latest \
+  --url https://pipeline.yourcompany.com \
+  --user your_username \
+  --api-token your_api_token
+```
+
+**Local installation with CLI args:**
+
+```bash
+claude mcp add --transport stdio --scope user jenkins \
+  -- node $HOME/path/to/mcp-jenkins/dist/index.js \
+  --url https://pipeline.yourcompany.com \
+  --user your_username \
+  --api-token your_api_token
+```
+
+**Multiple Jenkins instances:**
+
+```bash
+claude mcp add --transport stdio --scope user jenkins \
+  --env MCP_JENKINS_URL="https://pipeline.yourcompany.com,https://scheduler.yourcompany.com" \
+  --env MCP_JENKINS_USER="your_username,your_username" \
+  --env MCP_JENKINS_API_TOKEN="token1,token2" \
+  -- npx --yes @kud/mcp-jenkins@latest
+# Instances named "pipeline" and "scheduler" automatically from hostnames
+```
+
+Verify: `claude mcp list` should show `jenkins`
+
+## 🌐 Claude Code Web
+
+**For:** Claude.ai in your browser
+
+**⚠️ Not supported.** The Claude.ai web interface doesn't support custom MCP servers yet.
+
+**Alternatives:**
+
+- Use desktop clients (see below)
+- Use CLI tools (see above)
+- Test via MCP Inspector: `npm run inspect:dev` → `http://localhost:5173`
+
+## 🖥️ Claude Desktop
+
+**For:** Claude AI desktop application
+
+### 1. Open Configuration File
+
+**macOS:**
+
+```bash
+open ~/Library/Application\ Support/Claude/claude_desktop_config.json
+```
+
+**Windows:**
+
+```bash
+notepad %APPDATA%\Claude\claude_desktop_config.json
+```
+
+### 2. Add Configuration
+
+**Via npm with env vars (recommended):**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username",
+        "MCP_JENKINS_API_TOKEN": "your_api_token"
+      }
+    }
+  }
+}
+```
+
+**Via npm with CLI args:**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": [
+        "--yes",
+        "@kud/mcp-jenkins@latest",
+        "--url",
+        "https://pipeline.yourcompany.com",
+        "--user",
+        "your_username",
+        "--api-token",
+        "your_api_token"
+      ]
+    }
+  }
+}
+```
+
+**Local installation with CLI args:**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/mcp-jenkins/dist/index.js",
+        "--url",
+        "https://pipeline.yourcompany.com",
+        "--user",
+        "your_username",
+        "--api-token",
+        "your_api_token"
+      ]
+    }
+  }
+}
+```
+
+**Bearer token example:**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": [
+        "--yes",
+        "@kud/mcp-jenkins@latest",
+        "--url",
+        "https://pipeline.yourcompany.com",
+        "--bearer-token",
+        "your_bearer_token"
+      ]
+    }
+  }
+}
+```
+
+**Multiple Jenkins instances:**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com,https://scheduler.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username,your_username",
+        "MCP_JENKINS_API_TOKEN": "token1,token2"
+      }
+    }
+  }
+}
+```
+
+### 3. Restart
+
+Quit (Cmd+Q / Alt+F4) and reopen Claude Desktop.
+
+## 📝 VSCode
+
+**For:** VSCode with MCP-compatible extensions (Cline, Claude Dev, Continue)
+
+**Cline:**
+
+Settings (Cmd+, / Ctrl+,) → Search "Cline: MCP Settings" → Edit in settings.json:
+
+```json
+{
+  "cline.mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["@kud/mcp-jenkins"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username",
+        "MCP_JENKINS_API_TOKEN": "your_api_token"
+      }
+    }
+  }
+}
+```
+
+**Multiple Jenkins instances:**
+
+```json
+{
+  "cline.mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["@kud/mcp-jenkins"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com,https://scheduler.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username,your_username",
+        "MCP_JENKINS_API_TOKEN": "token1,token2"
+      }
+    }
+  }
+}
+```
+
+Or for local installation, use `"command": "node"` and `"args": ["/absolute/path/to/mcp-jenkins/dist/index.js"]`
+
+**Claude Dev / Continue:**
+
+Command Palette (Cmd+Shift+P) → "MCP: Edit Config" → Add similar configuration.
+
+Reload window after configuration.
+
+## 🌐 Cursor
+
+**For:** Cursor IDE with built-in AI
+
+Settings (Cmd+, / Ctrl+,) → Search "MCP" → Edit Config or open `~/.cursor/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username",
+        "MCP_JENKINS_API_TOKEN": "your_api_token"
+      }
+    }
+  }
+}
+```
+
+**Multiple Jenkins instances:**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com,https://scheduler.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username,your_username",
+        "MCP_JENKINS_API_TOKEN": "token1,token2"
+      }
+    }
+  }
+}
+```
+
+Or for local installation, use `"command": "node"` and `"args": ["/absolute/path/to/mcp-jenkins/dist/index.js"]`
+
+Restart Cursor (Cmd+Q / Alt+F4) after configuration.
+
+## 🌊 Windsurf
+
+**For:** Windsurf AI-powered code editor
+
+Settings → **AI Settings** → **Model Context Protocol** → Add Server:
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username",
+        "MCP_JENKINS_API_TOKEN": "your_api_token"
+      }
+    }
+  }
+}
+```
+
+**Multiple Jenkins instances:**
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com,https://scheduler.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username,your_username",
+        "MCP_JENKINS_API_TOKEN": "token1,token2"
+      }
+    }
+  }
+}
+```
+
+Or edit `~/.windsurf/mcp_settings.json` directly. For local installation, use `"command": "node"` with full path.
+
+Restart Windsurf after configuration.
+
+## 🤖 GitHub Copilot
+
+**For:** GitHub Copilot in VSCode or other editors
+
+**⚠️ Not supported.** GitHub Copilot doesn't support MCP servers.
+
+**Options:**
+
+- **In VSCode:** Install Copilot + Cline/Claude Dev. Use Copilot for coding, Cline/Claude Dev for Jenkins (see the VSCode section)
+- **In terminal:** Use Copilot for coding suggestions, an MCP-compatible CLI for Jenkins (see the CLI sections above)
+- **No MCP:** Use code in `src/lib/jenkins-client.ts` as examples for direct API calls
+
+## 💻 GitHub Copilot CLI
+
+**For:** New GitHub Copilot CLI (`@github/copilot`) in your terminal
+
+**Note:** This is for the NEW Copilot CLI (`npm install -g @github/copilot`), not the old `gh copilot` extension.
+
+### Option 1: Config File with Env Vars (Recommended)
+
+Create or edit `~/.copilot/mcp-config.json`:
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username",
+        "MCP_JENKINS_API_TOKEN": "your_api_token"
+      }
+    }
+  }
+}
+```
+
+Then run: `copilot`
+
+### Option 2: Config File with CLI Args
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": [
+        "--yes",
+        "@kud/mcp-jenkins@latest",
+        "--url",
+        "https://pipeline.yourcompany.com",
+        "--user",
+        "your_username",
+        "--api-token",
+        "your_api_token"
+      ]
+    }
+  }
+}
+```
+
+### Option 3: Inline Config with CLI Args
+
+Pass MCP config directly via command line:
+
+```bash
+copilot --additional-mcp-config '{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": [
+        "--yes", "@kud/mcp-jenkins@latest",
+        "--url", "https://pipeline.yourcompany.com",
+        "--user", "your_username",
+        "--api-token", "your_api_token"
+      ]
+    }
+  }
+}'
+```
+
+Or save to a file and reference it:
+
+```bash
+# Save config to jenkins-mcp.json
+copilot --additional-mcp-config @jenkins-mcp.json
+```
+
+For local installation, use `"command": "node"` with path in args:
+
+```json
+"args": ["/absolute/path/to/mcp-jenkins/dist/index.js", "--url", "...", "--user", "...", "--api-token", "..."]
+```
+
+### Option 4: Multiple Jenkins instances
+
+```json
+{
+  "mcpServers": {
+    "jenkins": {
+      "command": "npx",
+      "args": ["--yes", "@kud/mcp-jenkins@latest"],
+      "env": {
+        "MCP_JENKINS_URL": "https://pipeline.yourcompany.com,https://scheduler.yourcompany.com",
+        "MCP_JENKINS_USER": "your_username,your_username",
+        "MCP_JENKINS_API_TOKEN": "token1,token2"
+      }
+    }
+  }
+}
+```
+
+### Option 5: Allow All Tools (Non-Interactive)
+
+For scripts and automation:
+
+```bash
+copilot --allow-all-tools -p "Check status of mobile-pipeline build"
+```
+
+## 🔧 All JetBrains IDEs
+
+**For:** IntelliJ IDEA, WebStorm, PyCharm, GoLand, RubyMine, PhpStorm, Rider, CLion, DataGrip
+
+Settings (Cmd+, / Ctrl+,) → **Tools** → **AI Assistant** → **Model Context Protocol** → Add Server:
+
+- **Name:** Jenkins
+- **Command:** `npx`
+- **Arguments:** `--yes @kud/mcp-jenkins@latest`
+- **Environment Variables:**
+  ```
+  MCP_JENKINS_URL=https://pipeline.yourcompany.com
+  MCP_JENKINS_USER=your_username
+  MCP_JENKINS_API_TOKEN=your_api_token
+  ```
+
+**Multiple Jenkins instances:** set these environment variables:
+
+```
+MCP_JENKINS_URL=https://pipeline.yourcompany.com,https://scheduler.yourcompany.com
+MCP_JENKINS_USER=your_username,your_username
+MCP_JENKINS_API_TOKEN=token1,token2
+```
+
+For local installation, use **Command:** `node` and **Arguments:** `/absolute/path/to/mcp-jenkins/dist/index.js`
+
+Apply and restart the IDE.
+
+**Alternative:** If MCP isn't available, use an MCP-compatible CLI from the built-in terminal (Alt+F12 / ⌥F12)
+
+**Notes:**
+
+- Ultimate/Professional editions: Full AI Assistant MCP support
+- Community editions: Use an MCP-compatible CLI from the terminal instead

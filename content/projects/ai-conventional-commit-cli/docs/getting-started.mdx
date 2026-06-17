@@ -1,0 +1,86 @@
+---
+title: Getting Started
+description: Install the CLI, generate your first commit, and learn the full command and flag reference.
+---
+
+## Install
+
+```bash
+npm install -g @kud/ai-conventional-commit-cli
+```
+
+Optional shell alias for convenience:
+
+```bash
+alias aicc='ai-conventional-commit'
+```
+
+## First commit
+
+Stage your changes, then run the CLI with no arguments to generate a single
+suggestion from the staged diff:
+
+```bash
+git add .
+ai-conventional-commit
+# ✔ feat(api): add pagination metadata to list endpoint
+```
+
+Auto-confirm without prompts (handy in CI or scripting):
+
+```bash
+AICC_YES=true ai-conventional-commit
+```
+
+Pick and save your preferred model:
+
+```bash
+ai-conventional-commit models
+```
+
+## Commands
+
+| Command                                           | Description                                                    |
+| ------------------------------------------------- | -------------------------------------------------------------- |
+| `ai-conventional-commit`                          | Generate a single commit suggestion from staged diff (default) |
+| `ai-conventional-commit generate`                 | Explicit alias of the root command                             |
+| `ai-conventional-commit split [n]`                | Cluster staged changes into `n` commits and execute each       |
+| `ai-conventional-commit refine`                   | Refine the last generated commit message                       |
+| `ai-conventional-commit reword [hash]`            | AI-assisted reword of an existing commit                       |
+| `ai-conventional-commit models`                   | List, pick, and save available models                          |
+| `ai-conventional-commit config show`              | Show the merged resolved configuration and its sources         |
+| `ai-conventional-commit config get <key>`         | Read a single configuration value                              |
+| `ai-conventional-commit config set <key> <value>` | Persist a configuration value globally                         |
+
+## Flags
+
+| Flag                                        | Description                                   |
+| ------------------------------------------- | --------------------------------------------- |
+| `--style <standard\|gitmoji\|gitmoji-pure>` | Override the commit style for this run        |
+| `--model <provider/name>`                   | Override the active model for this run        |
+| `-y, --yes`                                 | Skip all confirmation prompts                 |
+| `--shorter`                                 | Ask the model to shorten the message (refine) |
+| `--longer`                                  | Ask the model to expand the message (refine)  |
+| `--scope <scope>`                           | Force a specific scope (refine)               |
+
+## Refine & reword
+
+`refine` reshapes the wording of the last generated message; `reword`
+re-generates the message of an existing commit.
+
+```bash
+# Interactive picker — last 20 commits
+ai-conventional-commit reword
+
+# Reword HEAD and amend in-place on acceptance
+ai-conventional-commit reword HEAD
+
+# Reword an older commit (prints interactive rebase instructions)
+ai-conventional-commit reword <hash>
+
+# With style and model overrides
+ai-conventional-commit reword <hash> --style gitmoji --model github-copilot/claude-sonnet-4.6
+```
+
+> Merge commits (multiple parents) are rejected. Title formatting — gitmoji,
+> normalisation — matches all other commands.

@@ -1,0 +1,67 @@
+---
+title: DNS
+description: List, create, update, and delete LiveDNS records.
+---
+
+The `gandi dns` group manages **LiveDNS** records for a domain. It supports all
+standard record types and custom TTLs.
+
+## List records
+
+List every DNS record for a domain:
+
+```sh
+gandi dns list example.com
+```
+
+**Requires:** the **Accéder aux enregistrements DNS de vos domaines**
+permission on your token.
+
+## Create or update a record
+
+`gandi dns set` creates a record, or replaces it if one already exists for the
+same type and name:
+
+```sh
+gandi dns set example.com A www 1.2.3.4
+```
+
+Provide a custom TTL in seconds with `--ttl`:
+
+```sh
+gandi dns set example.com A www 1.2.3.4 --ttl 300
+```
+
+This works for any standard record type — `A`, `AAAA`, `CNAME`, `MX`, `TXT`, and
+so on:
+
+```sh
+gandi dns set example.com CNAME blog example.com
+gandi dns set example.com TXT @ "v=spf1 include:_mailcust.gandi.net ~all"
+```
+
+**Requires:** the **Gérer les enregistrements DNS de vos domaines** permission on
+your token.
+
+## Delete a record
+
+Remove a record by type and name:
+
+```sh
+gandi dns delete example.com A www
+```
+
+**Requires:** the **Gérer les enregistrements DNS de vos domaines** permission on
+your token.
+
+## Command reference
+
+| Command                                                        | Description                       |
+| -------------------------------------------------------------- | --------------------------------- |
+| `gandi dns list <domain>`                                      | List all DNS records for a domain |
+| `gandi dns set <domain> <type> <name> <value>`                 | Create or replace a DNS record    |
+| `gandi dns set <domain> <type> <name> <value> --ttl <seconds>` | Set with a custom TTL in seconds  |
+| `gandi dns delete <domain> <type> <name>`                      | Delete a DNS record               |
+
+Not sure which commands your token can run? Use
+[`gandi doctor`](/projects/gandi-cli/docs/doctor) to check your scopes.

@@ -1,0 +1,95 @@
+---
+title: Introduction
+description: Query any opencode model from your AI assistant — no API key required. A zero-key bridge that delegates all authentication to opencode.
+---
+
+**mcp-opencode** is an [MCP](https://modelcontextprotocol.io/) server that lets
+your AI assistant query any model your local [opencode](https://opencode.ai)
+install is configured for — anthropic, github-copilot, google-vertex, and any
+other provider — without ever handling an API key.
+
+It acts as a thin bridge: your assistant calls a tool, the server forwards the
+prompt to opencode's local HTTP server, and the response comes back. opencode
+owns the credentials; this server never sees them.
+
+## The zero-key delegation model
+
+Most MCP servers that talk to model providers need their own API tokens, stored
+in config or environment variables. mcp-opencode takes a different approach:
+
+- **No tokens here** — you configure your providers **once** in opencode (via
+  `opencode auth`), and this server inherits them automatically.
+- **No secrets in flight** — no credentials are stored in or passed through the
+  MCP server. Authentication is delegated entirely to opencode's own config.
+- **One source of truth** — the models you can query are exactly the models
+  opencode knows about. Run `opencode models` to see the same list the server
+  exposes.
+
+This means you get a second-opinion model, a cheaper model for bulk work, or a
+different provider's flagship — all from inside your assistant, with zero extra
+auth setup.
+
+## Features
+
+- **Query any model** — send prompts to anthropic, github-copilot,
+  google-vertex, and any other provider you've configured in opencode.
+- **Discover models** — list every model opencode knows about, optionally
+  filtered by provider.
+- **Zero config auth** — no API tokens; authentication is delegated entirely to
+  opencode.
+- **Auto-start** — spins up the opencode server automatically if it isn't
+  already running.
+- **Allow/block filters** — restrict which models are accessible via
+  `MCP_OPENCODE_MODEL_ALLOW` / `MCP_OPENCODE_MODEL_BLOCK`.
+- **Works with any opencode provider** — whatever you've configured, you can
+  query.
+
+## Prerequisites
+
+- [opencode](https://opencode.ai) installed, with at least one provider
+  configured.
+- Node.js ≥ 20.
+
+## Install
+
+```bash
+npm install -g @kud/mcp-opencode
+```
+
+Then register it with your AI client. For Claude Desktop, edit the config:
+
+```json
+{
+  "mcpServers": {
+    "opencode": {
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-opencode"]
+    }
+  }
+}
+```
+
+The same `command` / `args` pair works for Cursor, Windsurf, VSCode (Copilot),
+and the Claude Code CLI — only the surrounding config file differs.
+
+## Example conversations
+
+> **"What models do I have access to?"**
+> → Calls `list_models`, returns all configured models grouped by provider.
+
+> **"List only my Anthropic models."**
+> → Calls `list_models` with `provider: "anthropic"`.
+
+> **"Ask GPT-4.1 via Copilot to explain what a monad is."**
+> → Calls `query` with `model: "github-copilot/gpt-4.1"`.
+
+> **"Use Claude Sonnet to review this diff and suggest improvements."**
+> → Calls `query` with `model: "anthropic/claude-sonnet-4-6"` and the diff as
+> the prompt.
+
+> **"Get a second opinion from Gemini on this architecture decision."**
+> → Calls `query` with `model: "google-vertex/gemini-2.5-pro"`.
+
+Head to [Tools](/projects/mcp-opencode/docs/tools) for the full reference, or
+[How it works](/projects/mcp-opencode/docs/how-it-works) to understand the
+bridge.

@@ -1,33 +1,4 @@
 {
-  "features": [
-    {
-      "title": "AI-generated conventional commits — reads your staged diff and produces a Conventional Commits-compliant message in one command",
-      "description": ""
-    },
-    {
-      "title": "Smart commit splitting — clusters hunks semantically and proposes multiple atomic commits, each selectively staged and executed",
-      "description": ""
-    },
-    {
-      "title": "Gitmoji style support — standard, gitmoji (emoji + type), and gitmoji-pure (emoji only) modes out of the box",
-      "description": ""
-    },
-    {
-      "title": "Refine & reword — iteratively reshape the last commit's wording or reword any past commit using natural-language instructions",
-      "description": ""
-    },
-    {
-      "title": "Plugin system — register custom transform and validate hooks to enforce team conventions or post-process candidates",
-      "description": ""
-    },
-    {
-      "title": "Privacy-aware diff filtering — three tiers (low / medium / high) control exactly how much code is sent to the model",
-      "description": ""
-    },
-    {
-      "title": "Provider-agnostic — any OpenCode-supported model, direct Claude CLI with no API key, or the Anthropic SDK with your own key",
-      "description": ""
-    }
-  ],
+  "features": [],
   "install": "npm install -g @kud/ai-conventional-commit-cli"
 }

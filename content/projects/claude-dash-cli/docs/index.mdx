@@ -1,0 +1,69 @@
+---
+title: Introduction
+description: A fast, minimal terminal dashboard for monitoring your Claude Code sessions in real time — built entirely in Rust.
+---
+
+**claude-dash** is a terminal dashboard for monitoring your
+[Claude Code](https://claude.ai/code) sessions in real time. See every running
+agent at a glance, approve permission prompts without leaving the terminal, and
+track your usage and spend live.
+
+Built entirely in Rust with [Ratatui](https://ratatui.rs). Zero lag, no
+Electron, no browser, no Node.js — just a single binary.
+
+```
+◆ claude-dash  2 active  │  today $4.20 · 9.8M tok  month $52.10
+┌──────────────────────────────────────────────────────────────────┐
+│ Agents · 2 active · 4 total                                      │
+│                                                                  │
+│  ▶ ACTIVE                                                        │
+│  ▶ ◆ abc12345  ~/projects/api  running  1m 42s                   │
+│       Bash: cargo test --release                                 │
+│    ● def56789  ~/projects/web  processing  28s                   │
+│       ⠹ thinking…                                                │
+│                                                                  │
+│  ~ IDLE                                                          │
+│    ○ gh901234  ~/projects/docs  idle  1h 03m                     │
+│                                                                  │
+│  ✗ ENDED                                                         │
+│    ✗ ij567890  ~/projects/old  ended  3h 22m                     │
+│                                                                  │
+│──────────────────────────────────────────────────────────────────│
+│ Usage  $4.20 today                                               │
+│ Today        $4.20  ·  9.80M tok                                 │
+│ This Month   $52.10  ·  136.20M tok                              │
+│ All Time     $248.75  ·  612.40M tok   18 sessions               │
+└──────────────────────────────────────────────────────────────────┘
+[q] quit  [↑↓] select  [e] rename  [n] new  [r] refresh  ● connected
+```
+
+## Install
+
+```bash
+cargo install claude-dash
+claude-dash install
+```
+
+`cargo install` builds and installs the `claude-dash` binary from
+[crates.io](https://crates.io/crates/claude-dash). The `claude-dash install`
+step wires up the Claude Code hooks (writes `~/.claude/settings.json`) so the
+dashboard can track your sessions.
+
+Then just run:
+
+```bash
+claude-dash
+```
+
+The TUI launches immediately and auto-spawns its background daemon on first run.
+
+## Requirements
+
+- macOS (Linux should work for the TUI; `osascript` session launch only works on
+  macOS)
+- [Claude Code](https://claude.ai/code) installed
+- A [Nerd Font](https://www.nerdfonts.com) terminal font for icons (optional but
+  recommended)
+
+Head to [Usage](/projects/claude-dash-cli/docs/usage) to get going, or skim the
+[Features](/projects/claude-dash-cli/docs/features).

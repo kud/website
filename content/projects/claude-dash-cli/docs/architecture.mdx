@@ -1,0 +1,55 @@
+---
+title: Architecture
+description: How the TUI, daemon, and Claude Code hooks talk to each other over two Unix sockets.
+---
+
+claude-dash is split into three cooperating parts: the **TUI** you interact
+with, a background **daemon** that holds session state, and lightweight **hook**
+processes that Claude Code fires on every tool use.
+
+## File tree
+
+```
+claude-dash-cli/
+├── Cargo.toml
+└── src/
+    ├── main.rs         # CLI dispatch (clap), TUI event loop, daemon spawn
+    ├── app.rs          # TUI app state, key handling, usage cache
+    ├── types.rs        # Shared domain types
+    ├── daemon.rs       # Unix socket client (TUI ↔ daemon)
+    ├── usage.rs        # ccusage + Anthropic API rate limits
+    ├── utils.rs        # Formatting helpers
+    ├── cmd/
+    │   ├── daemon.rs   # Daemon process — two Unix socket servers, state machine
+    │   ├── hook.rs     # Claude Code hook handler — reads stdin, fires events
+    │   └── install.rs  # Hook installer — writes ~/.claude/settings.json
+    └── ui/
+        ├── mod.rs          # Layout
+        ├── header.rs       # Top bar
+        ├── footer.rs       # Key hints bar
+        ├── session_list.rs # Agent list with status groups
+        ├── usage_panel.rs  # Cost/token/chart panel
+        └── overlays.rs     # Permission modal, new session, rename
+```
+
+## The two sockets
+
+Two Unix sockets connect the pieces:
+
+- **`/tmp/claude-dash.sock`** — hook processes send events here
+  (fire-and-forget, or await a decision for a `PermissionRequest`).
+- **`/tmp/claude-dash-tui.sock`** — the TUI connects here to receive state
+  snapshots/deltas and to send permission decisions.
+
+## Event flow
+
+Claude Code hooks trigger `claude-dash hook` on every tool use. The hook reads
+the event from stdin and forwards it to the daemon over
+`/tmp/claude-dash.sock`. The daemon tracks session state and pushes updates to
+all connected TUI clients over `/tmp/claude-dash-tui.sock` as newline-delimited
+JSON.
+
+For a `PermissionRequest`, the hook process blocks awaiting the daemon's
+decision: the TUI surfaces a permission modal, your keypress (`a` / `s` / `d`)
+travels back to the daemon, and the daemon replies to the waiting hook — which
+allows or denies the tool call in Claude Code.

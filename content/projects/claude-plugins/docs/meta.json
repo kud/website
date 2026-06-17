@@ -1,0 +1,13 @@
+{
+  "title": "claude-plugins",
+  "pages": [
+    "index",
+    "opencode",
+    "github-copilot",
+    "jenkins",
+    "harness-fme",
+    "trakt",
+    "raindrop-io",
+    "google-keep"
+  ]
+}

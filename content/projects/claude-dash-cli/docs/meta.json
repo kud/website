@@ -1,0 +1,4 @@
+{
+  "title": "claude-dash-cli",
+  "pages": ["index", "features", "keybindings", "architecture", "usage"]
+}

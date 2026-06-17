@@ -1,0 +1,51 @@
+---
+title: Usage
+description: Launch the dashboard, install hooks, and build from source.
+---
+
+## Running the dashboard
+
+```bash
+claude-dash
+```
+
+The TUI launches immediately. The daemon is auto-spawned in the background on
+first run — there's no separate step to start it.
+
+## Installing hooks
+
+The first install wires up the Claude Code hooks so the dashboard can see your
+sessions:
+
+```bash
+cargo install claude-dash
+claude-dash install
+```
+
+If you reinstall or update the binary, re-run the installer to refresh the
+hooks:
+
+```bash
+claude-dash install
+```
+
+This writes the hook configuration into `~/.claude/settings.json`.
+
+## Building from source
+
+```bash
+git clone https://github.com/kud/claude-dash-cli
+cd claude-dash-cli
+cargo install --path .
+claude-dash install
+```
+
+For local development you can build and run without installing:
+
+```bash
+cargo build
+cargo run
+```
+
+See the [Keybindings](/projects/claude-dash-cli/docs/keybindings) reference for
+everything you can do once the dashboard is open.

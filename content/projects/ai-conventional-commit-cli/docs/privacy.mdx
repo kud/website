@@ -1,0 +1,33 @@
+---
+title: Privacy & Tiers
+description: Control exactly how much of your code is sent to the model with three privacy tiers and skip-file defaults.
+---
+
+The CLI never sends more of your diff than necessary. Three privacy tiers control
+how much code reaches the model; set the tier via the `AICC_PRIVACY` environment
+variable or the `privacy` config key.
+
+## Privacy modes
+
+| Mode     | Data sent to model                                     |
+| -------- | ------------------------------------------------------ |
+| `low`    | Hunk headers + first 40 changed/context lines per hunk |
+| `medium` | File + hunk hash + line counts + function context only |
+| `high`   | File names + aggregate add/remove counts only          |
+
+Higher privacy reduces stylistic richness — choose based on your repository's
+sensitivity.
+
+## Skip-file defaults
+
+Files that add noise rather than signal are excluded from the AI prompt by
+default, but are still committed normally:
+
+- Lock files — `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`, `bun.lockb`,
+  `Cargo.lock`, …
+- TypeScript declarations — `**/*.d.ts`
+- Build output — `dist/**`, `build/**`, `.next/**`
+- Minified assets — `*.min.js`, `*.min.css`, `*.map`
+
+Override via the `skipFilePatterns` config key; set it to `[]` to disable
+entirely.

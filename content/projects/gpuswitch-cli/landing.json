@@ -1,33 +1,4 @@
 {
-  "features": [
-    {
-      "title": "Integrated GPU Mode — force the Intel iGPU for maximum battery life on long unplugged sessions",
-      "description": ""
-    },
-    {
-      "title": "Discrete GPU Mode — activate the dedicated dGPU for full graphics performance when you need it",
-      "description": ""
-    },
-    {
-      "title": "Auto Mode — restore macOS default behaviour, letting the system switch GPUs dynamically",
-      "description": ""
-    },
-    {
-      "title": "Interactive TUI — arrow-key picker built with Ink/React, shows your current mode at a glance",
-      "description": ""
-    },
-    {
-      "title": "Headless Subcommands — scriptable integrated|discrete|auto|status for shell scripts and Raycast",
-      "description": ""
-    },
-    {
-      "title": "Zero Config — thin wrapper around pmset, no daemons, no background processes, no setup",
-      "description": ""
-    },
-    {
-      "title": "Typed & Modern — strict TypeScript, ESM-only, built with tsup",
-      "description": ""
-    }
-  ],
+  "features": [],
   "install": "npm install -g @kud/gpuswitch-cli"
 }

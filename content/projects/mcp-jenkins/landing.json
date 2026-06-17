@@ -1,41 +1,4 @@
 {
-  "features": [
-    {
-      "title": "Flexible Authentication",
-      "description": "Bearer tokens, Basic auth, OAuth support"
-    },
-    {
-      "title": "Flexible Configuration",
-      "description": "CLI args or MCP_JENKINS_* env vars (priority-based)"
-    },
-    {
-      "title": "Tool Filtering",
-      "description": "Allowlist or blocklist tools via MCP_JENKINS_ALLOW_TOOLS / MCP_JENKINS_BLOCK_TOOLS"
-    },
-    {
-      "title": "Multi-Instance Support",
-      "description": "Connect to multiple Jenkins servers in one MCP entry, select per tool call"
-    },
-    {
-      "title": "37 Tools",
-      "description": "Comprehensive Jenkins API coverage"
-    },
-    {
-      "title": "Modern Stack",
-      "description": "TypeScript 5.3+, ES2023, Native Fetch API"
-    },
-    {
-      "title": "MCP Protocol",
-      "description": "Native integration with Claude Desktop, Claude Code CLI"
-    },
-    {
-      "title": "Real-time Monitoring",
-      "description": "Build status, queue management, pipeline stages"
-    },
-    {
-      "title": "Test Results",
-      "description": "View test pass/fail counts and suites"
-    }
-  ],
+  "features": [],
   "install": "claude mcp add --transport stdio --scope user jenkins \\\n  --env MCP_JENKINS_URL=https://your-jenkins.com \\\n  --env MCP_JENKINS_USER=your_username \\\n  --env MCP_JENKINS_API_TOKEN=your_token \\\n  -- npx --yes @kud/mcp-jenkins@latest"
 }

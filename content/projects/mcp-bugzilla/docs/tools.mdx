@@ -1,0 +1,220 @@
+---
+title: Tools
+description: Full reference for all 17 mcp-bugzilla tools — bugs, comments, attachments, products, users, fields, and flags.
+---
+
+mcp-bugzilla exposes **17 tools** across six areas. Tools marked
+🔑 require `MCP_BUGZILLA_API_KEY`; the rest work read-only.
+
+## 🐛 Bugs
+
+### `get_bug`
+
+Fetch a single bug by ID or alias.
+
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `id`      | string | yes      | Bug ID or alias |
+
+### `search_bugs`
+
+Search Bugzilla bugs with filters. Use `quicksearch` for full-text queries.
+
+| Parameter     | Type   | Required | Description                                                 |
+| ------------- | ------ | -------- | ----------------------------------------------------------- |
+| `product`     | string | no       | Product name (e.g. Firefox)                                 |
+| `component`   | string | no       | Component name                                              |
+| `status`      | string | no       | Bug status (NEW, ASSIGNED, RESOLVED, etc.)                  |
+| `severity`    | string | no       | Severity (blocker, critical, major, normal, minor, trivial) |
+| `priority`    | string | no       | Priority (P1, P2, P3, P4, P5)                               |
+| `assigned_to` | string | no       | Assignee email                                              |
+| `creator`     | string | no       | Reporter email                                              |
+| `resolution`  | string | no       | Resolution (FIXED, WONTFIX, DUPLICATE, etc.)                |
+| `summary`     | string | no       | Text to search in summary                                   |
+| `keywords`    | string | no       | Comma-separated keywords                                    |
+| `quicksearch` | string | no       | Quicksearch query string (full-text)                        |
+| `limit`       | number | no       | Max results (1–500, default 20)                             |
+| `offset`      | number | no       | Pagination offset                                           |
+
+### `create_bug` 🔑
+
+File a new bug. Requires `MCP_BUGZILLA_API_KEY`.
+
+| Parameter          | Type     | Required | Description                        |
+| ------------------ | -------- | -------- | ---------------------------------- |
+| `product`          | string   | yes      | Product name                       |
+| `component`        | string   | yes      | Component name                     |
+| `summary`          | string   | yes      | One-line bug summary               |
+| `version`          | string   | yes      | Product version affected           |
+| `type`             | enum     | no       | `defect`, `enhancement`, or `task` |
+| `description`      | string   | no       | Detailed description               |
+| `severity`         | string   | no       | Severity level                     |
+| `priority`         | string   | no       | Priority level                     |
+| `op_sys`           | string   | no       | Operating system                   |
+| `platform`         | string   | no       | Hardware platform                  |
+| `assigned_to`      | string   | no       | Assignee email                     |
+| `cc`               | string[] | no       | CC list (emails)                   |
+| `keywords`         | string[] | no       | Keywords                           |
+| `status`           | string   | no       | Initial status                     |
+| `target_milestone` | string   | no       | Target milestone                   |
+
+### `update_bug` 🔑
+
+Update fields on an existing bug. Requires `MCP_BUGZILLA_API_KEY`.
+
+| Parameter     | Type   | Required | Description                              |
+| ------------- | ------ | -------- | ---------------------------------------- |
+| `id`          | string | yes      | Bug ID or alias to update                |
+| `status`      | string | no       | New status                               |
+| `resolution`  | string | no       | Resolution (when closing)                |
+| `assigned_to` | string | no       | New assignee email                       |
+| `priority`    | string | no       | New priority                             |
+| `severity`    | string | no       | New severity                             |
+| `summary`     | string | no       | New summary                              |
+| `whiteboard`  | string | no       | Whiteboard text                          |
+| `keywords`    | object | no       | Keyword changes (`add`/`remove`/`set`)   |
+| `cc`          | object | no       | CC list changes (`add`/`remove`)         |
+| `comment`     | object | no       | Comment to attach (`body`, `is_private`) |
+| `dupe_of`     | number | no       | Mark as duplicate of this bug ID         |
+
+### `get_bug_history`
+
+Get the field-change history for a bug.
+
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `id`      | string | yes      | Bug ID or alias |
+
+## 💬 Comments
+
+### `get_comments`
+
+Get all comments for a bug.
+
+| Parameter   | Type   | Required | Description                                       |
+| ----------- | ------ | -------- | ------------------------------------------------- |
+| `id`        | string | yes      | Bug ID or alias                                   |
+| `new_since` | string | no       | ISO 8601 datetime — only comments newer than this |
+
+### `create_comment` 🔑
+
+Post a comment on a bug. Requires `MCP_BUGZILLA_API_KEY`.
+
+| Parameter    | Type    | Required | Description                         |
+| ------------ | ------- | -------- | ----------------------------------- |
+| `id`         | string  | yes      | Bug ID or alias                     |
+| `comment`    | string  | yes      | Comment text                        |
+| `is_private` | boolean | no       | Private comment (default false)     |
+| `work_time`  | number  | no       | Hours worked to log against the bug |
+
+### `search_comment_tags`
+
+Search for comment tag names by substring.
+
+| Parameter | Type   | Required | Description                          |
+| --------- | ------ | -------- | ------------------------------------ |
+| `query`   | string | yes      | Substring to search for in tag names |
+| `limit`   | number | no       | Max results (default 10)             |
+
+### `update_comment_tags` 🔑
+
+Add or remove tags on a comment (e.g. mark as spam or needinfo). Requires
+`MCP_BUGZILLA_API_KEY`.
+
+| Parameter    | Type     | Required | Description       |
+| ------------ | -------- | -------- | ----------------- |
+| `comment_id` | string   | yes      | Comment ID to tag |
+| `add`        | string[] | no       | Tags to add       |
+| `remove`     | string[] | no       | Tags to remove    |
+
+## 📎 Attachments
+
+### `get_attachments`
+
+List attachments (patches, screenshots, logs) for a bug.
+
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `id`      | string | yes      | Bug ID or alias |
+
+### `create_attachment` 🔑
+
+Upload a patch or file to a bug. `data` must be base64-encoded. Requires
+`MCP_BUGZILLA_API_KEY`.
+
+| Parameter      | Type     | Required | Description                                  |
+| -------------- | -------- | -------- | -------------------------------------------- |
+| `id`           | string   | yes      | Bug ID to attach to                          |
+| `data`         | string   | yes      | Base64-encoded file content                  |
+| `file_name`    | string   | yes      | Display filename (e.g. fix.patch)            |
+| `summary`      | string   | yes      | Brief description of the attachment          |
+| `content_type` | string   | yes      | MIME type (e.g. text/plain)                  |
+| `comment`      | string   | no       | Comment to post with the attachment          |
+| `is_patch`     | boolean  | no       | Mark as a code patch (default false)         |
+| `is_private`   | boolean  | no       | Private attachment (default false)           |
+| `flags`        | object[] | no       | Flags to set (`name`, `status`, `requestee`) |
+
+### `update_attachment` 🔑
+
+Update an existing attachment — rename, mark obsolete, change flags. Requires
+`MCP_BUGZILLA_API_KEY`.
+
+| Parameter       | Type     | Required | Description                                  |
+| --------------- | -------- | -------- | -------------------------------------------- |
+| `attachment_id` | string   | yes      | Attachment ID to update                      |
+| `file_name`     | string   | no       | New filename                                 |
+| `summary`       | string   | no       | New description                              |
+| `content_type`  | string   | no       | New MIME type                                |
+| `is_patch`      | boolean  | no       | Set patch status                             |
+| `is_private`    | boolean  | no       | Set private status                           |
+| `is_obsolete`   | boolean  | no       | Mark as obsolete (superseded)                |
+| `comment`       | string   | no       | Comment to post with the update              |
+| `flags`         | object[] | no       | Flag changes (`name`, `status`, `requestee`) |
+
+## 📦 Products
+
+### `get_products`
+
+List Bugzilla products.
+
+| Parameter | Type | Required | Description                                          |
+| --------- | ---- | -------- | ---------------------------------------------------- |
+| `type`    | enum | no       | `accessible` (default), `selectable`, or `enterable` |
+
+### `get_product`
+
+Get product details including components and versions.
+
+| Parameter | Type   | Required | Description                 |
+| --------- | ------ | -------- | --------------------------- |
+| `name`    | string | yes      | Product name (e.g. Firefox) |
+
+## 👤 Users
+
+### `get_user`
+
+Look up a Bugzilla user by email or login name.
+
+| Parameter | Type   | Required | Description              |
+| --------- | ------ | -------- | ------------------------ |
+| `name`    | string | yes      | User email or login name |
+
+## 🔖 Fields & Flags
+
+### `get_bug_fields`
+
+List bug fields and their legal values.
+
+| Parameter    | Type   | Required | Description                                       |
+| ------------ | ------ | -------- | ------------------------------------------------- |
+| `field_name` | string | no       | Specific field to inspect (e.g. status, severity) |
+
+### `get_flag_types`
+
+List available flags for a product/component (e.g. review, needinfo,
+approval-mozilla-beta).
+
+| Parameter   | Type   | Required | Description                      |
+| ----------- | ------ | -------- | -------------------------------- |
+| `product`   | string | yes      | Product name (e.g. Firefox)      |
+| `component` | string | no       | Component name to narrow results |

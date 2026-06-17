@@ -1,0 +1,122 @@
+---
+title: Installation
+description: Install and register mcp-bugzilla with Claude Code, Claude Desktop, Cursor, Windsurf, or VSCode.
+---
+
+## Prerequisites
+
+- Node.js 20+
+- A [Mozilla Bugzilla account](https://bugzilla.mozilla.org/) (optional — for
+  write operations)
+- A Bugzilla API key from
+  [User Preferences → API Keys](https://bugzilla.mozilla.org/userprefs.cgi?tab=apikey)
+  (optional)
+
+## Install
+
+Run directly without installing:
+
+```bash
+npx @kud/mcp-bugzilla
+```
+
+Or clone and build locally:
+
+```bash
+git clone https://github.com/kud/mcp-bugzilla.git
+cd mcp-bugzilla
+npm install && npm run build
+```
+
+## Claude Code CLI
+
+```bash
+claude mcp add mcp-bugzilla -- npx -y @kud/mcp-bugzilla
+claude mcp get mcp-bugzilla
+```
+
+To pass an API key:
+
+```bash
+claude mcp add mcp-bugzilla -e MCP_BUGZILLA_API_KEY=your-key -- npx -y @kud/mcp-bugzilla
+```
+
+## Claude Desktop (macOS + Windows)
+
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or
+`%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+
+```json
+{
+  "mcpServers": {
+    "mcp-bugzilla": {
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-bugzilla"],
+      "env": {
+        "MCP_BUGZILLA_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+Restart Claude Desktop after editing the config.
+
+## Cursor
+
+In Cursor settings → MCP → Add server:
+
+```json
+{
+  "mcp-bugzilla": {
+    "command": "npx",
+    "args": ["-y", "@kud/mcp-bugzilla"],
+    "env": { "MCP_BUGZILLA_API_KEY": "your-api-key-here" }
+  }
+}
+```
+
+## Windsurf
+
+In `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "mcp-bugzilla": {
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-bugzilla"],
+      "env": { "MCP_BUGZILLA_API_KEY": "your-api-key-here" }
+    }
+  }
+}
+```
+
+## VSCode
+
+In `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "mcp-bugzilla": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-bugzilla"],
+      "env": { "MCP_BUGZILLA_API_KEY": "your-api-key-here" }
+    }
+  }
+}
+```
+
+## Configuration
+
+The server is configured entirely through environment variables.
+
+| Variable                | Default                             | Description                                                 |
+| ----------------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `MCP_BUGZILLA_API_KEY`  | _(unset)_                           | API key for write operations. Read-only mode when unset.    |
+| `MCP_BUGZILLA_BASE_URL` | `https://bugzilla.mozilla.org/rest` | Bugzilla REST endpoint. Override for self-hosted instances. |
+
+See [Authentication](/projects/mcp-bugzilla/docs/troubleshooting#authentication)
+for how to generate and verify an API key.

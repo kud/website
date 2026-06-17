@@ -1,0 +1,62 @@
+---
+title: Introduction
+description: An MCP server for investigating GetStream feed subscriptions and push notification delivery state.
+---
+
+**mcp-getstream-feeds** is a [Model Context Protocol](https://modelcontextprotocol.io)
+server that lets an AI assistant inspect and repair the state behind GetStream's
+Activity Feeds — feed subscriptions, followers, activities, and follow/unfollow
+relationships.
+
+Its real purpose is debugging. When a user stops receiving push notifications in
+a GetStream-powered application, the fault usually lives in the feed graph: a
+missing follow relationship between a user's notification feed and the feed it
+should be subscribed to. This server turns that investigation into a
+conversation.
+
+Five tools, ESM + TypeScript, zero stored credentials — the SDK signs every
+request server-side.
+
+## Features
+
+- **Server-side JWT auth** — supply an API key and secret; the official
+  `getstream` SDK handles JWT signing automatically. No user tokens, no manual
+  signing.
+- **Five focused tools** — feed following, followers, activities, plus
+  follow/unfollow mutations covering the slice of the Feeds API needed to debug
+  delivery.
+- **Push-notification debugging** — the key differentiator: trace why a user
+  isn't receiving notifications by inspecting the feed subscription graph.
+- **Safety gates on mutations** — `getstream_feed_follow` and
+  `getstream_feed_unfollow` refuse to run unless called with `confirm: true`.
+- **ESM + TypeScript** — modern module system, fully typed, ES2023 target.
+
+## How push delivery maps to feeds
+
+GetStream fans out notifications through follow relationships. A user's
+`notification` feed receives activity only from the feeds it follows. If
+`notification:user_123` does not follow `timeline:timeline_global`, then
+`user_123` will never see global timeline notifications — no matter how the
+client app is configured.
+
+This server lets you confirm that subscription state directly, and fix it in
+place when it is wrong.
+
+## Authentication
+
+1. Log in to your GetStream dashboard at https://dashboard.getstream.io
+2. Select your app and open **Overview**
+3. Copy the **API Key** and **API Secret**
+4. Provide them as environment variables:
+
+```bash
+export MCP_GETSTREAM_API_KEY=your_api_key
+export MCP_GETSTREAM_SECRET=your_api_secret
+```
+
+The SDK uses these to sign requests server-side; the secret never leaves your
+environment.
+
+Head to [Tools](/projects/mcp-getstream-feeds/docs/tools) for the full reference,
+or jump straight to
+[Debugging push notifications](/projects/mcp-getstream-feeds/docs/debugging-push-notifications).

@@ -1,4 +1,4 @@
 {
   "features": [],
-  "install": "models-dev --search claude\nmodels-dev --provider openai --sort input-cost\nmodels-dev --tool --reasoning\nmodels-dev --provider anthropic --compact\nmodels-dev --search grok --json"
+  "install": "# one-shot\nnpx -p @kud/models-dev-cli models-dev\n\n# or install globally\nnpm i -g @kud/models-dev-cli\nmodels-dev   # alias: mdl"
 }

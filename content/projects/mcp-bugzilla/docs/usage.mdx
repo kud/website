@@ -1,0 +1,66 @@
+---
+title: Usage
+description: Example conversations showing how an AI assistant drives mcp-bugzilla against real Firefox/Mozilla bugs.
+---
+
+Once registered, you talk to your assistant in plain language — it picks the
+right tool and fills in the parameters. Here are representative exchanges.
+
+## Reading bugs
+
+```text
+You: "Show me bug 1234567"
+AI: Fetches and displays the bug summary, status, assignee, and metadata.
+
+You: "Search for open Firefox crashes with priority P1"
+AI: Queries product=Firefox, status=NEW|ASSIGNED, priority=P1, severity=critical.
+
+You: "Show me the change history for bug 500000"
+AI: Displays the full audit trail of field changes with timestamps.
+```
+
+## Discussion
+
+```text
+You: "What comments are on bug 1800000?"
+AI: Lists all comments with author names and timestamps.
+
+You: "Mark bug 9999 as RESOLVED FIXED with a comment explaining the fix"
+AI: Updates status/resolution and posts the comment in one operation.
+```
+
+## Filing and editing
+
+```text
+You: "File a bug for a Firefox crash on macOS when opening PDFs"
+AI: Creates the bug in the DOM: PDF Viewer component with the right fields.
+
+You: "Who is assigned to the most recent WebGL regression?"
+AI: Searches for WebGL regressions and shows assignee details.
+```
+
+## Attachments
+
+```text
+You: "Attach this patch to bug 1234567 and request review from alice@mozilla.com"
+AI: Uploads the base64-encoded patch and sets a review? flag for the requestee.
+
+You: "List the attachments on bug 1800000"
+AI: Returns each attachment with filename, type, and patch/obsolete status.
+```
+
+## Products, users, and fields
+
+```text
+You: "What components does the Firefox product have?"
+AI: Fetches product details and lists all components.
+
+You: "Who is lsalzman@mozilla.com on Bugzilla?"
+AI: Returns user profile including display name and real name.
+
+You: "What are the valid values for bug severity?"
+AI: Queries get_bug_fields for severity and lists all legal values.
+```
+
+See the [Tools](/projects/mcp-bugzilla/docs/tools) reference for every parameter
+each of these calls accepts.

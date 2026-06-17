@@ -1,0 +1,34 @@
+---
+title: Doctor
+description: Inspect your token info and see which commands your scopes unlock.
+---
+
+`gandi doctor` is a built-in health check. It reads your Personal Access Token,
+reports its expiry and entity info, and shows exactly which commands each scope
+unlocks.
+
+```sh
+gandi doctor
+```
+
+```console
+Gandi CLI
+Expires in 29 days · 1 entity
+
+✓  domain:view   gandi domain list
+✗  domain:renew  gandi domain renew
+✓  domain:tech   gandi dns list / set / delete
+```
+
+A `✓` means the scope is granted and the listed commands will work; a `✗` means
+the token lacks that permission and those commands will fail.
+
+## When to run it
+
+- **After creating a token** — confirm you granted the scopes you need.
+- **Before a command fails** — check whether a permission is missing rather than
+  guessing.
+- **When a token is about to expire** — the header shows how many days remain.
+
+To widen or narrow your scopes, see
+[Authentication](/projects/gandi-cli/docs/authentication).

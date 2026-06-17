@@ -1,0 +1,57 @@
+---
+title: Model Filtering
+description: Restrict which models are accessible with allow and block environment variables.
+---
+
+You can restrict which models mcp-opencode will expose and query using two
+environment variables. This is useful for capping access to a specific provider,
+or blocking expensive models from accidental use.
+
+## Variables
+
+| Variable                   | Description                                                  | Example                        |
+| -------------------------- | ------------------------------------------------------------ | ------------------------------ |
+| `MCP_OPENCODE_MODEL_ALLOW` | Comma-separated allowlist (supports `provider/*` wildcards). | `github-copilot/*,anthropic/*` |
+| `MCP_OPENCODE_MODEL_BLOCK` | Comma-separated blocklist (same syntax).                     | `anthropic/claude-opus-4-6`    |
+
+## How matching works
+
+Each pattern is either:
+
+- an **exact model ID** — `anthropic/claude-sonnet-4-6`, which matches only that
+  model, or
+- a **provider wildcard** — `github-copilot/*`, which matches every model from
+  that provider.
+
+The rules:
+
+- If `MCP_OPENCODE_MODEL_ALLOW` is **unset or empty**, all models are allowed.
+- If it is set, a model must match at least one allow pattern to be available.
+- A model matching any **block** pattern is always rejected, even if it also
+  matches an allow pattern. **Block wins.**
+
+Both `query` and `list_models` respect these filters: blocked models never
+appear in the list, and querying one returns an error.
+
+## Example
+
+A config that allows only Copilot and Anthropic models, while blocking one
+specific Opus model:
+
+```json
+{
+  "mcpServers": {
+    "opencode": {
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-opencode"],
+      "env": {
+        "MCP_OPENCODE_MODEL_ALLOW": "github-copilot/*,anthropic/*",
+        "MCP_OPENCODE_MODEL_BLOCK": "anthropic/claude-opus-4-6"
+      }
+    }
+  }
+}
+```
+
+The active filter summary is included in each tool's description, so your
+assistant always knows which models it may reach for.

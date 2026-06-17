@@ -1,0 +1,39 @@
+---
+title: Interactive TUI
+description: Keybindings and tips for the split-pane terminal UI — search, filter, sort, and copy model IDs.
+---
+
+By default `models-dev` opens a split-pane TUI: a scrollable model list on the
+left and a detail panel on the right. The list shows the provider in cyan and
+the model name in white; the detail panel groups info into Capabilities,
+Modalities, Costs, Limits, and Meta, with colour badges for quick scanning.
+
+## Keybindings
+
+- `/`: search (fuzzy; blank clears)
+- `p`: provider picker
+- `t`: cycle tool filter (Any → Yes → No)
+- `r`: cycle reasoning filter (Any → Yes → No)
+- `s`: cycle sort (Default → Provider → Input $ → Output $ → Context)
+- `c`: copy current model id to clipboard
+- `h`: toggle the help/status bar
+- `q`: quit
+- Navigation: arrows or `j`/`k`; PageUp/PageDown scroll
+
+## Tips
+
+- The left list shows the provider in cyan and the model name in white.
+- The detail panel groups info into Capabilities, Modalities, Costs, Limits,
+  and Meta, with colour badges for quick scanning.
+- Press `p` to bring up the provider picker and filter the catalogue fast.
+- Press `c` to copy the selected model id straight to your clipboard.
+
+## Forcing a mode
+
+```bash
+MODELS_DEV_UI=blessed models-dev     # force TUI
+MODELS_DEV_UI=table models-dev       # force table prompt mode
+```
+
+You can also pass `--ui blessed | table | auto` directly — see
+[CLI Usage](/projects/models-dev-cli/docs/cli).
