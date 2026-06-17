@@ -6,6 +6,7 @@ import {
   InstagramIcon,
   MailIcon,
 } from "@/components/social-icons"
+import { Reveal } from "@/components/reveal"
 import styles from "./page.module.css"
 
 const socials = [
@@ -149,7 +150,10 @@ const Home = () => (
           </ul>
 
           <a className={styles.scrollHint} href="#experience">
-            Experience ↓
+            Experience{" "}
+            <span className={styles.chevron} aria-hidden>
+              ↓
+            </span>
           </a>
         </div>
       </div>
@@ -160,21 +164,23 @@ const Home = () => (
         <p className={styles.timelineEyebrow}>Career</p>
         <h2 className={styles.timelineTitle}>Experience</h2>
 
-        <ol className={styles.track}>
-          {experience.map((item) => (
-            <li key={`${item.org}-${item.period}`} className={styles.entry}>
+        <div className={styles.track}>
+          {experience.map((item, index) => (
+            <Reveal
+              key={`${item.org}-${item.period}`}
+              className={styles.entry}
+              delay={index * 70}
+            >
               <div className={styles.entryPeriod}>{item.period}</div>
-              <div className={styles.entryBody}>
-                <h3 className={styles.entryRole}>{item.role}</h3>
-                <p className={styles.entryOrg}>
-                  {item.org}{" "}
-                  <span className={styles.entryPlace}>· {item.place}</span>
-                </p>
-                <p className={styles.entryNote}>{item.note}</p>
-              </div>
-            </li>
+              <h3 className={styles.entryRole}>{item.role}</h3>
+              <p className={styles.entryOrg}>
+                {item.org}{" "}
+                <span className={styles.entryPlace}>· {item.place}</span>
+              </p>
+              <p className={styles.entryNote}>{item.note}</p>
+            </Reveal>
           ))}
-        </ol>
+        </div>
 
         <a
           className={styles.timelineLink}

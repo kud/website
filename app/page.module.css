@@ -263,6 +263,27 @@
   color: #7c3aed;
 }
 
+@keyframes bobble {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.chevron {
+  display: inline-block;
+  animation: bobble 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    animation: none;
+  }
+}
+
 /* Timeline ------------------------------------------------------------------*/
 .timeline {
   min-height: 100vh;
@@ -336,6 +357,29 @@
   border-radius: 50%;
   background: #fafafb;
   border: 2px solid #7c3aed;
+}
+
+/* The current role (top entry) reads as "here now" — filled + live pulse. */
+.entry:first-child::before {
+  background: #7c3aed;
+  animation: pulseDot 2.4s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(124, 58, 237, 0.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry:first-child::before {
+    animation: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+  }
 }
 
 .entryPeriod {
