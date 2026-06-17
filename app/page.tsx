@@ -71,7 +71,8 @@ const Home = () => (
           <h1 className={styles.name}>Erwann Mest</h1>
 
           <p className={styles.tagline}>
-            I build and shape systems — not just features.
+            Less friction, more clarity — for the people who use software, and
+            the people who build it.
           </p>
 
           <p className={styles.bio}>
@@ -80,11 +81,10 @@ const Home = () => (
             the product, I work shoulder-to-shoulder with designers and PMs to
             reduce cognitive load for everyone — the people using what we build
             and the engineers building it. That&apos;s why I love optimising and
-            automating workflows: less friction, more clarity. What I love most
-            is architecting and designing the solution, then delegating its
-            execution to AI in a deliberate, fine-tuned way — turning years of
-            experience into skills and agents that keep getting sharper.
-            Currently on the mobile team at{" "}
+            automating workflows. What I love most is architecting and designing
+            the solution, then delegating its execution to AI in a deliberate,
+            fine-tuned way — turning years of experience into skills and agents
+            that keep getting sharper. Currently on the mobile team at{" "}
             <a
               href="https://www.sonymusic.com/"
               target="_blank"
