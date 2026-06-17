@@ -6,7 +6,6 @@ import {
   InstagramIcon,
   MailIcon,
 } from "@/components/social-icons"
-import { Reveal } from "@/components/reveal"
 import styles from "./page.module.css"
 
 const socials = [
@@ -179,12 +178,8 @@ const Home = () => (
         <h2 className={styles.timelineTitle}>Experience</h2>
 
         <div className={styles.track}>
-          {experience.map((item, index) => (
-            <Reveal
-              key={`${item.org}-${item.period}`}
-              className={styles.entry}
-              delay={index * 70}
-            >
+          {experience.map((item) => (
+            <div key={`${item.org}-${item.period}`} className={styles.entry}>
               <div className={styles.entryPeriod}>{item.period}</div>
               <h3 className={styles.entryRole}>{item.role}</h3>
               <p className={styles.entryOrg}>
@@ -192,7 +187,7 @@ const Home = () => (
                 <span className={styles.entryPlace}>· {item.place}</span>
               </p>
               <p className={styles.entryNote}>{item.note}</p>
-            </Reveal>
+            </div>
           ))}
         </div>
 

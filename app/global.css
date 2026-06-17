@@ -27,8 +27,10 @@
 }
 
 ::selection {
-  background: #7c3aed;
-  color: #fff;
+  background: rgba(124, 58, 237, 0.24);
+}
+::-moz-selection {
+  background: rgba(124, 58, 237, 0.24);
 }
 
 html {
