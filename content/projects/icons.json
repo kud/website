@@ -1,4 +1,7 @@
 {
   "ai-conventional-commit-cli": "https://raw.githubusercontent.com/kud/ai-conventional-commit-cli/HEAD/assets/icon.png",
-  "gpuswitch-cli": "https://raw.githubusercontent.com/kud/gpuswitch-cli/HEAD/assets/icon.png"
+  "pcloud-cli": "https://raw.githubusercontent.com/kud/pcloud-cli/HEAD/assets/logo.svg",
+  "mcp-pcloud": "https://raw.githubusercontent.com/kud/mcp-pcloud/HEAD/assets/logo.png",
+  "gpuswitch-cli": "https://raw.githubusercontent.com/kud/gpuswitch-cli/HEAD/assets/icon.png",
+  "shui": "https://raw.githubusercontent.com/kud/shui/HEAD/icon.png"
 }

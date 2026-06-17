@@ -161,17 +161,20 @@ const getTree = async (slug) => {
   }
 }
 
-// Convention: a repo opts into a logo by committing assets/icon.svg (preferred)
-// or assets/icon.png. Detected straight from the tree — no extra API call.
-const ICON = /^assets\/icon\.(svg|png)$/i
+// Convention: a repo opts into a logo with an icon.svg/icon.png (or logo.*) at
+// the repo root or under assets/. Detected straight from the tree — no extra
+// API call. When several match, prefer .svg, then "icon" over "logo".
+const ICON = /^(assets\/)?(icon|logo)\.(svg|png)$/i
+
+const iconRank = (path) =>
+  (/\.svg$/i.test(path) ? 0 : 2) + (/(^|\/)icon\./i.test(path) ? 0 : 1)
 
 const findIcon = (slug, tree) => {
-  const icons = tree.filter(
-    (node) => node.type === "blob" && ICON.test(node.path),
-  )
+  const icons = tree
+    .filter((node) => node.type === "blob" && ICON.test(node.path))
+    .sort((a, b) => iconRank(a.path) - iconRank(b.path))
   if (icons.length === 0) return null
-  const chosen = icons.find((node) => /\.svg$/i.test(node.path)) ?? icons[0]
-  return `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${chosen.path}`
+  return `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${icons[0].path}`
 }
 
 // Pull a repo's docs/ folder; returns true if it provides its own docs index.
