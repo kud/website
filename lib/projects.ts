@@ -6,6 +6,7 @@ export type Project = {
   name: string
   description: string | null
   category: string
+  icon?: string | null
   topics: string[]
   repoUrl: string
   homepage: string | null

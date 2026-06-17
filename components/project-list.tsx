@@ -182,7 +182,22 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
                   className={styles.row}
                 >
                   <div className={styles.rowHead}>
-                    <span className={styles.rowName}>{project.name}</span>
+                    <span className={styles.rowTitle}>
+                      {project.icon ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          className={styles.icon}
+                          src={project.icon}
+                          alt=""
+                          loading="lazy"
+                        />
+                      ) : (
+                        <span className={styles.monogram} aria-hidden>
+                          {project.name.charAt(0).toUpperCase()}
+                        </span>
+                      )}
+                      <span className={styles.rowName}>{project.name}</span>
+                    </span>
                     <span className={styles.rowMeta}>
                       {project.stars > 0 ? (
                         <span className={styles.stars}>★ {project.stars}</span>

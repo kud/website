@@ -149,30 +149,47 @@ const writeDoc = async (slug, relPath, body) => {
   await writeFile(file, body)
 }
 
-// Pull a repo's docs/ folder; returns true if it provides its own docs index.
-const syncRepoDocs = async (slug) => {
-  let hasIndex = false
+// One recursive tree fetch per repo, reused for docs + icon detection.
+const getTree = async (slug) => {
   try {
     const tree = await api(
       `https://api.github.com/repos/${OWNER}/${slug}/git/trees/HEAD?recursive=1`,
     )
-    const docFiles = (tree.tree ?? []).filter(
-      (node) =>
-        node.type === "blob" && /^docs\/.+\.(mdx?|json)$/.test(node.path),
-    )
-    for (const file of docFiles) {
-      const text = await rawFile(slug, file.path)
-      if (!text) continue
-      const rel = file.path.replace(/^docs\//, "")
-      if (/^index\.mdx?$/i.test(rel)) hasIndex = true
-      await writeDoc(
-        slug,
-        rel,
-        rewriteLinks(text, slug, `${dirname(file.path)}/`),
-      )
-    }
+    return tree.tree ?? []
   } catch {
-    // No docs/ folder — README-only project.
+    return []
+  }
+}
+
+// Convention: a repo opts into a logo by committing assets/icon.svg (preferred)
+// or assets/icon.png. Detected straight from the tree — no extra API call.
+const ICON = /^assets\/icon\.(svg|png)$/i
+
+const findIcon = (slug, tree) => {
+  const icons = tree.filter(
+    (node) => node.type === "blob" && ICON.test(node.path),
+  )
+  if (icons.length === 0) return null
+  const chosen = icons.find((node) => /\.svg$/i.test(node.path)) ?? icons[0]
+  return `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${chosen.path}`
+}
+
+// Pull a repo's docs/ folder; returns true if it provides its own docs index.
+const syncRepoDocs = async (slug, tree) => {
+  let hasIndex = false
+  const docFiles = tree.filter(
+    (node) => node.type === "blob" && /^docs\/.+\.(mdx?|json)$/.test(node.path),
+  )
+  for (const file of docFiles) {
+    const text = await rawFile(slug, file.path)
+    if (!text) continue
+    const rel = file.path.replace(/^docs\//, "")
+    if (/^index\.mdx?$/i.test(rel)) hasIndex = true
+    await writeDoc(
+      slug,
+      rel,
+      rewriteLinks(text, slug, `${dirname(file.path)}/`),
+    )
   }
   return hasIndex
 }
@@ -180,7 +197,9 @@ const syncRepoDocs = async (slug) => {
 const syncRepo = async (repo) => {
   const slug = repo.name
 
-  const hasDocsIndex = await syncRepoDocs(slug)
+  const tree = await getTree(slug)
+  const hasDocsIndex = await syncRepoDocs(slug, tree)
+  const icon = findIcon(slug, tree)
 
   const readme = await rawFile(slug, "README.md")
   if (readme) {
@@ -210,7 +229,7 @@ const syncRepo = async (repo) => {
     await writeFile(join(LANDINGS_DIR, `${slug}.mdx`), landing)
   }
 
-  return slug
+  return { slug, icon }
 }
 
 const main = async () => {
@@ -227,8 +246,18 @@ const main = async () => {
   }
 
   const synced = []
-  for (const repo of repos) synced.push(await syncRepo(repo))
+  const icons = {}
+  for (const repo of repos) {
+    const { slug, icon } = await syncRepo(repo)
+    synced.push(slug)
+    if (icon) icons[slug] = icon
+  }
+  await writeFile(
+    join(CONTENT_DIR, "icons.json"),
+    JSON.stringify(icons, null, 2),
+  )
   console.log(`[sync] synced ${synced.length} project(s): ${synced.join(", ")}`)
+  console.log(`[sync] ${Object.keys(icons).length} project(s) with a logo`)
 }
 
 try {

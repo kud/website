@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { getProjects, type Project } from "@/lib/projects"
+import { getIcons } from "@/lib/icons"
 import { ParallaxOrbs } from "@/components/parallax-orbs"
 import { ProjectList } from "@/components/project-list"
 import styles from "./page.module.css"
@@ -84,8 +85,12 @@ const AVATAR =
   "https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=512"
 
 const ProjectsIndex = async () => {
-  const projects = await getProjects()
-  const groups = groupByCategory(projects)
+  const [projects, icons] = await Promise.all([getProjects(), getIcons()])
+  const withIcons = projects.map((project) => ({
+    ...project,
+    icon: icons[project.slug] ?? null,
+  }))
+  const groups = groupByCategory(withIcons)
 
   return (
     <main className={styles.page}>
