@@ -23,9 +23,8 @@ export type Experience = {
 }
 
 // Proper nouns use a non-breaking space ( ) so the words never wrap apart.
-// NOTE: every `detail` block below is DRAFTED from the existing one-line notes
-// and public context — verify the specifics (especially `stack`) before relying
-// on them in the CV.
+// Detail blocks are drawn from the live LinkedIn profile — keep them in step
+// with it when roles change.
 export const experience: Experience[] = [
   {
     period: "2022 — Present",
@@ -37,17 +36,18 @@ export const experience: Experience[] = [
     note: "Mobile architecture, AI-assisted engineering workflows, and developer experience across product, design, and engineering.",
     detail: {
       summary:
-        "Technical lead on the mobile team — owning architecture and the day-to-day engineering practice, and working across product, design, and engineering to keep the codebase coherent and the team moving fast.",
+        "Working across Sony Music's mobile ecosystem — product delivery, technical architecture, and engineering workflows — collaborating closely with product, design, and backend teams.",
       highlights: [
-        "Lead mobile architecture and set technical direction across the team.",
-        "Introduced AI-assisted engineering workflows — agents, skills, and automation — to accelerate delivery without sacrificing quality.",
-        "Champion developer experience: tooling, conventions, and review practices that reduce friction for the whole team.",
-        "Partner closely with product and design to shape solutions before they reach implementation.",
+        "Provide technical leadership and architectural guidance for the mobile team.",
+        "Build and ship mobile applications across the product ecosystem.",
+        "Introduce AI-assisted engineering workflows and raise developer experience.",
+        "Drive reliability, maintainability, and scalability improvements.",
+        "Keep delivery aligned across initiatives, product, design, and backend.",
       ],
       stack: [
         "React Native",
         "TypeScript",
-        "Mobile CI/CD",
+        "GraphQL/Apollo",
         "AI-assisted tooling",
       ],
     },
@@ -61,13 +61,14 @@ export const experience: Experience[] = [
     note: "Front-end architecture, performance, and UX for the analytics & metrics platform used by labels, artists, and internal teams.",
     detail: {
       summary:
-        "Worked on the analytics & metrics platform that labels, artists, and internal teams rely on, focusing on front-end architecture, performance, and the quality of the everyday experience.",
+        "Focused on The Orchard's analytics and metrics platform — front-end architecture, performance, and product usability for the data-heavy interfaces labels, artists, and internal teams rely on.",
       highlights: [
-        "Shaped front-end architecture for a data-dense analytics platform.",
-        "Improved performance and responsiveness across heavy metrics dashboards.",
-        "Refined UX for labels, artists, and internal teams.",
+        "Owned front-end architecture and feature development on the analytics platform.",
+        "Optimised performance and rendering across data-dense dashboards.",
+        "Built analytics and data-visualisation interfaces.",
+        "Partnered with product and design to ship clear, responsive data features.",
       ],
-      stack: ["React", "TypeScript", "Data visualisation", "Web performance"],
+      stack: ["React", "GraphQL", "Data visualisation", "Web performance"],
     },
   },
   {
@@ -79,13 +80,21 @@ export const experience: Experience[] = [
     note: "Built a PWA from scratch and a company-wide design system for an online public-policy media.",
     detail: {
       summary:
-        "Led front-end for an online public-policy media — building its progressive web app from the ground up and a company-wide design system that unified the product.",
+        "Led front-end for an online media covering public policy — building a complete progressive web app from scratch and a company-wide design system, and lifting the whole team's front-end practice.",
       highlights: [
-        "Built the progressive web app from scratch.",
-        "Created and maintained a company-wide design system.",
-        "Set front-end standards and mentored the team as lead.",
+        "Built a complete progressive web app (PWA) from scratch.",
+        "Created a company-wide design system in partnership with designers.",
+        "Maintained all of the company's front-end components.",
+        "Mentored the team to sharpen their front-end skills.",
       ],
-      stack: ["React", "Next.js", "PWA", "Design systems", "JavaScript"],
+      stack: [
+        "React",
+        "Webpack",
+        "Python/Django",
+        "Elasticsearch",
+        "AWS",
+        "Design systems",
+      ],
     },
   },
   {
@@ -97,13 +106,13 @@ export const experience: Experience[] = [
     note: "Taught front-end culture and Next.js to students training to become lead developers and CTOs.",
     detail: {
       summary:
-        "Taught front-end culture and Next.js to students training to become lead developers and CTOs — focusing on judgement and fundamentals, not just syntax.",
+        "Taught front-end culture to students training to become lead developers and CTOs — a global view of the stack, modern HTML and CSS, and Next.js end to end.",
       highlights: [
-        "Designed and delivered a front-end curriculum centred on Next.js.",
-        "Mentored future lead developers and CTOs.",
-        "Emphasised engineering culture over rote tooling.",
+        "Taught front-end culture and a global view of front-end and back-end stacks.",
+        "Taught Next.js end to end.",
+        "Covered modern HTML5 and CSS3 — flexbox, grid, and the latest features.",
       ],
-      stack: ["Next.js", "React", "Teaching"],
+      stack: ["Next.js", "HTML5", "CSS3"],
     },
   },
   {
@@ -115,11 +124,12 @@ export const experience: Experience[] = [
     note: "Taught the web, HTML and CSS to career-changers — from zero to their own static site.",
     detail: {
       summary:
-        "Taught the web, HTML, and CSS to career-changers — guiding complete beginners all the way to shipping their own static site, across nearly a decade alongside engineering work.",
+        "Taught career-changers how the web works and how to build a site from nothing — over nine years, alongside engineering work.",
       highlights: [
-        "Taught HTML, CSS, and web fundamentals to career-changers.",
-        "Took complete beginners from zero to their own published site.",
-        "Sustained nearly a decade of continuous teaching.",
+        "Explained the internet and the web from first principles.",
+        "Taught HTML5 and CSS3 from the ground up.",
+        "Guided complete beginners to build their own static site by hand — no IDE.",
+        "Ran the oral exams.",
       ],
       stack: ["HTML", "CSS", "Web fundamentals"],
     },

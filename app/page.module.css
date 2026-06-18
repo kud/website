@@ -296,6 +296,9 @@
 
 .chevron {
   display: inline-block;
+  /* The ↓ glyph sits on the text baseline, which reads low next to the label;
+     seat its box against the text's middle so it lines up before it bobbles. */
+  vertical-align: middle;
   animation: bobble 1.8s ease-in-out infinite;
 }
 
@@ -378,6 +381,11 @@
   border-radius: 50%;
   background: #faf7f2;
   border: 2px solid #c2703d;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 /* The current role (top entry) reads as "here now" — filled + live pulse. */
@@ -662,8 +670,16 @@
   cursor: pointer;
 }
 
-.entryButton:hover .entryRole {
-  color: #c2703d;
+/* Hover/focus affordance: light + ring the timeline dot and surface the "View
+   details" hint, leaving the title colour calm. The dot's transition lives on
+   .entry::before so the fill + glow animate in and out. */
+/* Hover/selected dot: grow + halo, but keep the fill as-is. Resting (hollow)
+   dots stay hollow while enlarged, so they never mimic the solid "current" dot —
+   filled = where you are, enlarged + halo = what you're targeting. */
+.entryButton:hover::before,
+.entryButton:focus-visible::before {
+  transform: scale(1.32);
+  box-shadow: 0 0 0 6px rgba(194, 112, 61, 0.16);
 }
 
 .entryButton:focus-visible {
@@ -672,8 +688,8 @@
   border-radius: 8px;
 }
 
-/* A quiet "View details →" hint that surfaces on hover/focus (and stays softly
-   visible on touch, where there is no hover). */
+/* "View details →" hint — fades/slides in on hover & focus, softly visible on
+   touch where there is no hover. */
 .entryMore {
   margin-top: 10px;
   font-size: 12.5px;
@@ -682,8 +698,8 @@
   opacity: 0;
   transform: translateX(-4px);
   transition:
-    opacity 0.18s,
-    transform 0.18s;
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .entryButton:hover .entryMore,
@@ -694,7 +710,7 @@
 
 @media (hover: none) {
   .entryMore {
-    opacity: 0.75;
+    opacity: 0.7;
     transform: none;
   }
 }
@@ -717,6 +733,33 @@
   border-color: #c2703d;
   color: #fff;
   transform: translateY(-2px);
+}
+
+.timelineButton:disabled {
+  cursor: default;
+  transform: none;
+}
+
+/* Loading spinner inside the (dark) Download CV button. */
+.spinner {
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 1.4s;
+  }
 }
 
 /* Detail modal (native <dialog>) -------------------------------------------*/

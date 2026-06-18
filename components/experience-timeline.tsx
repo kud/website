@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { experience } from "@/lib/experience"
+import { CvDownloadButton } from "@/components/cv-download-button"
 import styles from "@/app/page.module.css"
 
 // The home timeline, with each role clickable to reveal a fuller modal. The
@@ -55,14 +56,7 @@ export const ExperienceTimeline = () => {
 
         <div className={styles.timelineMore}>
           <div className={styles.timelineButtons}>
-            <a
-              className={`${styles.timelineButton} ${styles.timelineButtonPrimary}`}
-              href="/cv.pdf"
-              download="erwann-mest-cv.pdf"
-            >
-              Download my CV
-              <span aria-hidden>↓</span>
-            </a>
+            <CvDownloadButton />
             <a
               className={styles.timelineButton}
               href="https://linkedin.kud.io/"

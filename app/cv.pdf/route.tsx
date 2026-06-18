@@ -16,105 +16,119 @@ export const runtime = "nodejs"
 export const dynamic = "force-static"
 
 const ACCENT = "#c2703d"
-const INK = "#1f1813"
-const MUTED = "#6a6a74"
-const FAINT = "#9a9aa3"
-const RULE = "#e8e1d6"
+const INK = "#1a1512"
+const BODY = "#4a443d"
+const MUTED = "#6f6a62"
+const FAINT = "#9a958c"
+const RULE = "#e6e0d6"
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 48,
-    paddingBottom: 44,
-    paddingHorizontal: 52,
+    paddingTop: 46,
+    paddingBottom: 42,
+    paddingHorizontal: 46,
     fontFamily: "Helvetica",
-    fontSize: 10,
-    color: INK,
-    lineHeight: 1.5,
+    fontSize: 9.5,
+    lineHeight: 1.4,
+    color: BODY,
   },
+
+  // Header ------------------------------------------------------------------
   name: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 24,
-    letterSpacing: -0.5,
+    fontSize: 21,
+    lineHeight: 1,
+    letterSpacing: -0.4,
     color: INK,
   },
   title: {
-    marginTop: 4,
+    marginTop: 5,
     fontFamily: "Helvetica-Bold",
-    fontSize: 11,
-    color: ACCENT,
+    fontSize: 8.5,
+    letterSpacing: 1.4,
     textTransform: "uppercase",
-    letterSpacing: 1,
+    color: ACCENT,
   },
   contact: {
-    marginTop: 8,
-    fontSize: 9,
+    marginTop: 7,
+    fontSize: 8.5,
     color: MUTED,
   },
   contactLink: {
     color: MUTED,
     textDecoration: "none",
   },
-  profile: {
-    marginTop: 14,
-    fontSize: 10,
-    color: "#574f47",
-    lineHeight: 1.6,
-  },
-  sectionLabel: {
-    marginTop: 24,
-    marginBottom: 12,
-    paddingBottom: 5,
+  rule: {
+    marginTop: 13,
     borderBottomWidth: 1,
     borderBottomColor: RULE,
+  },
+  profile: {
+    marginTop: 12,
+    fontSize: 9.5,
+    lineHeight: 1.45,
+    color: BODY,
+  },
+
+  // Section -----------------------------------------------------------------
+  sectionLabel: {
+    marginTop: 19,
+    marginBottom: 11,
     fontFamily: "Helvetica-Bold",
-    fontSize: 10,
+    fontSize: 9,
+    letterSpacing: 1.4,
+    textTransform: "uppercase",
     color: INK,
-    textTransform: "uppercase",
-    letterSpacing: 1.2,
   },
+
+  // Entry -------------------------------------------------------------------
   entry: {
-    marginBottom: 16,
+    marginBottom: 13,
   },
-  entryPeriod: {
-    fontSize: 8.5,
-    color: FAINT,
-    textTransform: "uppercase",
-    letterSpacing: 0.6,
+  entryHead: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    justifyContent: "space-between",
   },
   entryRole: {
-    marginTop: 2,
     fontFamily: "Helvetica-Bold",
-    fontSize: 12,
+    fontSize: 11,
     color: INK,
+  },
+  entryPeriod: {
+    fontSize: 8,
+    letterSpacing: 0.4,
+    color: FAINT,
   },
   entryOrg: {
     marginTop: 1,
-    fontFamily: "Helvetica-Bold",
-    fontSize: 9.5,
-    color: "#44444c",
+    marginBottom: 4,
+    fontSize: 9,
+    color: MUTED,
   },
   entrySummary: {
-    marginTop: 5,
-    color: MUTED,
-    lineHeight: 1.55,
+    marginBottom: 4,
+    fontSize: 9,
+    lineHeight: 1.4,
+    color: BODY,
   },
   bullet: {
     flexDirection: "row",
-    marginTop: 4,
-    paddingLeft: 2,
+    marginBottom: 2,
   },
   bulletDot: {
-    width: 10,
+    width: 9,
     color: ACCENT,
   },
   bulletText: {
     flex: 1,
-    color: "#574f47",
-    lineHeight: 1.5,
+    fontSize: 9,
+    lineHeight: 1.35,
+    color: BODY,
   },
   stack: {
-    marginTop: 6,
-    fontSize: 9,
+    marginTop: 5,
+    fontSize: 8.5,
     color: FAINT,
   },
   stackLabel: {
@@ -123,21 +137,23 @@ const styles = StyleSheet.create({
   },
 })
 
+const Dot = " · "
+
 const Contact = () => (
   <Text style={styles.contact}>
-    London ·{" "}
+    London{Dot}
     <Link style={styles.contactLink} src="https://kud.io">
       kud.io
-    </Link>{" "}
-    ·{" "}
+    </Link>
+    {Dot}
     <Link style={styles.contactLink} src="mailto:m+site@kud.io">
       m+site@kud.io
-    </Link>{" "}
-    ·{" "}
+    </Link>
+    {Dot}
     <Link style={styles.contactLink} src="https://linkedin.kud.io/">
       linkedin.kud.io
-    </Link>{" "}
-    ·{" "}
+    </Link>
+    {Dot}
     <Link style={styles.contactLink} src="https://github.kud.io/">
       github.kud.io
     </Link>
@@ -154,6 +170,7 @@ const Cv = () => (
       <Text style={styles.name}>Erwann Mest</Text>
       <Text style={styles.title}>Senior Software Engineer & Tech Lead</Text>
       <Contact />
+      <View style={styles.rule} />
 
       <Text style={styles.profile}>
         Senior engineer and tech lead with {yearsOfExperience()} years across
@@ -171,11 +188,15 @@ const Cv = () => (
           style={styles.entry}
           wrap={false}
         >
-          <Text style={styles.entryPeriod}>{item.period}</Text>
-          <Text style={styles.entryRole}>{item.role}</Text>
+          <View style={styles.entryHead}>
+            <Text style={styles.entryRole}>{item.role}</Text>
+            <Text style={styles.entryPeriod}>{item.period}</Text>
+          </View>
           <Text style={styles.entryOrg}>
             {item.org}
-            {item.team ? ` · ${item.team}` : ""} · {item.place}
+            {item.team ? `${Dot}${item.team}` : ""}
+            {Dot}
+            {item.place}
           </Text>
 
           {item.detail ? (
@@ -189,8 +210,8 @@ const Cv = () => (
               ))}
               {item.detail.stack.length > 0 ? (
                 <Text style={styles.stack}>
-                  <Text style={styles.stackLabel}>Stack: </Text>
-                  {item.detail.stack.join(" · ")}
+                  <Text style={styles.stackLabel}>Stack </Text>
+                  {item.detail.stack.join("  ·  ")}
                 </Text>
               ) : null}
             </>
