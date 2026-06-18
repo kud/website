@@ -61,10 +61,19 @@ const categoryFromTopics = (topics: string[]): string => {
   return tag ? tag.slice(TOPIC.length + 1) : "cli"
 }
 
+// Repo descriptions often lead with an emoji — charming on GitHub, noisy in the
+// project grid. Strip a leading emoji cluster so the cards read cleanly; the repo
+// keeps its emoji untouched.
+const stripLeadingEmoji = (text: string | null): string | null =>
+  text?.replace(
+    /^\p{Extended_Pictographic}[\p{Extended_Pictographic}\p{Emoji_Component}]*\s*/u,
+    "",
+  ) ?? null
+
 const toProject = (repo: Repo): Project => ({
   slug: repo.name,
   name: repo.name,
-  description: repo.description,
+  description: stripLeadingEmoji(repo.description),
   category: categoryFromTopics(repo.topics ?? []),
   // `kud-site-readme`: the README is the whole product (curated lists) — render
   // it on the landing and skip the docs route.

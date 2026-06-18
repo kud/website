@@ -1,0 +1,141 @@
+---
+title: claude-plugins
+---
+
+<Hero
+  badge="MIT · Claude Code · MCP"
+  title="claude-plugins"
+  tagline="A curated marketplace of Claude Code plugins — each bundles one of kud's MCP servers with its companion skills, so a single /plugin install gives you the tools and the slash commands together."
+>
+  <Action href="/projects/claude-plugins/docs" primary>
+    Documentation →
+  </Action>
+  <Action href="https://github.com/kud/claude-plugins">GitHub ↗</Action>
+</Hero>
+
+<Stats>
+  <Stat value="7" label="Plugins" />
+  <Stat value="1" label="Command to add" />
+  <Stat value="MCP" label="Server + skills" />
+  <Stat value="MIT" label="License" />
+</Stats>
+
+<Section
+  eyebrow="Why claude-plugins"
+  title="The MCP server and its skills, in one install"
+  sub="Normally you register an MCP server, edit config files, then hunt down the matching skills and install them separately. Each plugin here bundles the server with its companion skills into a single unit — install one, get the tools and the workflows in one shot."
+>
+  <Install label="the usual way">
+
+```text
+# 1. add the MCP server to your config
+# 2. find and install the matching skills
+# 3. wire up the credentials by hand
+```
+
+  </Install>
+
+  <Install label="with claude-plugins">
+
+```text
+/plugin install opencode@kud
+```
+
+  </Install>
+</Section>
+
+<Section eyebrow="Quick start" title="Up and running in one command">
+  <Install label="1 · register the marketplace">
+
+```text
+/plugin marketplace add kud/claude-plugins
+```
+
+  </Install>
+
+  <Install label="2 · install a plugin">
+
+```text
+/plugin install opencode@kud --scope user
+```
+
+  </Install>
+
+  <Install label="3 · use a skill">
+
+```text
+/ask-opencode explain this function
+```
+
+  </Install>
+</Section>
+
+<Section
+  eyebrow="The plugins"
+  title="Seven servers, ready to install"
+  sub="Each plugin wraps one of kud's published MCP servers and ships the slash commands for its most common workflows."
+>
+  <Features>
+    <Feature title="opencode">
+      Query any opencode-supported model for a second opinion, right inside
+      Claude Code.
+    </Feature>
+    <Feature title="github-copilot">
+      Query GitHub Copilot models through the official SDK.
+    </Feature>
+    <Feature title="jenkins">
+      Inspect builds, stream logs, and diagnose CI failures without leaving the
+      terminal.
+    </Feature>
+    <Feature title="harness-fme">
+      Inspect and control Harness FME feature flags.
+    </Feature>
+    <Feature title="trakt">
+      Track what you're watching: check in, manage your watchlist, browse
+      history.
+    </Feature>
+    <Feature title="raindrop-io">
+      Search and save Raindrop.io bookmarks.
+    </Feature>
+    <Feature title="google-keep">
+      Capture notes and manage Google Keep checklists.
+    </Feature>
+  </Features>
+</Section>
+
+<Section
+  eyebrow="Examples"
+  title="Skills you'll actually reach for"
+  sub="Once a plugin is installed, its slash commands are available immediately — no extra setup."
+>
+  <Install label="a second opinion on your code">
+
+```console
+/ask-opencode why is this function slow?
+```
+
+  </Install>
+
+  <Install label="diagnose a failing pipeline">
+
+```console
+/ci-diagnose my-service
+```
+
+  </Install>
+
+  <Install label="wind down after work">
+
+```console
+/trakt-whats-on
+```
+
+  </Install>
+</Section>
+
+<CTA
+  href="/projects/claude-plugins/docs"
+  title="Bring your services into Claude Code"
+  sub="Per-plugin install commands, the credentials each one needs, and the full skill reference — all in the docs."
+  label="Read the documentation →"
+/>

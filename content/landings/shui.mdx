@@ -3,9 +3,9 @@ title: shui
 ---
 
 <Hero
-  badge="MIT · Zero dependencies"
+  badge="MIT · Zero dependencies · Pure Zsh"
   title="shui · 水"
-  tagline="A fluid terminal UI for Zsh — semantic components, a token-based theme engine, and one consistent API."
+  tagline="Shell UI for Zsh — a design system for your terminal. Semantic components, a token-based theme engine, and one consistent API. 水: fluid by design."
 >
   <Action href="/projects/shui/docs" primary>
     Documentation →
@@ -17,13 +17,13 @@ title: shui
   <Stat value="20+" label="Components" />
   <Stat value="3" label="Themes" />
   <Stat value="0" label="Dependencies" />
-  <Stat value="MIT" label="License" />
+  <Stat value="1" label="File to source" />
 </Stats>
 
 <Section
-  eyebrow="Why shui"
+  eyebrow="The problem"
   title="Stop hand-rolling ANSI escapes"
-  sub="Most Zsh scripts scatter raw escape codes everywhere — unreadable, inconsistent, impossible to theme. shui gives you semantic components and a token-based theme engine instead."
+  sub="Most Zsh scripts scatter raw escape codes everywhere — unreadable, inconsistent, impossible to theme. shui replaces them with a real design system: semantic components you compose, and tokens you restyle."
 >
   <Install label="without shui">
 
@@ -46,52 +46,11 @@ shui message warning "Low disk space"
   </Install>
 </Section>
 
-<Section eyebrow="Quick start" title="Up and running in seconds">
-  <Install label="zsh">
-
-```sh
-git clone https://github.com/kud/shui ~/.shui
-source ~/.shui/shui.zsh
-
-shui message success "Deployment complete"
-```
-
-  </Install>
-</Section>
-
 <Section
-  eyebrow="Features"
-  title="Built for real shell scripts"
-  sub="Everything you need to give your scripts a consistent, themeable voice."
+  eyebrow="The system"
+  title="A component for every part of your output"
+  sub="Twenty-plus semantic components — messages, layout, inline tags, boxes, tables, progress, and interactive prompts — all sharing one consistent API. You compose your script's output instead of painting it by hand."
 >
-  <Features>
-    <Feature title="Unified message API">
-      One consistent command for success, error, warning, info, and muted
-      messages.
-    </Feature>
-    <Feature title="Token-based themes">
-      Swap colours, icons, and styles via environment variables without touching
-      component code.
-    </Feature>
-    <Feature title="Inline components">
-      Badges and pills write to stdout without a newline, composing naturally
-      inside command substitutions.
-    </Feature>
-    <Feature title="Interactive prompts">
-      Confirm, select, radio, and input build polished interactive layers with
-      sensible defaults.
-    </Feature>
-    <Feature title="Zero dependencies">
-      A single source file, pure Zsh — no npm, no brew, nothing to install.
-    </Feature>
-    <Feature title="NO_COLOR aware">
-      Respects the NO_COLOR standard and strips styling in constrained
-      environments.
-    </Feature>
-  </Features>
-</Section>
-
-<Section eyebrow="Examples" title="See it in your terminal">
   <Install label="messages">
 
 ```console
@@ -105,17 +64,16 @@ $ shui message warning "API key expires in 3 days"
 
   </Install>
 
-  <Install label="table">
+  <Install label="tables">
 
 ```console
-$ shui table "Package|Version|Status" "node|20.11.0|OK" "bun|1.1.3|OK" "python|3.12.0|outdated"
-┌─────────┬──────────┬──────────┐
-│ Package │ Version  │ Status   │
-├─────────┼──────────┼──────────┤
-│ node    │ 20.11.0  │  OK      │
-│ bun     │ 1.1.3    │  OK      │
-│ python  │ 3.12.0   │  outdated│
-└─────────┴──────────┴──────────┘
+$ shui table "Package|Version|Status" "node|20.11.0|OK" "bun|1.1.3|OK"
+┌─────────┬──────────┬────────┐
+│ Package │ Version  │ Status │
+├─────────┼──────────┼────────┤
+│ node    │ 20.11.0  │ OK     │
+│ bun     │ 1.1.3    │ OK     │
+└─────────┴──────────┴────────┘
 ```
 
   </Install>
@@ -123,10 +81,84 @@ $ shui table "Package|Version|Status" "node|20.11.0|OK" "bun|1.1.3|OK" "python|3
   <Install label="progress">
 
 ```console
-$ shui progress 50 100
-████████████████████░░░░░░░░░░░░░░░░░░░░ 50%
-$ shui progress 50 100 --width=30 --label="Downloading "
-Downloading ██████████░░░░░░░░░░░░░░░░░░░░ 50%
+$ shui progress 50 100 --label="Downloading "
+Downloading ████████████████████░░░░░░░░░░░░░░░░░░░░ 50%
+```
+
+  </Install>
+
+  <Install label="interactive prompts">
+
+```console
+$ shui confirm "Deploy to production?"
+? Deploy to production? › (y/N)
+
+$ shui select "Pick an environment" staging production
+? Pick an environment ›
+  ❯ staging
+    production
+```
+
+  </Install>
+</Section>
+
+<Section
+  eyebrow="The theme engine"
+  title="Tokens, not hardcoded colours"
+  sub="Every component reads from a token layer — colours, icons, and styles set by environment variables. Swap a theme or an icon set and your whole output restyles, without touching a single component call. That is what makes shui a design system and not a bag of helpers."
+>
+  <Install label="restyle everything from the outside">
+
+```zsh
+SHUI_THEME=minimal     # default · minimal — swap the whole look
+SHUI_ICONS=emoji       # nerd-font glyphs → emoji, instantly
+NO_COLOR=1             # respected automatically, degrades to plain ASCII
+```
+
+  </Install>
+</Section>
+
+<Section
+  eyebrow="Features"
+  title="Built for real shell scripts"
+  sub="Everything you need to give your scripts a consistent, themeable voice."
+>
+  <Features>
+    <Feature title="Unified message API">
+      One command for success, error, warning, info, and muted messages — no
+      escape codes in sight.
+    </Feature>
+    <Feature title="Token-based themes">
+      Swap colours, icons, and styles via environment variables, without
+      touching component code.
+    </Feature>
+    <Feature title="Inline components">
+      Badges and pills write to stdout without a newline, composing naturally
+      inside command substitutions.
+    </Feature>
+    <Feature title="Interactive prompts">
+      confirm, select, radio, multiselect, and input — keyboard navigation and
+      sensible defaults included.
+    </Feature>
+    <Feature title="Progress & spinners">
+      progress, spinner, and loader, with optional native iTerm2 dock badge
+      integration.
+    </Feature>
+    <Feature title="Zero dependencies">
+      A single source file, pure Zsh. No npm, no brew, nothing to install. And
+      NO_COLOR aware out of the box.
+    </Feature>
+  </Features>
+</Section>
+
+<Section eyebrow="Quick start" title="Up and running in seconds">
+  <Install label="zsh">
+
+```sh
+git clone https://github.com/kud/shui ~/.shui
+source ~/.shui/shui.zsh
+
+shui message success "Deployment complete"
 ```
 
   </Install>
@@ -135,6 +167,6 @@ Downloading ██████████░░░░░░░░░░░░�
 <CTA
   href="/projects/shui/docs"
   title="Ready to make your scripts beautiful?"
-  sub="Full component reference, theming guide, and configuration — in the docs."
+  sub="The full component reference, the theming guide, icon sets, and configuration all live in the docs."
   label="Read the documentation →"
 />
