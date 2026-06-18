@@ -166,6 +166,8 @@
   font-weight: 500;
   line-height: 1.35;
   color: #2d2822;
+  /* Balance the lines so a short final word never widows onto its own row. */
+  text-wrap: balance;
 }
 
 .bio {
@@ -743,9 +745,16 @@
   }
 
   /* The accent dot is a desktop left-rail flourish; on the centred mobile card
-     it orphans to the left of the wrapped, centred text — so drop it here. */
+     it orphans to the left of the wrapped, centred text — so drop it here, and
+     balance the title across lines so it never wraps to a lone "· London". */
   .eyebrow::before {
     display: none;
+  }
+
+  .eyebrow {
+    display: block;
+    text-align: center;
+    text-wrap: balance;
   }
 
   /* Full-width, stacked timeline buttons read cleaner than ragged auto widths. */
