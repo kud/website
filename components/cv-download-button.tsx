@@ -41,13 +41,12 @@ export const CvDownloadButton = () => {
       onClick={handleClick}
       disabled={loading}
       aria-busy={loading}
+      aria-label={loading ? "Preparing your CV…" : undefined}
     >
-      {loading ? "Preparing…" : "Download my CV"}
-      {loading ? (
-        <span className={styles.spinner} aria-hidden />
-      ) : (
-        <span aria-hidden>↓</span>
-      )}
+      Download my CV
+      <span className={styles.btnIcon} aria-hidden>
+        {loading ? <span className={styles.spinner} /> : "↓"}
+      </span>
     </button>
   )
 }

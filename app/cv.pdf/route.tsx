@@ -3,28 +3,40 @@ import {
   Page,
   Text,
   View,
+  Image,
   Link,
   StyleSheet,
   renderToBuffer,
 } from "@react-pdf/renderer"
 import { experience, yearsOfExperience } from "@/lib/experience"
+import { focus, coreTech } from "@/lib/focus"
 
 // Rendered once at build time (force-static) and served as a cached static
-// asset from /cv.pdf. Reads the same experience data as the home timeline, so
-// the CV can never drift from the site.
+// asset from /cv.pdf. Reads the same experience + focus data as the site, so the
+// CV can never drift. Designed — not just a PDF — to carry kud's identity: warm
+// palette, the terracotta eyebrow-dot, focus pills, and the dotted experience
+// timeline that echo kud.io. Page 1 = who I am + skills, page 2 = experience.
 export const runtime = "nodejs"
 export const dynamic = "force-static"
 
+const AVATAR_URL =
+  "https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=256"
+
+const BG = "#fdfbf8"
 const ACCENT = "#c2703d"
+const ACCENT_DEEP = "#a85f33"
 const INK = "#1a1512"
 const BODY = "#4a443d"
 const MUTED = "#6f6a62"
 const FAINT = "#9a958c"
-const RULE = "#e6e0d6"
+const RULE = "#e7ddcf"
+const PILL_BG = "#f6ece2"
+const PILL_BORDER = "#e7d2bf"
 
 const styles = StyleSheet.create({
   page: {
-    paddingTop: 46,
+    backgroundColor: BG,
+    paddingTop: 44,
     paddingBottom: 42,
     paddingHorizontal: 46,
     fontFamily: "Helvetica",
@@ -34,20 +46,46 @@ const styles = StyleSheet.create({
   },
 
   // Header ------------------------------------------------------------------
-  name: {
-    fontFamily: "Helvetica-Bold",
-    fontSize: 21,
-    lineHeight: 1,
-    letterSpacing: -0.4,
-    color: INK,
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  title: {
-    marginTop: 5,
+  avatar: {
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+    marginRight: 18,
+    border: `1.5pt solid ${RULE}`,
+    objectFit: "cover",
+  },
+  headerText: {
+    flex: 1,
+  },
+  eyebrowRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  eyebrowDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: ACCENT,
+    marginRight: 7,
+  },
+  eyebrowText: {
     fontFamily: "Helvetica-Bold",
-    fontSize: 8.5,
-    letterSpacing: 1.4,
+    fontSize: 8,
+    letterSpacing: 1.2,
     textTransform: "uppercase",
     color: ACCENT,
+  },
+  name: {
+    fontFamily: "Helvetica-Bold",
+    fontSize: 23,
+    lineHeight: 1,
+    letterSpacing: -0.5,
+    color: INK,
   },
   contact: {
     marginTop: 7,
@@ -59,31 +97,80 @@ const styles = StyleSheet.create({
     textDecoration: "none",
   },
   rule: {
-    marginTop: 13,
+    marginTop: 14,
     borderBottomWidth: 1,
     borderBottomColor: RULE,
   },
-  profile: {
-    marginTop: 12,
-    fontSize: 9.5,
-    lineHeight: 1.45,
+
+  intro: {
+    marginTop: 14,
+    fontSize: 10,
+    lineHeight: 1.5,
     color: BODY,
   },
 
-  // Section -----------------------------------------------------------------
+  // Section label -----------------------------------------------------------
   sectionLabel: {
-    marginTop: 19,
-    marginBottom: 11,
+    marginTop: 20,
+    marginBottom: 10,
     fontFamily: "Helvetica-Bold",
-    fontSize: 9,
+    fontSize: 8.5,
     letterSpacing: 1.4,
     textTransform: "uppercase",
-    color: INK,
+    color: ACCENT,
   },
 
-  // Entry -------------------------------------------------------------------
-  entry: {
-    marginBottom: 13,
+  // Focus pills (page 1) ----------------------------------------------------
+  pillRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  pill: {
+    marginRight: 6,
+    marginBottom: 6,
+    paddingVertical: 3,
+    paddingHorizontal: 9,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: PILL_BORDER,
+    backgroundColor: PILL_BG,
+    fontSize: 9,
+    color: ACCENT_DEEP,
+  },
+  techLine: {
+    fontSize: 10,
+    lineHeight: 1.6,
+    color: BODY,
+  },
+
+  // Experience timeline -----------------------------------------------------
+  tlRow: {
+    flexDirection: "row",
+  },
+  tlRail: {
+    width: 16,
+    borderLeftWidth: 1.5,
+    borderLeftColor: RULE,
+    position: "relative",
+  },
+  tlDot: {
+    position: "absolute",
+    left: -5.25,
+    top: 3.5,
+    width: 9,
+    height: 9,
+    borderRadius: 4.5,
+    backgroundColor: BG,
+    borderWidth: 1.5,
+    borderColor: ACCENT,
+  },
+  tlDotFilled: {
+    backgroundColor: ACCENT,
+  },
+  tlContent: {
+    flex: 1,
+    paddingLeft: 4,
+    paddingBottom: 12,
   },
   entryHead: {
     flexDirection: "row",
@@ -114,7 +201,7 @@ const styles = StyleSheet.create({
   },
   bullet: {
     flexDirection: "row",
-    marginBottom: 2,
+    marginBottom: 1.5,
   },
   bulletDot: {
     width: 9,
@@ -127,7 +214,7 @@ const styles = StyleSheet.create({
     color: BODY,
   },
   stack: {
-    marginTop: 5,
+    marginTop: 4,
     fontSize: 8.5,
     color: FAINT,
   },
@@ -137,42 +224,54 @@ const styles = StyleSheet.create({
   },
 })
 
-const Dot = " · "
+const SEP = "  ·  "
 
 const Contact = () => (
   <Text style={styles.contact}>
-    London{Dot}
+    London ·{" "}
     <Link style={styles.contactLink} src="https://kud.io">
       kud.io
-    </Link>
-    {Dot}
-    <Link style={styles.contactLink} src="mailto:m+site@kud.io">
-      m+site@kud.io
-    </Link>
-    {Dot}
+    </Link>{" "}
+    ·{" "}
+    <Link style={styles.contactLink} src="mailto:m+job@kud.io">
+      m+job@kud.io
+    </Link>{" "}
+    ·{" "}
     <Link style={styles.contactLink} src="https://linkedin.kud.io/">
       linkedin.kud.io
-    </Link>
-    {Dot}
+    </Link>{" "}
+    ·{" "}
     <Link style={styles.contactLink} src="https://github.kud.io/">
       github.kud.io
     </Link>
   </Text>
 )
 
-const Cv = () => (
+const Cv = ({ avatar }: { avatar: string | null }) => (
   <Document
     author="Erwann Mest"
     title="Erwann Mest — CV"
     subject="Senior Software Engineer & Tech Lead"
   >
+    {/* Page 1 — who I am + skills */}
     <Page size="A4" style={styles.page}>
-      <Text style={styles.name}>Erwann Mest</Text>
-      <Text style={styles.title}>Senior Software Engineer & Tech Lead</Text>
-      <Contact />
+      <View style={styles.header}>
+        {avatar ? <Image src={avatar} style={styles.avatar} /> : null}
+        <View style={styles.headerText}>
+          <View style={styles.eyebrowRow}>
+            <View style={styles.eyebrowDot} />
+            <Text style={styles.eyebrowText}>
+              Senior Software Engineer & Tech Lead · London
+            </Text>
+          </View>
+          <Text style={styles.name}>Erwann Mest</Text>
+          <Contact />
+        </View>
+      </View>
+
       <View style={styles.rule} />
 
-      <Text style={styles.profile}>
+      <Text style={styles.intro}>
         Senior engineer and tech lead with {yearsOfExperience()} years across
         product, design, and engineering. I think in systems and the people they
         serve — reducing cognitive load for users and engineers alike, and
@@ -180,52 +279,86 @@ const Cv = () => (
         workflows.
       </Text>
 
+      <Text style={styles.sectionLabel}>Focus</Text>
+      <View style={styles.pillRow}>
+        {focus.map((item) => (
+          <Text key={item.label} style={styles.pill}>
+            {item.label}
+          </Text>
+        ))}
+      </View>
+
+      <Text style={styles.sectionLabel}>Core tech</Text>
+      <Text style={styles.techLine}>{coreTech.join(SEP)}</Text>
+
       <Text style={styles.sectionLabel}>Experience</Text>
 
-      {experience.map((item) => (
+      {experience.map((item, index) => (
         <View
           key={`${item.org}-${item.period}`}
-          style={styles.entry}
+          style={styles.tlRow}
           wrap={false}
         >
-          <View style={styles.entryHead}>
-            <Text style={styles.entryRole}>{item.role}</Text>
-            <Text style={styles.entryPeriod}>{item.period}</Text>
+          <View style={styles.tlRail}>
+            <View
+              style={
+                index === 0 ? [styles.tlDot, styles.tlDotFilled] : styles.tlDot
+              }
+            />
           </View>
-          <Text style={styles.entryOrg}>
-            {item.org}
-            {item.team ? `${Dot}${item.team}` : ""}
-            {Dot}
-            {item.place}
-          </Text>
+          <View style={styles.tlContent}>
+            <View style={styles.entryHead}>
+              <Text style={styles.entryRole}>{item.role}</Text>
+              <Text style={styles.entryPeriod}>{item.period}</Text>
+            </View>
+            <Text style={styles.entryOrg}>
+              {item.org}
+              {item.team ? `${SEP}${item.team}` : ""}
+              {SEP}
+              {item.place}
+            </Text>
 
-          {item.detail ? (
-            <>
-              <Text style={styles.entrySummary}>{item.detail.summary}</Text>
-              {item.detail.highlights.map((highlight) => (
-                <View key={highlight} style={styles.bullet}>
-                  <Text style={styles.bulletDot}>•</Text>
-                  <Text style={styles.bulletText}>{highlight}</Text>
-                </View>
-              ))}
-              {item.detail.stack.length > 0 ? (
-                <Text style={styles.stack}>
-                  <Text style={styles.stackLabel}>Stack </Text>
-                  {item.detail.stack.join("  ·  ")}
-                </Text>
-              ) : null}
-            </>
-          ) : (
-            <Text style={styles.entrySummary}>{item.note}</Text>
-          )}
+            {item.detail ? (
+              <>
+                <Text style={styles.entrySummary}>{item.detail.summary}</Text>
+                {item.detail.highlights.map((highlight) => (
+                  <View key={highlight} style={styles.bullet}>
+                    <Text style={styles.bulletDot}>•</Text>
+                    <Text style={styles.bulletText}>{highlight}</Text>
+                  </View>
+                ))}
+                {item.detail.stack.length > 0 ? (
+                  <Text style={styles.stack}>
+                    <Text style={styles.stackLabel}>Stack </Text>
+                    {item.detail.stack.join("  ·  ")}
+                  </Text>
+                ) : null}
+              </>
+            ) : (
+              <Text style={styles.entrySummary}>{item.note}</Text>
+            )}
+          </View>
         </View>
       ))}
     </Page>
   </Document>
 )
 
+const loadAvatar = async (): Promise<string | null> => {
+  try {
+    const response = await fetch(AVATAR_URL)
+    if (!response.ok) return null
+    const type = response.headers.get("content-type") ?? "image/png"
+    const base64 = Buffer.from(await response.arrayBuffer()).toString("base64")
+    return `data:${type};base64,${base64}`
+  } catch {
+    return null
+  }
+}
+
 export const GET = async () => {
-  const buffer = await renderToBuffer(<Cv />)
+  const avatar = await loadAvatar()
+  const buffer = await renderToBuffer(<Cv avatar={avatar} />)
   return new Response(new Uint8Array(buffer), {
     headers: {
       "Content-Type": "application/pdf",

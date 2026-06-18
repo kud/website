@@ -130,7 +130,22 @@
   height: 7px;
   border-radius: 50%;
   background: #c2703d;
-  box-shadow: 0 0 10px rgba(194, 112, 61, 0.5);
+  box-shadow: 0 0 10px rgba(194, 112, 61, 0.45);
+  /* Gentle "alive" breathe — animates opacity only, so it's GPU-composited and
+     never triggers a per-frame repaint. (Animating box-shadow does, which is
+     what was costing FPS.) The dotBreathe keyframes are reused by the timeline
+     current-role dot. */
+  animation: dotBreathe 2.8s ease-in-out infinite;
+}
+
+@keyframes dotBreathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .name {
@@ -160,20 +175,44 @@
 .focus {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 8px;
   list-style: none;
   padding: 0;
-  margin: 0 0 30px;
+  margin: 8px 0 32px;
 }
 
 .focus li {
+  display: flex;
+}
+
+/* Interactive focus pill — opens its "what I mean" modal. */
+.focusTag {
+  font-family: inherit;
   font-size: 12.5px;
   font-weight: 500;
   color: #574f47;
   background: #f6f2ec;
   border: 1px solid #ebe4da;
   border-radius: 999px;
-  padding: 5px 12px;
+  padding: 5px 13px;
+  cursor: pointer;
+  transition:
+    color 0.16s,
+    background 0.16s,
+    border-color 0.16s,
+    transform 0.16s;
+}
+
+.focusTag:hover {
+  color: #c2703d;
+  background: #fff;
+  border-color: #c2703d;
+  transform: translateY(-1px);
+}
+
+.focusTag:focus-visible {
+  outline: 2px solid #c2703d;
+  outline-offset: 2px;
 }
 
 .personal {
@@ -306,6 +345,10 @@
   .chevron {
     animation: none;
   }
+
+  .eyebrow::before {
+    animation: none;
+  }
 }
 
 /* Timeline ------------------------------------------------------------------*/
@@ -391,17 +434,8 @@
 /* The current role (top entry) reads as "here now" — filled + live pulse. */
 .entry:first-child::before {
   background: #c2703d;
-  animation: pulseDot 2.4s ease-in-out infinite;
-}
-
-@keyframes pulseDot {
-  0%,
-  100% {
-    box-shadow: 0 0 0 3px rgba(194, 112, 61, 0.18);
-  }
-  50% {
-    box-shadow: 0 0 0 7px rgba(194, 112, 61, 0.05);
-  }
+  box-shadow: 0 0 0 3px rgba(194, 112, 61, 0.16);
+  animation: dotBreathe 2.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -696,7 +730,7 @@
   font-weight: 600;
   color: #c2703d;
   opacity: 0;
-  transform: translateX(-4px);
+  transform: translateY(6px);
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
@@ -738,6 +772,16 @@
 .timelineButton:disabled {
   cursor: default;
   transform: none;
+}
+
+/* Fixed-width trailing slot so swapping the arrow for the spinner never resizes
+   the button — no jump on click. */
+.btnIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
 }
 
 /* Loading spinner inside the (dark) Download CV button. */

@@ -144,13 +144,17 @@ html[data-vt="back"]::view-transition-new(root) {
    #ink-edge SVG turbulence filter displaces the growing boundary so it reads
    like spreading ink rather than a hard circle. The shared `site-avatar` rides
    above in its own group and morphs as the ink spreads. */
-html[data-vt="reveal"]::view-transition-old(root) {
-  animation: none;
-}
+@media (min-width: 861px) {
+  /* Desktop only — on mobile the existing flat fade + avatar morph is already
+     the right feel, so the ink reveal is scoped above the 860px breakpoint. */
+  html[data-vt="reveal"]::view-transition-old(root) {
+    animation: none;
+  }
 
-html[data-vt="reveal"]::view-transition-new(root) {
-  animation: vt-ink-reveal 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
-  filter: url("#ink-edge");
+  html[data-vt="reveal"]::view-transition-new(root) {
+    animation: vt-ink-reveal 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+    filter: url("#ink-edge");
+  }
 }
 
 @keyframes vt-ink-reveal {
@@ -183,5 +187,11 @@ html[data-vt="reveal"]::view-transition-new(root) {
   ::view-transition-old(site-avatar),
   ::view-transition-new(site-avatar) {
     animation: none;
+  }
+
+  html[data-vt="reveal"]::view-transition-new(root) {
+    animation: none;
+    filter: none;
+    clip-path: none;
   }
 }

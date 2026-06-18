@@ -1,4 +1,4 @@
-import { Link } from "next-view-transitions"
+import { RevealLink } from "@/components/reveal-link"
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -7,6 +7,7 @@ import {
   MailIcon,
 } from "@/components/social-icons"
 import { ExperienceTimeline } from "@/components/experience-timeline"
+import { FocusTags } from "@/components/focus-tags"
 import { yearsOfExperience } from "@/lib/experience"
 import styles from "./page.module.css"
 
@@ -60,16 +61,6 @@ const Bio = () => (
   </p>
 )
 
-const Focus = () => (
-  <ul className={styles.focus}>
-    <li>Systems thinking</li>
-    <li>User empathy</li>
-    <li>Design &amp; product partnership</li>
-    <li>AI-assisted engineering</li>
-    <li>Developer experience</li>
-  </ul>
-)
-
 const Personal = () => (
   <p className={styles.personal}>
     Off the clock: a{" "}
@@ -93,10 +84,10 @@ const Personal = () => (
 )
 
 const Cta = () => (
-  <Link href="/projects" className={styles.primary}>
+  <RevealLink href="/projects" className={styles.primary}>
     Explore my projects
     <span aria-hidden>→</span>
-  </Link>
+  </RevealLink>
 )
 
 const SocialLinks = () => (
@@ -135,7 +126,7 @@ const HeroDesktop = () => (
         <Name />
         <Tagline />
         <Bio />
-        <Focus />
+        <FocusTags />
         <Personal />
         <div className={styles.actions}>
           <Cta />
@@ -166,7 +157,7 @@ const HeroMobile = () => (
 
     <section className={styles.slideAbout}>
       <Bio />
-      <Focus />
+      <FocusTags />
       <Personal />
       <ScrollHint />
     </section>
