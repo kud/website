@@ -21,11 +21,12 @@
 }
 
 .art {
-  width: 96px;
+  width: 108px;
   height: auto;
-  /* Pivot from the feet so it leans like a person, not a spinning sprite. */
+  display: block;
+  /* Pivot from the feet so it leans like a person, not a spinning sprite. The
+     asset already carries its own shadow, so no drop-shadow here. */
   transform-origin: 50% 100%;
-  filter: drop-shadow(0 6px 8px rgba(20, 16, 12, 0.22));
 }
 
 /* Once it has stood up, the body leans over to say hello, then gently rocks. */

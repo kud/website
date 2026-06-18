@@ -24,7 +24,7 @@ export const CvDownloadButton = () => {
       const url = URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
-      link.download = "erwann-mest-cv.pdf"
+      link.download = "erwann-mest-systems-designer-cv.pdf"
       document.body.appendChild(link)
       link.click()
       link.remove()

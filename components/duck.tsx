@@ -3,59 +3,11 @@
 import { useEffect, useRef, useState } from "react"
 import styles from "./duck.module.css"
 
-// Side-profile pixel duck (facing left): bold outline + a few shading clusters
-// for readability, the way good pixel art reads at small sizes.
-//   K outline · Y body · w highlight · o shade · b beak/feet
-const DUCK_ROWS = [
-  "......KKKKK.....",
-  ".....KYYYYYK....",
-  "....KYYYYYYYK...",
-  "...KYYKwYYYYK...",
-  "..KbYYKwYYYYK...",
-  "..KbbKYYYYYYK...",
-  "...KKYYYYYYYK...",
-  "....KYYYYYYYK...",
-  "....KYYYYYYYKK..",
-  "...KYYYYYYYYYYK.",
-  "..KYwwYYYYYYYYK.",
-  "..KYwwwYYYYoooK.",
-  "..KYYwwYYYYoooK.",
-  "...KYYYYYYYooK..",
-  "...KKYYYKYYYKK..",
-  "....KbK.KbK.....",
-  "....KK..KK......",
-]
-
-const DUCK_COLORS: Record<string, string> = {
-  K: "#1a1512",
-  Y: "#ffce3a",
-  w: "#ffffff",
-  o: "#e0a400",
-  b: "#f5882b",
-}
-
+// Cartoon duck illustration (cleaned-up Vecteezy asset, white knocked out to a
+// transparent PNG). It faces left, so leaning pivots from its feet to greet.
 const DuckArt = () => (
-  <svg
-    className={styles.art}
-    viewBox="0 0 16 17"
-    shapeRendering="crispEdges"
-    aria-hidden
-  >
-    {DUCK_ROWS.flatMap((row, y) =>
-      [...row].map((char, x) =>
-        DUCK_COLORS[char] ? (
-          <rect
-            key={`${x}-${y}`}
-            x={x}
-            y={y}
-            width={1}
-            height={1}
-            fill={DUCK_COLORS[char]}
-          />
-        ) : null,
-      ),
-    )}
-  </svg>
+  // eslint-disable-next-line @next/next/no-img-element
+  <img className={styles.art} src="/duck.png" alt="" aria-hidden />
 )
 
 // A pool of lines per trigger type, so the duck doesn't repeat itself.
