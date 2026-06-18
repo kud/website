@@ -48,7 +48,7 @@ const TITLES: Record<string, string> = {
   greeting: "whoami",
   contact: "say-hi.sh",
   history: "git log",
-  tickets: "jira 🙄",
+  tickets: "jira",
   cv: "cat cv.pdf",
 }
 
