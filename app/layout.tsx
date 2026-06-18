@@ -1,5 +1,5 @@
 import "./global.css"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
 import { RootProvider } from "fumadocs-ui/provider/next"
 import { ViewTransitions } from "next-view-transitions"
@@ -14,27 +14,36 @@ const sans = Hanken_Grotesk({
   variable: "--font-sans",
 })
 
+const TITLE = "Erwann Mest — Senior Software Engineer & Tech Lead"
+const DESCRIPTION =
+  "Senior Software Engineer & Tech Lead in London. I turn empathy for users and engineers into clear systems, better developer experience, and AI-assisted engineering — currently on the mobile team at Sony Music."
+
+// The OpenGraph and Twitter share images are supplied by the file-based
+// conventions (app/opengraph-image.tsx + app/twitter-image.tsx), so no images
+// are listed here — those would otherwise stack on top of the branded card.
 export const metadata: Metadata = {
   metadataBase: new URL("https://kud.io"),
-  title:
-    "Erwann Mest — Senior Software Engineer specialised in Front-end / JavaScript",
-  description:
-    "My name is Erwann Mest and I am a Senior Software Engineer specialised in Front-end / JavaScript. I currently live in London and work in the Music Industry!",
+  title: TITLE,
+  description: DESCRIPTION,
   openGraph: {
     type: "website",
     url: "https://kud.io",
-    title:
-      "Erwann Mest — Senior Software Engineer specialised in Front-end / JavaScript",
-    description:
-      "My name is Erwann Mest and I am a Senior Software Engineer specialised in Front-end / JavaScript. I currently live in London and work in the Music Industry!",
-    images: [
-      "https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=1024",
-    ],
+    siteName: "kud.io",
+    locale: "en_GB",
+    title: TITLE,
+    description: DESCRIPTION,
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     site: "@_kud",
+    creator: "@_kud",
+    title: TITLE,
+    description: DESCRIPTION,
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#fdfbf8",
 }
 
 const RootLayout = ({ children }: { children: ReactNode }) => (

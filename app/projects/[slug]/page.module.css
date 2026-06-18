@@ -157,7 +157,10 @@
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.04;
-  margin: 0 0 20px;
+  /* Extend the gradient-clip box so glyph descenders (g, p, j in slug names)
+     aren't clipped; margin trimmed to keep the gap to the tagline unchanged. */
+  padding-bottom: 0.16em;
+  margin: 0 0 8px;
   background: linear-gradient(135deg, #f1f5f9 0%, #e0a87e 60%, #c2703d 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -240,6 +243,8 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.1;
+  /* Same gradient-clip descender guard for values like "JavaScript"/"Python". */
+  padding-bottom: 0.12em;
   background: linear-gradient(
     135deg,
     var(--text) 0%,

@@ -128,9 +128,34 @@ body {
   }
 }
 
+/* Back navigation (/projects → /, flagged by the BackLink component) arrives at
+   the warm home page. The forward zoom there feels like a second "entry", so the
+   return is flattened to a pure cross-fade on every viewport — the forward CTA
+   keeps its zoom because it never sets this flag. */
+html[data-vt="back"]::view-transition-new(root) {
+  animation-name: vt-fade-in-flat;
+}
+
+/* Avatar shared-element morph (mobile): glide the carte-de-visite avatar to its
+   spot on /projects in concert with the root fade. The element fades out of the
+   root snapshot and into its own group, so it never double-exposes mid-fade. */
+::view-transition-group(site-avatar) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(site-avatar),
+::view-transition-new(site-avatar) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
-  ::view-transition-new(root) {
+  ::view-transition-new(root),
+  ::view-transition-group(site-avatar),
+  ::view-transition-old(site-avatar),
+  ::view-transition-new(site-avatar) {
     animation: none;
   }
 }

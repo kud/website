@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+import { BackLink } from "@/components/back-link"
 import { getProjects, type Project } from "@/lib/projects"
 import { getIcons } from "@/lib/icons"
 import { Blueprint } from "@/components/blueprint"
@@ -101,9 +101,9 @@ const ProjectsIndex = async () => {
     <main className={styles.page}>
       <header className={styles.hero}>
         <Blueprint className={styles.blueprint} />
-        <Link href="/" className={styles.back}>
+        <BackLink href="/" className={styles.back}>
           ← kud.io
-        </Link>
+        </BackLink>
         <div className={styles.heroInner}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -117,10 +117,10 @@ const ProjectsIndex = async () => {
             Projects <span className={styles.titleBy}>by kud</span>
           </h1>
           <p className={styles.intro}>
-            Open-source tools I design and maintain — command-line apps, MCP
-            servers, and terminal design systems. I&apos;m{" "}
-            <strong>Erwann Mest</strong> (kud), a Lead Engineer in London who
-            cares about developer experience and the craft of polished tools.
+            Open-source tools I design and build — command-line apps, MCP
+            servers, and terminal design systems. Each one is shaped by the same
+            care: <strong>developer experience</strong> first, obsessive polish,
+            and neat, considered interfaces — down to the last detail.
           </p>
           <div className={styles.social}>
             <a href="https://github.kud.io/" target="_blank" rel="noreferrer">

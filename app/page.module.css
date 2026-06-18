@@ -515,6 +515,16 @@
     font-family: var(--font-sans), system-ui, sans-serif;
   }
 
+  /* Anchor the avatar to a fixed top offset (shared verbatim with /projects'
+     .hero) instead of vertically centring it — a centred avatar can't be
+     pixel-equal to the top-anchored one on /projects across viewport heights,
+     and matching this exactly is what makes the avatar hold perfectly still
+     through the route transition. */
+  .slideCard {
+    justify-content: flex-start;
+    padding-top: clamp(64px, 16svh, 190px);
+  }
+
   /* The about slide is content-heavy, so top-align it (centring a long column
      leaves weird gaps) and pin the scroll hint to the bottom. Left-align the
      reading content for a clean shared edge. */
@@ -554,6 +564,9 @@
     margin: 0 auto 28px;
     border-radius: 50%;
     border: 2px solid #e7e0d6;
+    /* Shared element: the same name on /projects' avatar lets the View
+       Transitions API morph this circle to its new spot instead of teleporting. */
+    view-transition-name: site-avatar;
     background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=512");
     background-size: cover;
     background-position: center;

@@ -138,7 +138,12 @@
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.02;
-  margin: 0 0 18px;
+  /* The gradient fill (background-clip: text) is only painted across the box, so
+     a descender like the j in "Projects" falls outside it and renders clipped.
+     padding-bottom extends the painted box to cover descenders; margin-bottom is
+     reduced to keep the gap to the intro unchanged. */
+  padding-bottom: 0.16em;
+  margin: 0 0 6px;
   background: linear-gradient(135deg, #f1f5f9 0%, #e0a87e 55%, #c2703d 100%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -214,4 +219,23 @@
 
 .empty code {
   color: var(--primary-light);
+}
+
+/* Pin the avatar to the exact same spot as the home carte-de-visite so it never
+   moves through the route transition. Both values are shared verbatim with the
+   home `.slideCard`: identical `padding-top` anchor + identical avatar size, so
+   on any mobile viewport both routes compute the same rect. The matching
+   view-transition-name then locks them as one shared element. Scoped to 860px to
+   line up with the home mobile-slides breakpoint (not this page's 720px layout
+   breakpoint) so both ends exist together across the whole mobile range. */
+@media (max-width: 860px) {
+  .hero {
+    padding-top: clamp(64px, 16svh, 190px);
+  }
+
+  .avatar {
+    width: 156px;
+    height: 156px;
+    view-transition-name: site-avatar;
+  }
 }
