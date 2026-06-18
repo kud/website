@@ -742,6 +742,23 @@
     justify-content: center;
   }
 
+  /* The accent dot is a desktop left-rail flourish; on the centred mobile card
+     it orphans to the left of the wrapped, centred text — so drop it here. */
+  .eyebrow::before {
+    display: none;
+  }
+
+  /* Full-width, stacked timeline buttons read cleaner than ragged auto widths. */
+  .timelineButtons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .timelineButton {
+    width: 100%;
+    justify-content: center;
+  }
+
   /* Keep the long bio left-aligned — centred multi-line body text reads poorly. */
   .bio {
     text-align: left;

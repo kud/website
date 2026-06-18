@@ -62,11 +62,11 @@ const Bio = () => (
     </p>
     <p className={styles.bio}>
       Most of what I do comes down to one question:{" "}
-      <strong>how can we help people do their best work?</strong> That question
-      has pulled me across a lot of ground. Engineering and tech leadership,
-      hiring, performance, developer experience, even security and how a team is
-      organised. I&apos;m at my best when I can make something complicated feel
-      clear.
+      <strong>{"how can we help people do their best work? "}</strong>That
+      question has pulled me across a lot of ground. Engineering and tech
+      leadership, hiring, performance, developer experience, even security and
+      how a team is organised. I&apos;m at my best when I can make something
+      complicated feel clear.
     </p>
     <p className={styles.bio}>
       I like architecting a solution and then handing its execution to AI, in a
