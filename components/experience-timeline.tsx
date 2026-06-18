@@ -12,6 +12,7 @@ import styles from "@/app/page.module.css"
 export const ExperienceTimeline = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -19,6 +20,30 @@ export const ExperienceTimeline = () => {
     if (activeIndex !== null && !dialog.open) dialog.showModal()
     if (activeIndex === null && dialog.open) dialog.close()
   }, [activeIndex])
+
+  // "Depile" the entries: they stay hidden (.entryReveal) until we arrive at the
+  // section, then deal out one by one with a staggered delay.
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+    const items = Array.from(
+      track.querySelectorAll<HTMLElement>(`.${styles.entryReveal}`),
+    )
+    if (items.length === 0) return
+    const observer = new IntersectionObserver(
+      (observed) => {
+        if (!observed.some((entry) => entry.isIntersecting)) return
+        items.forEach((item, index) => {
+          item.style.transitionDelay = `${index * 90}ms`
+          item.classList.add(styles.entryRevealed)
+        })
+        observer.disconnect()
+      },
+      { threshold: 0.12 },
+    )
+    observer.observe(track)
+    return () => observer.disconnect()
+  }, [])
 
   const active = activeIndex === null ? null : experience[activeIndex]
 
@@ -28,12 +53,12 @@ export const ExperienceTimeline = () => {
         <p className={styles.timelineEyebrow}>Career</p>
         <h2 className={styles.timelineTitle}>Experience</h2>
 
-        <div className={styles.track}>
+        <div className={styles.track} ref={trackRef}>
           {experience.map((item, index) => (
             <button
               key={`${item.org}-${item.period}`}
               type="button"
-              className={`${styles.entry} ${styles.entryButton}`}
+              className={`${styles.entry} ${styles.entryButton} ${styles.entryReveal}`}
               onClick={() => setActiveIndex(index)}
               aria-haspopup="dialog"
             >

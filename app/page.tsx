@@ -8,6 +8,7 @@ import {
 } from "@/components/social-icons"
 import { ExperienceTimeline } from "@/components/experience-timeline"
 import { FocusTags } from "@/components/focus-tags"
+import { HeroName } from "@/components/hero-name"
 import { yearsOfExperience } from "@/lib/experience"
 import styles from "./page.module.css"
 
@@ -33,8 +34,6 @@ const Eyebrow = () => (
     Systems&nbsp;Designer &amp; Lead&nbsp;Software&nbsp;Engineer ·&nbsp;London
   </p>
 )
-
-const Name = () => <h1 className={styles.name}>Erwann&nbsp;Mest</h1>
 
 const Tagline = () => (
   <p className={styles.tagline}>
@@ -126,7 +125,7 @@ const SocialLinks = () => (
 
 const ScrollHint = () => (
   <a className={styles.scrollHint} href="#experience">
-    Experience{" "}
+    Experience
     <span className={styles.chevron} aria-hidden>
       ↓
     </span>
@@ -141,7 +140,7 @@ const HeroDesktop = () => (
     <div className={styles.content}>
       <div className={styles.inner}>
         <Eyebrow />
-        <Name />
+        <HeroName />
         <Tagline />
         <Bio />
         <FocusTags />
@@ -163,7 +162,7 @@ const HeroMobile = () => (
     <section className={styles.slideCard}>
       <div className={styles.cardAvatar} role="img" aria-label="Erwann Mest" />
       <Eyebrow />
-      <Name />
+      <HeroName />
       <Tagline />
       <div className={styles.cardLinks}>
         <div className={styles.actions}>

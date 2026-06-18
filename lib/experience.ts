@@ -103,10 +103,10 @@ export const experience: Experience[] = [
     org: "EEMI",
     url: "https://www.eemi.com/",
     place: "Paris",
-    note: "Taught front-end culture and Next.js to students training to become lead developers and CTOs.",
+    note: "Taught front-end, performance, and Next.js to students on track to become lead developers and CTOs.",
     detail: {
       summary:
-        "Taught front-end culture to students training to become lead developers and CTOs: a global view of the stack, modern HTML and CSS, and Next.js end to end.",
+        "Taught students on track to become lead developers and CTOs: front-end culture, a global view of the stack, performance, modern HTML and CSS, and Next.js end to end.",
       highlights: [
         "Taught front-end culture and a global view of front-end and back-end stacks.",
         "Taught Next.js end to end.",

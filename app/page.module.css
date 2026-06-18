@@ -116,7 +116,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  margin: 0 0 18px;
+  margin: 0 0 14px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -131,6 +131,9 @@
   border-radius: 50%;
   background: #c2703d;
   box-shadow: 0 0 10px rgba(194, 112, 61, 0.45);
+  /* Uppercase text reads optically higher than the line-box centre, so nudge the
+     dot up a hair to sit with the letters rather than below them. */
+  transform: translateY(-1px);
   /* Gentle "alive" breathe — animates opacity only, so it's GPU-composited and
      never triggers a per-frame repaint. (Animating box-shadow does, which is
      what was costing FPS.) The dotBreathe keyframes are reused by the timeline
@@ -149,7 +152,7 @@
 }
 
 .name {
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   font-size: clamp(44px, 5.5vw, 64px);
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -158,7 +161,7 @@
 }
 
 .tagline {
-  margin: 0 0 28px;
+  margin: 0 0 34px;
   font-size: clamp(19px, 2.4vw, 23px);
   font-weight: 500;
   line-height: 1.35;
@@ -278,6 +281,17 @@
   transform: translateY(-2px);
 }
 
+/* Nudge the arrow up 1px to optically centre it with the text, and forward on
+   hover — a small, obvious "go" cue. */
+.primary span {
+  transition: transform 0.18s ease;
+  transform: translateY(-1px);
+}
+
+.primary:hover span {
+  transform: translateX(3px) translateY(-1px);
+}
+
 /* Socials -------------------------------------------------------------------*/
 .socials {
   display: flex;
@@ -314,7 +328,9 @@
 }
 
 .scrollHint {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   margin-top: 38px;
   font-size: 13px;
   font-weight: 500;
@@ -340,9 +356,7 @@
 
 .chevron {
   display: inline-block;
-  /* The ↓ glyph sits on the text baseline, which reads low next to the label;
-     seat its box against the text's middle so it lines up before it bobbles. */
-  vertical-align: middle;
+  /* The inline-flex parent centres it vertically; bobble only nudges it down. */
   animation: bobble 1.8s ease-in-out infinite;
 }
 
@@ -404,15 +418,28 @@
 }
 
 .track {
+  position: relative;
   list-style: none;
   margin: 0;
   padding: 0;
-  border-left: 2px solid #e8e1d6;
+}
+
+/* The connecting line starts at the first dot's centre (not the track top, which
+   left a stub above the first dot) and runs to the bottom, where the dashed
+   timelineMore continues it. Dots paint on top and cover it. */
+.track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 0;
+  width: 2px;
+  background: #e8e1d6;
 }
 
 .entry {
   position: relative;
-  padding: 0 0 38px 30px;
+  padding: 0 0 38px 32px;
 }
 
 .entry:last-child {
@@ -422,7 +449,7 @@
 .entry::before {
   content: "";
   position: absolute;
-  left: -8px;
+  left: -5.5px;
   top: 3px;
   width: 13px;
   height: 13px;
@@ -439,8 +466,42 @@
 /* The current role (top entry) reads as "here now" — filled + live pulse. */
 .entry:first-child::before {
   background: #c2703d;
-  box-shadow: 0 0 0 3px rgba(194, 112, 61, 0.16);
-  animation: dotBreathe 2.4s ease-in-out infinite;
+}
+
+/* A radar ping around the current-role dot. Transform + opacity only (GPU-cheap),
+   and because the dot underneath stays fully opaque, the timeline line never
+   shows through it (an opacity breathe on the dot itself did). */
+.entry:first-child::after {
+  content: "";
+  position: absolute;
+  left: -5.5px;
+  top: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #c2703d;
+  opacity: 0.3;
+  pointer-events: none;
+  animation: dotPing 2.6s ease-out infinite;
+}
+
+@keyframes dotPing {
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  70%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entry:first-child::after {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -508,6 +569,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
   padding: 11px 18px;
   border-radius: 11px;
   border: 1px solid #e2dacd;
@@ -1027,5 +1089,29 @@
   .hero,
   .timeline {
     scroll-snap-align: start;
+  }
+}
+
+/* Scroll-reveal: each timeline entry fades + slides up as it scrolls into view.
+   The entries sit below the hero (off-screen on load) so starting hidden never
+   flashes; an IntersectionObserver adds .entryRevealed as each enters. */
+.entryReveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.6, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.entryRevealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entryReveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

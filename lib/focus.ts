@@ -42,7 +42,7 @@ export const focus: Focus[] = [
   {
     label: "AI-assisted engineering",
     description:
-      "What I love most: architecting the solution, then delegating its execution to AI in a deliberate, fine-tuned way, turning experience into agents and skills that keep getting sharper.",
+      "What I love about AI: it's a layer above coding, but it's still coding. I architect the solution, then build and fine-tune the instructions, skills, and workflows that run it, like pipelines, turning years of experience into agents that keep getting sharper.",
   },
 ]
 
