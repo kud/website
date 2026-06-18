@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Link } from "next-view-transitions"
+import { MorphLink } from "@/components/morph-link"
 import type { Project } from "@/lib/projects"
 import styles from "./project-list.module.css"
 
@@ -279,7 +279,7 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
             {group.blurb ? <p className={styles.blurb}>{group.blurb}</p> : null}
             <div className={styles.list}>
               {group.items.map((project) => (
-                <Link
+                <MorphLink
                   key={project.slug}
                   href={`/projects/${project.slug}`}
                   className={styles.row}
@@ -324,7 +324,7 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
                       <p className={styles.rowDesc}>{project.description}</p>
                     ) : null}
                   </span>
-                </Link>
+                </MorphLink>
               ))}
               {group.items.length % 2 === 1 ? (
                 <div className={styles.filler} aria-hidden />

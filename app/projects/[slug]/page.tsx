@@ -1,6 +1,7 @@
 import { Fragment } from "react"
 import type { Metadata } from "next"
 import { Link } from "next-view-transitions"
+import { MorphLink } from "@/components/morph-link"
 import { notFound } from "next/navigation"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import { DocsBody } from "fumadocs-ui/layouts/docs/page"
@@ -57,9 +58,9 @@ const AutoLanding = ({ project }: { project: Project }) => {
     <>
       <section className={styles.hero}>
         <div className={styles.heroGrid} />
-        <Link href="/projects" className={styles.back}>
+        <MorphLink href="/projects" className={styles.back}>
           ← Projects
-        </Link>
+        </MorphLink>
         <div className={styles.heroContent}>
           <div className={styles.badge}>
             <span className={styles.badgeDot} />
@@ -219,9 +220,9 @@ const ReadmeLanding = ({ project }: { project: Project }) => {
     <>
       <section className={styles.hero}>
         <div className={styles.heroGrid} />
-        <Link href="/projects" className={styles.back}>
+        <MorphLink href="/projects" className={styles.back}>
           ← Projects
-        </Link>
+        </MorphLink>
         <div className={styles.heroContent}>
           <div className={styles.badge}>
             <span className={styles.badgeDot} />

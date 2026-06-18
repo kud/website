@@ -136,6 +136,25 @@ html[data-vt="back"]::view-transition-new(root) {
   animation-name: vt-fade-in-flat;
 }
 
+/* Project index ↔ detail: the title is a shared-element morph (view-transition-name
+   project-<slug>). Hold the rest of the incoming page hidden until the morph has
+   mostly landed, then fade it in — so the morph reads as the lead instead of
+   fighting a simultaneous cross-fade. Scoped to the "morph" flag the card sets. */
+@keyframes vt-content-reveal {
+  0%,
+  45% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+html[data-vt="morph"]::view-transition-new(root) {
+  animation-name: vt-content-reveal;
+  animation-duration: 0.55s;
+}
+
 /* The home → /projects "ink" transition is handled on desktop by the
    InkTransition overlay component (a real full-screen element it can filter and
    clip reliably), not by View Transitions — browsers don't apply SVG filters to
@@ -167,6 +186,7 @@ html[data-vt="back"]::view-transition-new(root) {
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root),
+  html[data-vt="morph"]::view-transition-new(root),
   ::view-transition-group(site-avatar),
   ::view-transition-old(site-avatar),
   ::view-transition-new(site-avatar) {
