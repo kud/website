@@ -1,7 +1,7 @@
 // The focus/skill values shown on the home hero and the CV. Ordered as a
-// deliberate narrative — how I think, who I start from, how I work, what I care
-// about for engineers, and how I execute — rather than a random pill cloud.
-// Descriptions are drafted in kud's voice from the bio/LinkedIn — verify.
+// deliberate narrative — how I think, who I start from, how I work with design &
+// product, how I ship, and how I execute — rather than a random pill cloud.
+// Descriptions are in kud's own voice.
 
 export type Focus = {
   label: string
@@ -12,22 +12,32 @@ export const focus: Focus[] = [
   {
     label: "Systems thinking",
     description:
-      "I think in systems and the people they serve — workflows, interfaces, and the connections between them, not just isolated features.",
+      "Everything is a workflow or a pipeline to me — a feature is connected to other features, and to how the team works. I see systems everywhere, in how I work and how I build, and I love thinking in design systems. I work at a higher level: not just the thing we're building, but the system it lives in.",
+  },
+  {
+    label: "Language & meaning",
+    description:
+      "I'm a linguist at heart: coding is a language, not maths. I'm into terminology and detail, and I need meaning in what I do — in what we build, what we believe, and how we work together.",
   },
   {
     label: "User empathy",
     description:
-      "Everything starts from empathy for the user and the product. I want to understand the real problem before reaching for a solution.",
+      "I start by listening — to users and to stakeholders — because the point is to deliver something genuinely meaningful to them, not just to close a ticket. I'd rather resolve the real need straight away and then polish, than chase a perfect plan that delivers what we assume the user wants — which often isn't what they actually need.",
   },
   {
     label: "Design & product partnership",
     description:
-      "I work shoulder-to-shoulder with designers and PMs, shaping solutions together before a line of code is written.",
+      "My best work happens with designers and PMs, and I learn the basics of each discipline so we genuinely speak the same language. The design review is honestly my favourite meeting — I want to shape the solution together before a line of code is written.",
+  },
+  {
+    label: "Shape Up & iteration",
+    description:
+      "Inspired by Shape Up. I used to be a handcraft developer; now I'm about optimising systems and the right constraints — the need, the appetite, adjusting the plan as we learn. I treat every feature like a startup: an MVP that already works, then v1, v2, v3 — each version usable on its own, improving piece by piece instead of waiting for the whole thing to come alive at the end.",
   },
   {
     label: "Developer experience",
     description:
-      "I care about the engineers building the software as much as the people using it — cutting their cognitive load with better tooling, conventions, and automation.",
+      "I see developers as users too — that's why I love DX so much: my users are the engineers, and I want to facilitate their work. I believe in reducing cognitive load for everyone — users, engineers, and the PMs and designers around them — with better tooling, conventions, automation, and design systems.",
   },
   {
     label: "AI-assisted engineering",

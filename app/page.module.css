@@ -819,12 +819,12 @@
 
 .modal::backdrop {
   background: rgba(20, 16, 12, 0.5);
-  backdrop-filter: blur(3px);
-  animation: backdropIn 0.2s ease both;
+  backdrop-filter: blur(2px);
+  animation: backdropIn 0.12s ease both;
 }
 
 .modal[open] {
-  animation: modalIn 0.22s cubic-bezier(0.2, 0.6, 0.2, 1) both;
+  animation: modalIn 0.15s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
 
 @keyframes backdropIn {

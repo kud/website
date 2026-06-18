@@ -148,15 +148,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   tlRail: {
-    width: 16,
+    width: 13,
     borderLeftWidth: 1.5,
     borderLeftColor: RULE,
     position: "relative",
   },
   tlDot: {
     position: "absolute",
-    left: -5.25,
-    top: 3.5,
+    left: -4,
+    top: 2.5,
     width: 9,
     height: 9,
     borderRadius: 4.5,
@@ -166,6 +166,11 @@ const styles = StyleSheet.create({
   },
   tlDotFilled: {
     backgroundColor: ACCENT,
+  },
+  tlDotNext: {
+    borderColor: ACCENT,
+    borderStyle: "dashed",
+    backgroundColor: BG,
   },
   tlContent: {
     flex: 1,
@@ -261,7 +266,7 @@ const Cv = ({ avatar }: { avatar: string | null }) => (
           <View style={styles.eyebrowRow}>
             <View style={styles.eyebrowDot} />
             <Text style={styles.eyebrowText}>
-              Senior Software Engineer & Tech Lead · London
+              Senior Software Engineer & Tech Lead
             </Text>
           </View>
           <Text style={styles.name}>Erwann Mest</Text>
@@ -292,6 +297,25 @@ const Cv = ({ avatar }: { avatar: string | null }) => (
       <Text style={styles.techLine}>{coreTech.join(SEP)}</Text>
 
       <Text style={styles.sectionLabel}>Experience</Text>
+
+      {/* A forward-looking "open role" at the top of the timeline — a dashed dot
+          marks it as the next, not-yet-written entry. */}
+      <View style={styles.tlRow} wrap={false}>
+        <View style={styles.tlRail}>
+          <View style={[styles.tlDot, styles.tlDotNext]} />
+        </View>
+        <View style={styles.tlContent}>
+          <View style={styles.entryHead}>
+            <Text style={styles.entryRole}>Open to opportunities</Text>
+            <Text style={styles.entryPeriod}>Next</Text>
+          </View>
+          <Text style={styles.entryOrg}>Your company?</Text>
+          <Text style={styles.entrySummary}>
+            Exploring the right next role in systems, developer experience, and
+            AI-assisted engineering — it could be with you.
+          </Text>
+        </View>
+      </View>
 
       {experience.map((item, index) => (
         <View
