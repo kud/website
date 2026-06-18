@@ -1,3 +1,19 @@
+/* Layout shell --------------------------------------------------------------*/
+/* On desktop .home is transparent — the hero and timeline flow normally. On
+   mobile it becomes the scroll-snap container that drives the slides. */
+.home {
+  display: contents;
+}
+
+/* Mobile-only slide elements: hidden on desktop, where the split-screen hero
+   carries everything instead. */
+.slideCard,
+.slideAbout,
+.cardAvatar,
+.cardLinks {
+  display: none;
+}
+
 /* Hero ----------------------------------------------------------------------*/
 .hero {
   display: flex;
@@ -468,32 +484,132 @@
 
 /* Responsive ----------------------------------------------------------------*/
 @media (max-width: 860px) {
-  .hero {
-    flex-direction: column;
+  /* .home becomes the scroll-snap container: each slide locks to a full screen.
+     A snap area taller than the viewport (the timeline) still scrolls freely
+     per spec, so mandatory snapping never traps it. */
+  .home {
+    display: block;
+    height: 100svh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
   }
 
-  /* The full-bleed split crops the face on a narrow screen. Show the portrait
-     as a rounded avatar instead (matching /projects) — the gravatar is square,
-     so a square→circle crop keeps the whole face visible. */
-  .photo {
-    flex: none;
-    width: 152px;
-    height: 152px;
-    margin: 44px auto 0;
+  /* The desktop split-screen hero is swapped out for the mobile slides. */
+  .hero {
+    display: none;
+  }
+
+  .slideCard,
+  .slideAbout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 48px 30px;
+    text-align: center;
+    scroll-snap-align: start;
+    background: #fdfbf8;
+    color: #1f1813;
+    font-family: var(--font-sans), system-ui, sans-serif;
+  }
+
+  /* The about slide is content-heavy, so top-align it (centring a long column
+     leaves weird gaps) and pin the scroll hint to the bottom. Left-align the
+     reading content for a clean shared edge. */
+  .slideAbout {
+    justify-content: flex-start;
+    text-align: left;
+    padding-top: 60px;
+    padding-bottom: 40px;
+    border-top: 1px solid #ece5db;
+  }
+
+  .slideAbout .bio {
+    font-size: 16px;
+    line-height: 1.72;
+  }
+
+  .slideAbout .focus {
+    justify-content: flex-start;
+  }
+
+  .slideAbout .personal {
+    margin-bottom: 0;
+  }
+
+  .slideAbout .scrollHint {
+    align-self: center;
+    margin-top: auto;
+    padding-top: 32px;
+  }
+
+  /* Slide 1 — carte de visite: the portrait as a rounded avatar. The gravatar
+     is square, so a square→circle crop keeps the whole face visible. */
+  .cardAvatar {
+    display: block;
+    width: 156px;
+    height: 156px;
+    margin: 0 auto 28px;
     border-radius: 50%;
     border: 2px solid #e7e0d6;
+    background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=512");
+    background-size: cover;
     background-position: center;
     box-shadow:
       0 0 0 5px rgba(194, 112, 61, 0.1),
       0 16px 34px -16px rgba(0, 0, 0, 0.28);
   }
 
-  /* Centre the hero on mobile so it reads as a balanced profile card — but keep
-     the long bio left-aligned, since centred multi-line body text is hard to
-     read. */
-  .inner {
-    padding: 34px 28px 64px;
-    text-align: center;
+  .cardLinks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    margin-top: 38px;
+  }
+
+  /* On the carte-de-visite slide the socials are a primary action, so give them
+     real button presence and a comfortable tap target (≥48px). */
+  .cardLinks .socials {
+    gap: 12px;
+  }
+
+  .cardLinks .socials a {
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+    color: #2d2822;
+    background: #fff;
+    border: 1px solid #e2dacd;
+    box-shadow: 0 3px 10px -4px rgba(31, 24, 19, 0.18);
+  }
+
+  .cardLinks .socials a:active {
+    transform: translateY(1px);
+  }
+
+  .cardLinks .socialIcon {
+    width: 23px;
+    height: 23px;
+  }
+
+  /* Let the carte-de-visite text breathe — looser vertical rhythm and a more
+     open tagline to match the generous whitespace around it. */
+  .cardAvatar {
+    margin-bottom: 34px;
+  }
+
+  .slideCard .eyebrow {
+    margin-bottom: 26px;
+  }
+
+  .slideCard .name {
+    margin-bottom: 24px;
+  }
+
+  .slideCard .tagline {
+    line-height: 1.5;
   }
 
   .eyebrow,
@@ -503,11 +619,14 @@
     justify-content: center;
   }
 
+  /* Keep the long bio left-aligned — centred multi-line body text reads poorly. */
   .bio {
     text-align: left;
   }
 
   .timeline {
-    padding: 64px 24px 80px;
+    min-height: 100svh;
+    padding: 44px 24px 72px;
+    scroll-snap-align: start;
   }
 }
