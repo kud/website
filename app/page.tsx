@@ -8,7 +8,7 @@ import {
 } from "@/components/social-icons"
 import { ExperienceTimeline } from "@/components/experience-timeline"
 import { FocusTags } from "@/components/focus-tags"
-import { HeroName } from "@/components/hero-name"
+import { Duck } from "@/components/duck"
 import { yearsOfExperience } from "@/lib/experience"
 import styles from "./page.module.css"
 
@@ -35,6 +35,13 @@ const Eyebrow = () => (
   </p>
 )
 
+// data-duck-message summons the easter-egg duck on hover (see components/duck).
+const Name = () => (
+  <h1 className={styles.name} data-duck="greeting">
+    Erwann&nbsp;Mest
+  </h1>
+)
+
 const Tagline = () => (
   <p className={styles.tagline}>
     Less friction, more clarity, for the people who use software, and the people
@@ -45,11 +52,12 @@ const Tagline = () => (
 const Bio = () => (
   <>
     <p className={styles.bio}>
-      I think beyond tickets and lines of code: in systems, workflows, and the
-      people they serve. Software engineering, technical leadership, systems
-      design. To me, that&apos;s one job. I want to understand how a complex
-      system actually works (software, a team, an organisation, the way people
-      deal with each other) and make it simpler and more humane.
+      I think beyond <span data-duck="tickets">tickets</span> and lines of code:
+      in systems, workflows, and the people they serve. Software engineering,
+      technical leadership, systems design. To me, that&apos;s one job. I want
+      to understand how a complex system actually works (software, a team, an
+      organisation, the way people deal with each other) and make it simpler and
+      more humane.
     </p>
     <p className={styles.bio}>
       Most of what I do comes down to one question:{" "}
@@ -114,6 +122,7 @@ const SocialLinks = () => (
         <a
           href={href}
           aria-label={label}
+          data-duck={label === "Email" ? "contact" : undefined}
           {...(isExternal(href) ? { target: "_blank", rel: "noreferrer" } : {})}
         >
           <Icon className={styles.socialIcon} />
@@ -140,7 +149,7 @@ const HeroDesktop = () => (
     <div className={styles.content}>
       <div className={styles.inner}>
         <Eyebrow />
-        <HeroName />
+        <Name />
         <Tagline />
         <Bio />
         <FocusTags />
@@ -162,7 +171,7 @@ const HeroMobile = () => (
     <section className={styles.slideCard}>
       <div className={styles.cardAvatar} role="img" aria-label="Erwann Mest" />
       <Eyebrow />
-      <HeroName />
+      <Name />
       <Tagline />
       <div className={styles.cardLinks}>
         <div className={styles.actions}>
@@ -186,6 +195,7 @@ const Home = () => (
     <HeroDesktop />
     <HeroMobile />
     <ExperienceTimeline />
+    <Duck />
   </div>
 )
 
