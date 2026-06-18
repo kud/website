@@ -9,6 +9,7 @@ type AvatarImageProps = {
   width: number
   height: number
   className?: string
+  placeholderIcon?: boolean
 }
 
 const cx = (...classes: Array<string | false | undefined>) =>
@@ -20,6 +21,7 @@ export const AvatarImage = ({
   width,
   height,
   className,
+  placeholderIcon = true,
 }: AvatarImageProps) => {
   const [loaded, setLoaded] = useState(false)
   const imageRef = useRef<HTMLImageElement>(null)
@@ -37,7 +39,7 @@ export const AvatarImage = ({
       aria-label={alt}
     >
       <span className={styles.placeholder} aria-hidden="true">
-        <span className={styles.placeholderIcon} />
+        {placeholderIcon ? <span className={styles.placeholderIcon} /> : null}
       </span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

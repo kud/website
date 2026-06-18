@@ -149,6 +149,7 @@ const HeroDesktop = () => (
       width={1028}
       height={1028}
       className={styles.photo}
+      placeholderIcon={false}
     />
 
     <div className={styles.content}>
