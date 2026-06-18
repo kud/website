@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { AvatarImage } from "@/components/avatar-image"
 import { BackLink } from "@/components/back-link"
 import { getProjects, type Project } from "@/lib/projects"
 import { getIcons } from "@/lib/icons"
@@ -105,8 +106,7 @@ const ProjectsIndex = async () => {
           ← kud.io
         </BackLink>
         <div className={styles.heroInner}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <AvatarImage
             src={AVATAR}
             alt="Erwann Mest"
             width={148}

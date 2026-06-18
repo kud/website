@@ -1,4 +1,5 @@
 import { RevealLink } from "@/components/reveal-link"
+import { AvatarImage } from "@/components/avatar-image"
 import {
   GitHubIcon,
   LinkedInIcon,
@@ -24,6 +25,12 @@ const socials = [
   },
   { label: "Email", href: "mailto:m+site@kud.io", Icon: MailIcon },
 ]
+
+const AVATAR =
+  "https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=512"
+
+const DESKTOP_AVATAR =
+  "https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=2056"
 
 const isExternal = (href: string) => href.startsWith("http")
 
@@ -136,7 +143,13 @@ const SocialLinks = () => (
 // Desktop: the split-screen hero (photo beside a single column of content).
 const HeroDesktop = () => (
   <section className={styles.hero}>
-    <div className={styles.photo} role="img" aria-label="Erwann Mest" />
+    <AvatarImage
+      src={DESKTOP_AVATAR}
+      alt="Erwann Mest"
+      width={1028}
+      height={1028}
+      className={styles.photo}
+    />
 
     <div className={styles.content}>
       <div className={styles.inner}>
@@ -161,7 +174,13 @@ const HeroDesktop = () => (
 const HeroMobile = () => (
   <>
     <section className={styles.slideCard}>
-      <div className={styles.cardAvatar} role="img" aria-label="Erwann Mest" />
+      <AvatarImage
+        src={AVATAR}
+        alt="Erwann Mest"
+        width={156}
+        height={156}
+        className={styles.cardAvatar}
+      />
       <Eyebrow />
       <Name />
       <Tagline />

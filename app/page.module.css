@@ -26,11 +26,9 @@
 }
 
 .photo {
+  --avatar-placeholder-background: linear-gradient(135deg, #f0efed 0%, #dedbd7 100%);
+
   flex: 1 1 42%;
-  background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=2056");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
 }
 
 .content {
@@ -642,7 +640,7 @@
   .slideAbout {
     justify-content: flex-start;
     text-align: left;
-    padding-top: 60px;
+    padding-top: clamp(34px, 6svh, 52px);
     padding-bottom: 40px;
     border-top: 1px solid #ece5db;
   }
@@ -678,9 +676,6 @@
     /* Shared element: the same name on /projects' avatar lets the View
        Transitions API morph this circle to its new spot instead of teleporting. */
     view-transition-name: site-avatar;
-    background-image: url("https://www.gravatar.com/avatar/e6eaeaa6da69e804c27c2d4cd55107e0?s=512");
-    background-size: cover;
-    background-position: center;
     box-shadow:
       0 0 0 5px rgba(194, 112, 61, 0.1),
       0 16px 34px -16px rgba(0, 0, 0, 0.28);
