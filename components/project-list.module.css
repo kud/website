@@ -253,6 +253,9 @@
   max-width: 1040px;
   margin: 0 auto;
   padding-top: 60px;
+  /* When the app landing's back link anchors to #apps, leave breathing room
+     above the section so it isn't jammed under the viewport top. */
+  scroll-margin-top: 32px;
 }
 
 .section[data-cat="cli"] {

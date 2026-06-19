@@ -233,7 +233,9 @@ const AppLanding = ({ project }: { project: Project }) => {
     <div className={styles.appLanding} style={accentStyle}>
       <section className={styles.appHero}>
         <div className={styles.heroGrid} />
-        <MorphLink href="/projects" className={styles.back}>
+        {/* Anchor back to the Apps row so the icon morphs into its visible tile,
+            rather than landing on the hero with the tile off-screen. */}
+        <MorphLink href="/projects#apps" className={styles.back}>
           ← Projects
         </MorphLink>
         <div className={styles.appHeroContent}>

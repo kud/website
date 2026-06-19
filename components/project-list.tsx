@@ -268,6 +268,7 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
         visibleGroups.map((group) => (
           <section
             key={group.key}
+            id={group.key === "app" ? "apps" : undefined}
             className={styles.section}
             data-cat={group.key}
           >
