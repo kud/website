@@ -69,11 +69,12 @@ bespoke visuals live in an optional `landing.mdx`.
 2. **`## Features`** — a short bullet list of what the project does. Use
    `**Title** — description` bullets. (These render on the landing too, since the
    landing _is_ the README.)
-3. **One screenshot** _(optional)_ — only when there's a GUI worth showing. CLIs
-   should prefer a ` ```console ` fenced block (command + sample output) over a
-   screenshot: it renders crisply on kud.io as a terminal, matches the theme, and
-   is copy-pasteable. Don't bake terminal chrome into a screenshot — that's CSS on
-   kud.io's side.
+3. **One screenshot** _(optional)_ — placed **immediately after the Features
+   list** (the hero pitches, Features explains, then the screenshot pays it off),
+   only when there's a GUI worth showing. CLIs should prefer a ` ```console `
+   fenced block (command + sample output) over a screenshot: it renders crisply on
+   kud.io as a terminal, matches the theme, and is copy-pasteable. Don't bake
+   terminal chrome into a screenshot — that's CSS on kud.io's side.
 4. **`## Install`** — the install command(s).
 5. **`## Usage`** — a short, representative usage example (a ` ```console ` block
    for CLIs).
