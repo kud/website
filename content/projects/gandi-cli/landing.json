@@ -1,6 +1,0 @@
-{
-  "intro": "A modern CLI for the Gandi v5 REST API — manage your domains and LiveDNS records from the terminal.",
-  "features": [],
-  "install": "npm install -g @kud/gandi-cli",
-  "examples": []
-}
