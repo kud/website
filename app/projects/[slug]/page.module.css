@@ -699,6 +699,22 @@
   box-shadow: 0 0 14px var(--primary-light);
 }
 
+/* The first content block sits flush at the top — the 56px section gap on h2 is
+   for spacing BETWEEN sections, not above the first one (which otherwise floats
+   below the TOC rail). Covers a leading heading, paragraph, or image. */
+.readme :global(h2:first-child),
+.readme :global(p:first-child),
+.readme :global(figure:first-child),
+.readme :global(div:first-child > :first-child) {
+  margin-top: 0;
+}
+
+/* Content images (screenshots, demo gifs) get a subtle rounded frame. */
+.readme :global(img) {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
 .readme :global(h3) {
   font-size: 18px;
   font-weight: 700;
