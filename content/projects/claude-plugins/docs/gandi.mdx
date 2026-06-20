@@ -1,0 +1,41 @@
+---
+title: 🌐 gandi
+description: Manage Gandi domains, DNS records, and web redirects from Claude — driven by the gandi CLI with structured JSON output.
+---
+
+The **gandi** plugin drives the
+[`@kud/gandi-cli`](https://www.npmjs.com/package/@kud/gandi-cli) command-line
+tool — there is no MCP server. It manages Gandi domains, DNS records, and web
+redirects, using the CLI's `--json` output for structured, scriptable results.
+
+## 🧰 What it bundles
+
+| Skill    | Trigger  | What it does                                                     |
+| -------- | -------- | ---------------------------------------------------------------- |
+| `/gandi` | `/gandi` | Manage DNS records, domains, and web redirects on a Gandi domain |
+
+## 📦 Install
+
+```
+/plugin install gandi@kud --scope user
+```
+
+## 🔧 Configuration
+
+Install the CLI and provide a Gandi Personal Access Token:
+
+```
+npm install -g @kud/gandi-cli
+export GANDI_API_KEY="your-token-here"
+gandi doctor
+```
+
+Scope the token to **Manage technical configuration** (`domain:tech`) for DNS and
+redirects. See the CLI's
+[authentication guide](https://kud.io/projects/gandi-cli/docs/authentication).
+
+## 🔗 Links
+
+- npm: [`@kud/gandi-cli`](https://www.npmjs.com/package/@kud/gandi-cli)
+- GitHub: [kud/gandi-cli](https://github.com/kud/gandi-cli)
+- Docs: [kud.io/projects/gandi-cli](https://kud.io/projects/gandi-cli/docs)

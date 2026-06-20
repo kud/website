@@ -14,8 +14,8 @@ List every DNS record for a domain:
 gandi dns list example.com
 ```
 
-**Requires:** the **Accéder aux enregistrements DNS de vos domaines**
-permission on your token.
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token.
 
 ## ✏️ Create or update a record
 
@@ -40,19 +40,61 @@ gandi dns set example.com CNAME blog example.com
 gandi dns set example.com TXT @ "v=spf1 include:_mailcust.gandi.net ~all"
 ```
 
-**Requires:** the **Gérer les enregistrements DNS de vos domaines** permission on
-your token.
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token.
+
+## ➕ Append a value
+
+A DNS record (rrset) can hold several values — multiple `A` addresses, several
+`TXT` strings, and so on. `gandi dns set` **replaces** the whole set, so use
+`gandi dns add` to append a value **without** clobbering the existing ones:
+
+```sh
+gandi dns add example.com A www 5.6.7.8
+gandi dns add example.com TXT @ "google-site-verification=…"
+```
+
+`add` reads the current record, adds your value, and keeps the existing TTL
+(override it with `--ttl`). If the value is already present, it's left
+untouched.
+
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token.
+
+## 🔍 Show a record
+
+Print a single record — its values and TTL:
+
+```sh
+gandi dns get example.com A www
+```
+
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token.
+
+## 📤 Export the zone
+
+Export the entire zone as a BIND-format master file — handy for backups or
+review. Redirect it to a file:
+
+```sh
+gandi dns export example.com > example.com.zone
+```
+
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token.
 
 ## 🗑️ Delete a record
 
-Remove a record by type and name:
+Remove a record by type and name. Deletes ask for confirmation — pass `--yes`
+to skip the prompt (for example, in scripts):
 
 ```sh
-gandi dns delete example.com A www
+gandi dns delete example.com A www --yes
 ```
 
-**Requires:** the **Gérer les enregistrements DNS de vos domaines** permission on
-your token.
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token.
 
 ## 📖 Command reference
 
@@ -61,7 +103,10 @@ your token.
 | `gandi dns list <domain>`                                      | List all DNS records for a domain |
 | `gandi dns set <domain> <type> <name> <value>`                 | Create or replace a DNS record    |
 | `gandi dns set <domain> <type> <name> <value> --ttl <seconds>` | Set with a custom TTL in seconds  |
-| `gandi dns delete <domain> <type> <name>`                      | Delete a DNS record               |
+| `gandi dns add <domain> <type> <name> <value>`                 | Append a value without replacing  |
+| `gandi dns get <domain> <type> <name>`                         | Show a single record              |
+| `gandi dns export <domain>`                                    | Export the zone as a BIND file    |
+| `gandi dns delete <domain> <type> <name> --yes`                | Delete a record (skip the prompt) |
 
 Not sure which commands your token can run? Use
 [`gandi doctor`](/projects/gandi-cli/docs/doctor) to check your scopes.

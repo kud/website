@@ -4,25 +4,33 @@ description: Create a Gandi Personal Access Token, scope it, and configure gandi
 ---
 
 gandi-cli authenticates with **Personal Access Tokens (PATs)** — not legacy API
-keys. PATs let you grant fine-grained, time-limited permissions.
+keys. Gandi has **no CLI login**: there is no API to mint a token, so you create
+one once in the dashboard and hand it to the CLI.
+
+Any command run **without a token**, or with one Gandi **rejects**, prints
+step-by-step setup guidance — so you never have to memorise the steps below.
 
 ## 🔑 Create a token
 
-Generate a token at **gandi.net → Account → Partage → Créer un jeton d'accès
-personnel**, granting only the permissions you need.
+Generate a token at **[admin.gandi.net](https://admin.gandi.net) → Account →
+Personal Access Tokens → Create**, granting only the permissions you need.
 
-| Permission                                      | Required for                        |
-| ----------------------------------------------- | ----------------------------------- |
-| Voir la liste de vos domaines                   | `gandi domain list`                 |
-| Gérer le renouvellement de vos domaines         | `gandi domain renew`                |
-| Accéder aux enregistrements DNS de vos domaines | `gandi dns list`                    |
-| Gérer les enregistrements DNS de vos domaines   | `gandi dns set`, `gandi dns delete` |
+| Dashboard permission                      | Scope                        | Unlocks                              |
+| ----------------------------------------- | ---------------------------- | ------------------------------------ |
+| Manage technical configuration of domains | `domain:tech`                | DNS records **and web redirections** |
+| View and renew domains                    | `domain:view` `domain:renew` | `gandi domain list` / `renew`        |
+
+For DNS work, **Manage technical configuration** (`domain:tech`) is the only
+permission strictly required — it covers both DNS records and web redirections.
+Leave every other product (Email, Web Hosting, Cloud, Certificates…) off unless
+you use it: a narrower token is a smaller risk if it ever leaks.
 
 ## ⚙️ Configure gandi-cli
 
-### Via environment variable
+The CLI checks the `GANDI_API_KEY` environment variable first, then the config
+file — either mechanism works.
 
-The `GANDI_API_KEY` environment variable takes precedence over the config file:
+### Via environment variable
 
 ```sh
 export GANDI_API_KEY="your-token-here"
@@ -36,9 +44,21 @@ Store the token in `~/.config/gandi/config.toml`:
 api_key = "your-token-here"
 ```
 
+## 🩹 Troubleshooting
+
+The error you see tells you which case you're in:
+
+- **Not authenticated** — no token found in the environment or config file.
+  Follow the steps above to create one.
+- **Token rejected** — a token was found but Gandi refused it. Usual causes: it
+  is **expired**, **mistyped / partially pasted**, or **missing the scope** for
+  that command.
+
 ## ✅ Best practices
 
 - ✅ Only grant the permissions each command actually needs.
-- ✅ Set an expiry date on the token.
-- ✅ Use [`gandi doctor`](/projects/gandi-cli/docs/doctor) to verify scopes before
-  running commands.
+- ✅ Set an expiry date on the token — Gandi has no API to read or renew it, so
+  rotate it manually when [`gandi doctor`](/projects/gandi-cli/docs/doctor)
+  shows the expiry approaching.
+- ✅ Use [`gandi doctor`](/projects/gandi-cli/docs/doctor) to verify scopes
+  before running commands.

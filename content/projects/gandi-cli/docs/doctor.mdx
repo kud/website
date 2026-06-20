@@ -3,25 +3,29 @@ title: 🩺 Doctor
 description: Inspect your token info and see which commands your scopes unlock.
 ---
 
-`gandi doctor` is a built-in health check. It reads your Personal Access Token,
-reports its expiry and entity info, and shows exactly which commands each scope
-unlocks.
+`gandi doctor` is a built-in health check. It introspects your Personal Access
+Token and reports its **name**, **expiry**, and **granted scopes** — so you can
+see at a glance which commands the token unlocks.
 
 ```sh
 gandi doctor
 ```
 
 ```console
-Gandi CLI
-Expires in 29 days · 1 entity
+Token gandi-cli
+Expires in 59 days · 1 entity
 
 ✓  domain:view   gandi domain list
-✗  domain:renew  gandi domain renew
+○  domain:renew  gandi domain renew
 ✓  domain:tech   gandi dns list / set / delete
 ```
 
-A `✓` means the scope is granted and the listed commands will work; a `✗` means
-the token lacks that permission and those commands will fail.
+Each scope row tells you what the token can do:
+
+- **`✓` (green)** — the scope is granted; the listed commands will work.
+- **`○` (dim)** — the scope is not granted. This is **not an error** — it's
+  usually an intentional least-privilege choice. The matching command stays
+  locked until you re-create the token with that permission ticked.
 
 ## ⏰ When to run it
 
@@ -29,6 +33,11 @@ the token lacks that permission and those commands will fail.
 - **Before a command fails** — check whether a permission is missing rather than
   guessing.
 - **When a token is about to expire** — the header shows how many days remain.
+  Gandi has no API to renew a token, so rotate it manually before it lapses.
 
-To widen or narrow your scopes, see
-[Authentication](/projects/gandi-cli/docs/authentication).
+## 🩹 When the token is missing or rejected
+
+If no token is configured, or Gandi rejects the one you have, `doctor` (and
+every other command) prints step-by-step setup guidance instead of a cryptic
+error. See [Authentication](/projects/gandi-cli/docs/authentication) to widen or
+narrow your scopes.

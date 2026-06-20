@@ -12,69 +12,41 @@ opening the Gandi dashboard.
 
 ## ✨ Features
 
-- 🌐 **Domain management** — list all registered domains with expiry dates and
+- 🌐 **Domain management** — list registered domains with expiry dates and
   statuses, and renew them for one or more years.
 - 🔧 **Full DNS control** — list, create, update, and delete LiveDNS records with
-  support for custom TTLs and all standard record types.
-- 🩺 **Permission doctor** — built-in `gandi doctor` checks your PAT scopes and
-  shows exactly which commands are unlocked.
-- 🔐 **PAT authentication** — uses Gandi Personal Access Tokens with fine-grained
-  scope control, so you only grant what you need.
+  custom TTLs and all standard record types.
+- 🩺 **Permission doctor** — `gandi doctor` reports your token's name, expiry, and
+  scopes, and shows which commands each scope unlocks.
+- 🔐 **PAT authentication** — fine-grained, least-privilege Gandi Personal Access
+  Tokens; graceful guidance when a token is missing or rejected.
 - ⚡ **Rich terminal UI** — built with Ink and React for spinners, aligned tables,
   and clean formatted output.
-- 📦 **Zero config** — set one env var or add one line to a TOML file and you're
-  ready to go.
+- 🤖 **Script & AI friendly** — add `--json` to any command for structured output,
+  non-zero exit codes on failure, and `--yes` to skip confirmations.
 
-## 📦 Install
+## 🤖 Scripting & JSON output
 
-```sh
-npm install -g @kud/gandi-cli
-```
-
-This adds the `gandi` command to your `PATH`. See
-[Installation](/projects/gandi-cli/docs/installation) for requirements and
-alternatives.
-
-## 🚀 Quick start
-
-### 1. Authenticate
-
-Generate a **Personal Access Token** at **gandi.net → Account → Partage → Créer
-un jeton d'accès personnel**, then export it:
+Every command accepts a global `--json` flag. Reads print the data as JSON,
+writes print a result object (`{ "ok": true, … }`), and errors print
+`{ "error": "…" }` to **stderr** with a non-zero exit code:
 
 ```sh
-export GANDI_API_KEY="your-token-here"
+gandi dns list example.com --json
+gandi domain info example.com --json | jq '.nameservers'
+gandi dns delete example.com A www --json --yes
 ```
 
-### 2. Check permissions
+Destructive commands still require `--yes` in `--json` mode, so an automated run
+can never delete something by accident.
 
-```sh
-gandi doctor
-```
+## 🧭 Where to go next
 
-```console
-Gandi CLI
-Expires in 29 days · 1 entity
-
-✓  domain:view   gandi domain list
-✗  domain:renew  gandi domain renew
-✓  domain:tech   gandi dns list / set / delete
-```
-
-### 3. Manage domains and DNS
-
-```sh
-gandi domain list
-
-gandi dns list example.com
-gandi dns set example.com A www 1.2.3.4 --ttl 300
-gandi dns delete example.com A www
-```
-
-## 🧭 Next steps
-
+- [Installation](/projects/gandi-cli/docs/installation) — requirements and how to
+  install the `gandi` command.
+- [Authentication](/projects/gandi-cli/docs/authentication) — create a token,
+  scope it, and configure the CLI.
 - [Domains](/projects/gandi-cli/docs/domains) — list and renew your domains.
 - [DNS](/projects/gandi-cli/docs/dns) — manage LiveDNS records.
+- [Redirects](/projects/gandi-cli/docs/redirect) — manage web forwarding.
 - [Doctor](/projects/gandi-cli/docs/doctor) — inspect token info and scopes.
-- [Authentication](/projects/gandi-cli/docs/authentication) — tokens, scopes,
-  and config.

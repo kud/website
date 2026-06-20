@@ -3,88 +3,23 @@ title: "sim-crafter-cli"
 description: "📱 Minimal simctl wrapper — list, create, boot and screenshot iOS simulators from your terminal"
 ---
 
-Sim Crafter is a command-line interface tool designed to streamline the management of iOS simulators. With Sim Crafter, users can effortlessly list, create, delete, boot up simulators, and take screenshots directly from the terminal.
+> A CLI tool to manage iOS simulators on macOS — list, create, delete, boot, and screenshot, all from the terminal.
 
-## Features
-
-- **List Simulators**: Display all available iOS simulators, including their OS versions, UDIDs, state, and availability.
-- **Create Simulators**: Quickly create new simulators by selecting the device type and iOS version.
-- **Delete Simulators**: Remove unnecessary simulators with ease.
-- **Boot Simulators**: Start up a simulator by choosing from a list of available devices.
-- **Take Screenshots**: Capture screenshots from an active simulator.
-
-## Installation
-
-Sim Crafter can be installed through npm. To add it to your project, run the following command:
+## Install
 
 ```bash
 npm install -g @kud/sim-crafter-cli
 ```
 
-Make sure you have Node.js installed on your system to use Sim Crafter.
+This installs the `sim-crafter` command globally. Requires macOS with Xcode (the tool wraps `xcrun simctl`) and Node.js.
 
-## Usage
-
-### Listing Available Simulators
-
-To see all available simulators:
+## Development
 
 ```bash
-sim-crafter list-remote
+git clone https://github.com/kud/sim-crafter-cli.git
+cd sim-crafter-cli
+npm install
+./index.js list
 ```
 
-### Listing Simulators
-
-To see all installed simulators:
-
-```bash
-sim-crafter list
-```
-
-### Creating a Simulator
-
-To create a new simulator:
-
-```bash
-sim-crafter create
-```
-
-Follow the prompts to choose a device type and iOS runtime for your new simulator.
-
-### Deleting a Simulator
-
-To delete one or more simulators:
-
-```bash
-sim-crafter delete
-```
-
-You will be prompted to select the simulators you wish to delete from the presented list.
-
-### Booting a Simulator
-
-To boot up a simulator:
-
-```bash
-sim-crafter boot
-```
-
-Select a simulator to boot from the list of available devices.
-
-### Taking a Screenshot
-
-To capture a screenshot of a booted simulator:
-
-```bash
-sim-crafter screenshot
-```
-
-Choose a booted simulator and specify the path where you want the screenshot saved.
-
-## Contributing
-
-Your contributions are welcome! Feel free to submit pull requests or open issues to suggest improvements or add new features to Sim Crafter.
-
-## License
-
-Sim Crafter is distributed under the MIT License. See `LICENSE` for more information.
+📚 **Full documentation → https://kud.io/projects/sim-crafter-cli/docs**

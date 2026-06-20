@@ -5,7 +5,7 @@ title: claude-plugins
 <Hero
   badge="MIT · Claude Code · MCP"
   title="claude-plugins"
-  tagline="A curated marketplace of Claude Code plugins — each bundles one of kud's MCP servers with its companion skills, so a single /plugin install gives you the tools and the slash commands together."
+  tagline="A curated marketplace of Claude Code plugins — each bundles one of kud's MCP servers or CLI workflows with its companion skills, so a single /plugin install gives you the tools and the slash commands together."
 >
   <Action href="/projects/claude-plugins/docs" primary>
     Documentation →
@@ -14,7 +14,7 @@ title: claude-plugins
 </Hero>
 
 <Stats>
-  <Stat value="7" label="Plugins" />
+  <Stat value="8" label="Plugins" />
   <Stat value="1" label="Command to add" />
   <Stat value="MCP" label="Server + skills" />
   <Stat value="MIT" label="License" />
@@ -22,13 +22,13 @@ title: claude-plugins
 
 <Section
   eyebrow="Why claude-plugins"
-  title="The MCP server and its skills, in one install"
-  sub="Normally you register an MCP server, edit config files, then hunt down the matching skills and install them separately. Each plugin here bundles the server with its companion skills into a single unit — install one, get the tools and the workflows in one shot."
+  title="The integration and its skills, in one install"
+  sub="Normally you register an MCP server or CLI workflow, edit config files, then hunt down the matching skills and install them separately. Each plugin here bundles the integration with its companion skills into a single unit — install one, get the tools and the workflows in one shot."
 >
   <Install label="the usual way">
 
 ```text
-# 1. add the MCP server to your config
+# 1. add the integration to your config
 # 2. find and install the matching skills
 # 3. wire up the credentials by hand
 ```
@@ -72,8 +72,8 @@ title: claude-plugins
 
 <Section
   eyebrow="The plugins"
-  title="Seven servers, ready to install"
-  sub="Each plugin wraps one of kud's published MCP servers and ships the slash commands for its most common workflows."
+  title="Eight integrations, ready to install"
+  sub="Each plugin wraps one of kud's published MCP servers or CLI workflows and ships the slash commands for its most common tasks."
 >
   <Features>
     <Feature title="opencode">
@@ -100,6 +100,10 @@ title: claude-plugins
     <Feature title="google-keep">
       Capture notes and manage Google Keep checklists.
     </Feature>
+    <Feature title="gandi">
+      Manage Gandi domains, DNS records, and web redirects through the
+      @kud/gandi-cli workflow.
+    </Feature>
   </Features>
 </Section>
 
@@ -124,10 +128,10 @@ title: claude-plugins
 
   </Install>
 
-  <Install label="wind down after work">
+  <Install label="manage a DNS record">
 
 ```console
-/trakt-whats-on
+/gandi set A www 1.2.3.4
 ```
 
   </Install>

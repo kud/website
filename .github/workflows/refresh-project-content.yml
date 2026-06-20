@@ -1,0 +1,53 @@
+name: Refresh project content
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [project-content-updated]
+  schedule:
+    - cron: "17 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-project-content
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync project content
+        run: npm run sync
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build website
+        run: npm run build
+
+      - name: Commit refreshed content
+        run: |
+          if [ -z "$(git status --porcelain -- content/projects content/landings)" ]; then
+            echo "No project content changes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/projects content/landings
+          git commit -m "chore: refresh project content"
+          git push

@@ -1,0 +1,52 @@
+---
+title: ↪️ Redirects
+description: Manage web redirections (web forwarding) for a domain.
+---
+
+The `gandi redirect` group manages **web redirections** (web forwarding) — rules
+that forward a hostname to another URL. They share the same scope as DNS, so a
+`domain:tech` token covers them.
+
+## 📋 List redirects
+
+Show every web redirect configured for a domain:
+
+```sh
+gandi redirect list example.com
+```
+
+## ➕ Add a redirect
+
+Forward a source host to a target URL. The `--type` flag controls how the
+redirect behaves:
+
+```sh
+gandi redirect add example.com www https://example.org
+gandi redirect add example.com shop https://shop.example.org --type http302
+```
+
+| `--type`  | Behaviour                                                           |
+| --------- | ------------------------------------------------------------------- |
+| `http301` | Permanent redirect (default) — browsers and search engines cache it |
+| `http302` | Temporary redirect — not cached                                     |
+| `cloak`   | Frame the target so the original URL stays in the address bar       |
+
+## 🗑️ Delete a redirect
+
+Remove the redirect on a source host. This asks for confirmation — pass `--yes`
+to skip the prompt:
+
+```sh
+gandi redirect delete example.com www --yes
+```
+
+**Requires:** the **Manage technical configuration** (`domain:tech`) permission
+on your token (the same one used for DNS).
+
+## 📖 Command reference
+
+| Command                                                       | Description                     |
+| ------------------------------------------------------------- | ------------------------------- |
+| `gandi redirect list <domain>`                                | List web redirects              |
+| `gandi redirect add <domain> <source> <target> --type <type>` | Add a web redirect              |
+| `gandi redirect delete <domain> <source> --yes`               | Delete a redirect (skip prompt) |
