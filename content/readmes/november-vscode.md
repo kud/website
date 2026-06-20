@@ -3,8 +3,6 @@ title: "november-vscode"
 description: "🌙 Dark VS Code theme with warm amber accents — calm, focused and easy on the eyes"
 ---
 
-![November theme screenshot](https://raw.githubusercontent.com/kud/november-vscode/HEAD/images/screenshot.png)
-
 ## Features
 
 - **Warm amber accents** — a signature amber palette that keeps highlights visible without eye strain
@@ -12,6 +10,8 @@ description: "🌙 Dark VS Code theme with warm amber accents — calm, focused 
 - **Single focused variant** — one well-tuned `vs-dark` theme rather than a sprawling set of half-finished alternatives
 - **Consistent syntax** — carefully mapped token colours across JavaScript, TypeScript, HTML, CSS, and more
 - **Soft UI chrome** — activity bar, sidebar, and panel tones chosen to recede and let code take centre stage
+
+![November theme screenshot](https://raw.githubusercontent.com/kud/november-vscode/HEAD/images/screenshot.png)
 
 ## Install
 

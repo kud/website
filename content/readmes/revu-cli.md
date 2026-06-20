@@ -12,6 +12,14 @@ description: "🔍 Review code diffs in your terminal — annotate lines, export
 - **Persistent reviews** — annotations autosave to `.revu.json` and survive across sessions.
 - **Themeable** — switch theme and view mode from an in-app settings panel, saved to your user config.
 
+<div align="center">
+
+<a href="https://asciinema.org/a/SitNPy6fQpidFCcH">
+  <img src="https://raw.githubusercontent.com/kud/revu-cli/HEAD/assets/demo.gif" alt="revu demo" />
+</a>
+
+</div>
+
 ## Install
 
 ```sh

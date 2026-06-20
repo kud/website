@@ -3,8 +3,6 @@ title: "modern-cobalt2-vscode"
 description: "🎨 A modern take on Cobalt2 for VS Code — deep navy with Palenight syntax colours"
 ---
 
-![Modern Cobalt2 screenshot](https://raw.githubusercontent.com/kud/modern-cobalt2-vscode/HEAD/images/screenshot.png)
-
 ## Features
 
 - **Deep Navy Palette** — rich `#062335` background tones that reduce eye strain during long sessions
@@ -13,6 +11,8 @@ description: "🎨 A modern take on Cobalt2 for VS Code — deep navy with Palen
 - **Full UI Coverage** — activity bar, sidebar, status bar, panels, and terminal all share a coherent dark theme
 - **Single Focused Variant** — one well-tuned `vs-dark` theme rather than a sprawling palette of half-finished alternatives
 - **Drop-in Replacement** — named _Modern Cobalt2_ for straightforward discovery by existing Cobalt2 users
+
+![Modern Cobalt2 screenshot](https://raw.githubusercontent.com/kud/modern-cobalt2-vscode/HEAD/images/screenshot.png)
 
 ## Install
 
