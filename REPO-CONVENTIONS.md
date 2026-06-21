@@ -100,7 +100,12 @@ bespoke visuals live in an optional `landing.mdx`.
 
 - `docs/index.mdx` is the docs home; `docs/meta.json` orders the sidebar:
   `{ "pages": ["index", "..."] }`.
-- **Use emojis** in headings/intros — it's the house style and it reads warmly.
+- **Every page's frontmatter `title` leads with an emoji** — it's the sidebar
+  label, so a bare title looks unfinished next to the others. The index page is
+  `title: 👋 Introduction` (the docs label, **not** the repo name — the landing
+  already shows the project name). Pick a fitting glyph per page, e.g.
+  `⚡ Usage`, `🔐 Authentication`, `📚 Library`, `⌨️ Keybindings`, `⚙️ Configuration`.
+- **Use emojis** in headings/intros too — it's the house style and reads warmly.
 - **Don't link to "the docs" or the landing from inside the docs** — you're
   already there. Cross-link sibling doc pages, not the page you're on.
 - Keep it current: prune instructions for removed flags/commands.
@@ -132,6 +137,6 @@ placeholders (`example.com`, `<your-token>`).
 - [ ] A sharp, benefit-led repo description
 - [ ] `assets/icon.svg` — square, transparent, mark only
 - [ ] Standard README — logo · intro + features + badges + links · install · usage · dev · docs link
-- [ ] `docs/index.mdx` (+ `docs/meta.json`), emojis, no redundant landing/docs links
+- [ ] `docs/index.mdx` (+ `docs/meta.json`); **every page `title` leads with an emoji** (index = `👋 Introduction`, not the repo name); no redundant landing/docs links
 - [ ] No secrets anywhere
 - [ ] _(flagship only)_ a `landing.mdx`
