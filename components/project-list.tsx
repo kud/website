@@ -355,6 +355,11 @@ export const ProjectList = ({ groups }: { groups: Group[] }) => {
                               ★ {project.stars}
                             </span>
                           ) : null}
+                          {project.downloads ? (
+                            <span className={styles.downloads}>
+                              ↓ {project.downloads.toLocaleString()}
+                            </span>
+                          ) : null}
                           {project.language ? (
                             <span className={styles.lang}>
                               {project.language}

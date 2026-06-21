@@ -219,7 +219,17 @@ const ReadmeLanding = ({
   // Section headings (depth 2) drive a simple right-rail TOC.
   const toc = (readme?.data.toc ?? []).filter((item) => item.depth === 2)
   const isList = project.readmeLanding
-  const hasDocs = !isList && projectHasExtraDocs(project.slug)
+  // Raycast extensions live in the raycast/extensions monorepo, so the hero links
+  // to the Raycast Store + the monorepo source rather than a docs route.
+  const isRaycast = project.category === "raycast"
+  const hasDocs = !isList && !isRaycast && projectHasExtraDocs(project.slug)
+  const badgeLabel = isRaycast
+    ? project.downloads
+      ? `${project.downloads.toLocaleString()} installs`
+      : "Raycast extension"
+    : isList
+      ? "Curated list"
+      : "Open source"
 
   return (
     <>
@@ -238,7 +248,7 @@ const ReadmeLanding = ({
           <div className={styles.badge}>
             <span className={styles.badgeDot} />
             {project.license ? `${project.license} · ` : ""}
-            {isList ? "Curated list" : "Open source"}
+            {badgeLabel}
           </div>
           <h1
             className={`${styles.title} ${styles.titleReadme}`}
@@ -250,22 +260,45 @@ const ReadmeLanding = ({
             <p className={styles.tagline}>{project.description}</p>
           ) : null}
           <div className={styles.actions}>
-            {hasDocs ? (
-              <Link
-                href={`/projects/${project.slug}/docs`}
-                className={styles.primary}
-              >
-                Documentation →
-              </Link>
-            ) : null}
-            <a
-              href={project.repoUrl}
-              className={hasDocs ? styles.secondary : styles.primary}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {hasDocs ? "GitHub ↗" : "View on GitHub ↗"}
-            </a>
+            {isRaycast ? (
+              <>
+                <a
+                  href={project.storeUrl ?? project.homepage ?? project.repoUrl}
+                  className={styles.primary}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Raycast Store ↗
+                </a>
+                <a
+                  href={project.repoUrl}
+                  className={styles.secondary}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View source ↗
+                </a>
+              </>
+            ) : (
+              <>
+                {hasDocs ? (
+                  <Link
+                    href={`/projects/${project.slug}/docs`}
+                    className={styles.primary}
+                  >
+                    Documentation →
+                  </Link>
+                ) : null}
+                <a
+                  href={project.repoUrl}
+                  className={hasDocs ? styles.secondary : styles.primary}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {hasDocs ? "GitHub ↗" : "View on GitHub ↗"}
+                </a>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -306,7 +339,9 @@ const ProjectLanding = async ({
 
   const authored = getLandingMdx(slug)
   const icon =
-    project.category === "app" ? null : ((await getIcons())[slug] ?? null)
+    project.category === "app"
+      ? null
+      : ((await getIcons())[slug] ?? project.icon ?? null)
 
   return (
     <main className={styles.page}>

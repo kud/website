@@ -569,6 +569,11 @@
   white-space: nowrap;
 }
 
+.downloads {
+  display: inline-flex;
+  align-items: center;
+}
+
 .lang {
   display: inline-flex;
   align-items: center;

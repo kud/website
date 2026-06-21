@@ -67,9 +67,15 @@ const CATEGORY_META: Record<
     order: 6,
     blurb: "Colour schemes for VS Code, tuned for long sessions in the dark.",
   },
+  raycast: {
+    name: "Raycast Extensions",
+    order: 7,
+    blurb:
+      "Extensions for Raycast that bring file sharing, domains, fonts, and more into the launcher — published to the Raycast Store.",
+  },
   other: {
     name: "Lists & Resources",
-    order: 7,
+    order: 8,
     blurb:
       "Curated lists and references for people who love a beautiful terminal.",
   },
@@ -111,7 +117,7 @@ const ProjectsIndex = async () => {
         accent: app.accent ?? null,
       }
     }
-    return { ...project, icon: icons[project.slug] ?? null }
+    return { ...project, icon: icons[project.slug] ?? project.icon ?? null }
   })
   const groups = groupByCategory(withIcons)
 

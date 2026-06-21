@@ -1,3 +1,5 @@
+import { getRaycastProjects } from "@/lib/raycast"
+
 const OWNER = "kud"
 const TOPIC = "kud-site"
 
@@ -19,6 +21,10 @@ export type Project = {
   language: string | null
   license: string | null
   pushedAt: string
+  // Raycast extensions only: link to the Raycast store and a download count
+  // shown in place of stars (they have no GitHub repo of their own).
+  storeUrl?: string | null
+  downloads?: number | null
 }
 
 // Reserved `kud-site-*` topics that are NOT categories: behaviour flags and the
@@ -101,9 +107,12 @@ export const getProjects = async (): Promise<Project[]> => {
     `https://api.github.com/search/repositories?q=user:${OWNER}+topic:${TOPIC}&sort=updated&per_page=100`,
     { headers: ghHeaders(), next: { revalidate: 3600 } },
   )
-  if (!res.ok) return []
+  // Raycast extensions come from content/raycast.json (no GitHub repo to tag), so
+  // they're appended regardless — even when the topic search fails or is empty.
+  const raycast = getRaycastProjects()
+  if (!res.ok) return raycast
   const data = (await res.json()) as { items?: Repo[] }
-  return (data.items ?? []).map(toProject)
+  return [...(data.items ?? []).map(toProject), ...raycast]
 }
 
 export const getProject = async (slug: string): Promise<Project | null> => {

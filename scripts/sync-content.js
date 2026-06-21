@@ -5,7 +5,7 @@
 // the README, with the repo as the single source of truth. When a repo ships no
 // docs/index, its README also serves as the fallback docs page. Runs as part of
 // `npm run build` and never fails the build.
-import { mkdir, writeFile } from "node:fs/promises"
+import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 
 const OWNER = "kud"
@@ -13,6 +13,26 @@ const TOPIC = "kud-site"
 const CONTENT_DIR = "content/projects"
 const README_DIR = "content/readmes"
 const LANDINGS_DIR = "content/landings"
+
+// Raycast extensions don't live in kud-owned repos — they're subdirectories of
+// the raycast/extensions monorepo, so there's no GitHub topic to detect them by.
+// Instead we curate the slugs here (the analogue of tagging a repo `kud-site`)
+// and enrich each from the Raycast store API + the monorepo README. New
+// extension → add one slug. Authored only; community contributions are excluded.
+const RAYCAST_AUTHOR = "kud"
+const RAYCAST_SLUGS = [
+  "1loc",
+  "nerd-font-picker",
+  "whimsical",
+  "thermoconvert",
+  "vlc",
+  "gandi",
+  "uk-bank-holidays",
+  "localsend",
+  "espanso",
+]
+const RAYCAST_REPO = "raycast/extensions"
+const RAYCAST_FILE = "content/raycast.json"
 
 const token = process.env.GITHUB_TOKEN
 const headers = {
@@ -129,9 +149,10 @@ const stripTrailingDocsLink = (markdown, slug) => {
 
 const RELATIVE = /^(?!https?:|\/\/|\/|#|mailto:|tel:|data:)/i
 
-const rewriteLinks = (markdown, slug, srcDir) => {
-  const rawBase = `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${srcDir}`
-  const blobBase = `https://github.com/${OWNER}/${slug}/blob/HEAD/${srcDir}`
+// Absolutise a README's relative links/images against explicit raw (images,
+// src=) and blob (links, href=) bases. The kud-repo and Raycast-monorepo syncs
+// share this core, differing only in which bases they pass.
+const rewriteLinksAgainst = (markdown, rawBase, blobBase) => {
   const absolute = (rel, base) => {
     try {
       return new URL(rel, base).href
@@ -153,6 +174,14 @@ const rewriteLinks = (markdown, slug, srcDir) => {
       RELATIVE.test(url) ? `${pre}${absolute(url, blobBase)}${post}` : m,
     )
 }
+
+// A kud repo's relative links resolve against raw/blob URLs for kud/<slug>.
+const rewriteLinks = (markdown, slug, srcDir) =>
+  rewriteLinksAgainst(
+    markdown,
+    `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${srcDir}`,
+    `https://github.com/${OWNER}/${slug}/blob/HEAD/${srcDir}`,
+  )
 
 // Authors can wrap any README region in `<!-- landing:skip -->` … `<!-- landing:/skip -->`
 // to keep it off the kud.io landing (e.g. a Development section, contributor notes)
@@ -267,32 +296,130 @@ const syncRepo = async (repo) => {
   return { slug, icon }
 }
 
+const readJson = async (path) => {
+  try {
+    return JSON.parse(await readFile(path, "utf8"))
+  } catch {
+    return {}
+  }
+}
+
+// One Raycast extension: pull its store metadata, render the monorepo README at
+// the published commit as the landing, and return a compact record for
+// content/raycast.json (read at render time by lib/raycast.ts). Returns null if
+// the store API doesn't know the slug.
+const syncRaycastExtension = async (slug) => {
+  let meta
+  try {
+    meta = await api(
+      `https://backend.raycast.com/api/v1/extensions/${RAYCAST_AUTHOR}/${slug}`,
+    )
+  } catch (error) {
+    console.warn(`[sync] raycast ${slug} skipped: ${error.message}`)
+    return null
+  }
+
+  // The monorepo folder isn't always the store slug (e.g. thermoconvert lives in
+  // extensions/thermo-convert), so trust the API's relative_path. Fetch the README
+  // from the monorepo's main branch (not the pinned published SHA), so a merged
+  // README PR shows on kud.io within the hour without waiting for a republish.
+  const dir = (meta.relative_path ?? `extensions/${slug}`).replace(/\/+$/, "")
+  const readme = await fetch(
+    `https://raw.githubusercontent.com/${RAYCAST_REPO}/HEAD/${dir}/README.md`,
+  ).then((res) => (res.ok ? res.text() : null))
+
+  if (readme) {
+    await mkdir(README_DIR, { recursive: true })
+    await writeFile(
+      join(README_DIR, `${slug}.md`),
+      frontmatter(meta.title, meta.description) +
+        rewriteLinksAgainst(
+          stripLandingSkips(stripLeadingChrome(readme)),
+          `https://raw.githubusercontent.com/${RAYCAST_REPO}/HEAD/${dir}/`,
+          `https://github.com/${RAYCAST_REPO}/blob/HEAD/${dir}/`,
+        ),
+    )
+  }
+
+  const icon = meta.icons?.dark || meta.icons?.light || null
+
+  return {
+    icon,
+    record: {
+      slug,
+      name: meta.title ?? slug,
+      description: meta.description ?? null,
+      icon,
+      tags: (meta.categories ?? []).map((category) =>
+        category.toLowerCase().replace(/\s+/g, "-"),
+      ),
+      repoUrl: `https://github.com/${RAYCAST_REPO}/tree/main/${dir}`,
+      storeUrl:
+        meta.store_url ?? `https://www.raycast.com/${RAYCAST_AUTHOR}/${slug}`,
+      downloads: meta.download_count ?? 0,
+      updatedAt: meta.updated_at
+        ? new Date(meta.updated_at * 1000).toISOString()
+        : new Date(0).toISOString(),
+    },
+  }
+}
+
+// Sync every curated Raycast extension; writes content/raycast.json and returns
+// a slug → icon-URL map to fold into icons.json.
+const syncRaycast = async () => {
+  const records = []
+  const icons = {}
+  for (const slug of RAYCAST_SLUGS) {
+    const result = await syncRaycastExtension(slug)
+    if (!result) continue
+    records.push(result.record)
+    if (result.icon) icons[slug] = result.icon
+  }
+  if (records.length > 0) {
+    await writeFile(RAYCAST_FILE, `${JSON.stringify(records, null, 2)}\n`)
+    console.log(`[sync] synced ${records.length} raycast extension(s)`)
+  }
+  return icons
+}
+
 const main = async () => {
   const search = await api(
     `https://api.github.com/search/repositories?q=user:${OWNER}+topic:${TOPIC}&per_page=100`,
-  )
+  ).catch((error) => {
+    console.warn(`[sync] github topic search failed: ${error.message}`)
+    return { items: [] }
+  })
   const repos = search.items ?? []
 
-  if (repos.length === 0) {
-    console.warn(
-      `[sync] no repos tagged "${TOPIC}" yet — leaving existing content untouched.`,
-    )
-    return
-  }
-
+  // Start from the existing map so a transient GitHub or Raycast API failure
+  // can't wipe icons synced on an earlier run; this run's results overlay it.
+  const icons = await readJson(join(CONTENT_DIR, "icons.json"))
   const synced = []
-  const icons = {}
   for (const repo of repos) {
     const { slug, icon } = await syncRepo(repo)
     synced.push(slug)
     if (icon) icons[slug] = icon
   }
+
+  const raycastIcons = await syncRaycast()
+  Object.assign(icons, raycastIcons)
+
+  // Sorted keys keep icons.json diffs stable across runs (the GitHub search
+  // returns repos in a non-deterministic order otherwise).
+  const sorted = Object.fromEntries(
+    Object.keys(icons)
+      .sort()
+      .map((key) => [key, icons[key]]),
+  )
   await writeFile(
     join(CONTENT_DIR, "icons.json"),
-    JSON.stringify(icons, null, 2),
+    `${JSON.stringify(sorted, null, 2)}\n`,
   )
-  console.log(`[sync] synced ${synced.length} project(s): ${synced.join(", ")}`)
-  console.log(`[sync] ${Object.keys(icons).length} project(s) with a logo`)
+  console.log(
+    `[sync] ${synced.length} repo(s), ${
+      Object.keys(raycastIcons).length
+    } raycast extension(s), ${Object.keys(sorted).length} icon(s)`,
+  )
 }
 
 export {

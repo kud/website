@@ -25,6 +25,15 @@ No category topic → it falls into **CLIs & Tools** by default. Once tagged, th
 repo appears on kud.io within the hour (and on each push, via the refresh
 workflow) — you never touch the website.
 
+> **Raycast extensions** are the one exception to the topic model: they live as
+> subdirectories of the `raycast/extensions` monorepo, so there's no kud-owned
+> repo to tag. Instead their slugs are curated in `scripts/sync-content.js`
+> (`RAYCAST_SLUGS`) — the analogue of a `kud-site` topic. The sync enriches each
+> from the Raycast store API and renders its **monorepo README** (tracked on
+> `main`) as the landing; there's no docs route. Improve the content by opening a
+> PR on `raycast/extensions` — never override it on the website — and it shows on
+> both the Raycast Store and kud.io. New extension → add one slug.
+
 ## 2. Description — the GitHub repo description
 
 The **repo description** (not the README) is the projects-list blurb and the
