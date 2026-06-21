@@ -324,6 +324,10 @@ const syncRaycastExtension = async (slug) => {
   // from the monorepo's main branch (not the pinned published SHA), so a merged
   // README PR shows on kud.io within the hour without waiting for a republish.
   const dir = (meta.relative_path ?? `extensions/${slug}`).replace(/\/+$/, "")
+  // Route slug is namespaced so an extension can never collide with a kud repo of
+  // the same name in the shared /projects/<slug> space. The bare store slug stays
+  // the canonical Raycast identifier (API, store URL, install deep link).
+  const routeSlug = `raycast-${slug}`
   const readme = await fetch(
     `https://raw.githubusercontent.com/${RAYCAST_REPO}/HEAD/${dir}/README.md`,
   ).then((res) => (res.ok ? res.text() : null))
@@ -331,7 +335,7 @@ const syncRaycastExtension = async (slug) => {
   if (readme) {
     await mkdir(README_DIR, { recursive: true })
     await writeFile(
-      join(README_DIR, `${slug}.md`),
+      join(README_DIR, `${routeSlug}.md`),
       frontmatter(meta.title, meta.description) +
         rewriteLinksAgainst(
           stripLandingSkips(stripLeadingChrome(readme)),
@@ -354,7 +358,7 @@ const syncRaycastExtension = async (slug) => {
   return {
     icon,
     record: {
-      slug,
+      slug: routeSlug,
       name: meta.title ?? slug,
       description: meta.description ?? null,
       icon,
@@ -381,7 +385,7 @@ const syncRaycast = async () => {
     const result = await syncRaycastExtension(slug)
     if (!result) continue
     records.push(result.record)
-    if (result.icon) icons[slug] = result.icon
+    if (result.icon) icons[result.record.slug] = result.icon
   }
   if (records.length > 0) {
     await writeFile(RAYCAST_FILE, `${JSON.stringify(records, null, 2)}\n`)

@@ -1,6 +1,6 @@
 [
   {
-    "slug": "1loc",
+    "slug": "raycast-1loc",
     "name": "1 LOC - JavaScript Utilities in Single Line of Code",
     "description": "Browse JavaScript Utilities from 1loc.dev",
     "icon": "https://files.raycast.com/cvw0ejinx1q1hle097zcidqt8ail",
@@ -14,7 +14,7 @@
     "updatedAt": "2026-04-03T10:23:38.000Z"
   },
   {
-    "slug": "nerd-font-picker",
+    "slug": "raycast-nerd-font-picker",
     "name": "Nerd Font Picker",
     "description": "Browse and copy Nerd Font glyphs from your installed fonts",
     "icon": "https://files.raycast.com/dya54k0dot6nbei9p2sfnog1gb8v",
@@ -29,7 +29,7 @@
     "updatedAt": "2026-05-13T12:28:26.000Z"
   },
   {
-    "slug": "whimsical",
+    "slug": "raycast-whimsical",
     "name": "Whimsical",
     "description": "Transform ideas into beautiful diagrams using AI. Automatically generates flowcharts, mindmaps, and sequence diagrams from natural language descriptions.",
     "icon": "https://files.raycast.com/g0hdzmmyhn7yvrdtx3e0jpk28l0c",
@@ -46,7 +46,7 @@
     "updatedAt": "2025-11-03T15:21:54.000Z"
   },
   {
-    "slug": "thermoconvert",
+    "slug": "raycast-thermoconvert",
     "name": "ThermoConvert",
     "description": "Instantly convert between all major temperature scales",
     "icon": "https://files.raycast.com/5vxjj1bwneujkycsop8vrqrjl8rn",
@@ -61,7 +61,7 @@
     "updatedAt": "2026-04-24T14:10:48.000Z"
   },
   {
-    "slug": "vlc",
+    "slug": "raycast-vlc",
     "name": "VLC",
     "description": "Seamlessly control VLC Media Player from Raycast. Play, pause, skip tracks, adjust volume, seek, toggle fullscreen, and more—all from your keyboard. Requires VLC's HTTP interface enabled.",
     "icon": "https://files.raycast.com/r04cg1qun5sij48ezc8fkbvlf0eq",
@@ -73,7 +73,7 @@
     "updatedAt": "2025-11-12T07:27:52.000Z"
   },
   {
-    "slug": "gandi",
+    "slug": "raycast-gandi",
     "name": "Gandi",
     "description": "Manage your Gandi domains, DNS records, and check domain availability",
     "icon": "https://files.raycast.com/k0rjkyznrlyr6pyv3vca0w4wbh2c",
@@ -88,7 +88,7 @@
     "updatedAt": "2026-04-03T13:13:17.000Z"
   },
   {
-    "slug": "uk-bank-holidays",
+    "slug": "raycast-uk-bank-holidays",
     "name": "UK Bank Holidays",
     "description": "Display the upcoming bank holiday information for England and Wales.",
     "icon": "https://files.raycast.com/isjghrj854mx231c9zrycz7lloqf",
@@ -103,7 +103,7 @@
     "updatedAt": "2024-05-14T12:16:57.000Z"
   },
   {
-    "slug": "localsend",
+    "slug": "raycast-localsend",
     "name": "LocalSend",
     "description": "Share files to nearby devices using LocalSend protocol",
     "icon": "https://files.raycast.com/jzuuzt49spzls4x0vx5xfwkxjbhu",
@@ -115,7 +115,7 @@
     "updatedAt": "2026-04-24T13:11:14.000Z"
   },
   {
-    "slug": "espanso",
+    "slug": "raycast-espanso",
     "name": "Espanso",
     "description": "The Raycast version of Espanso Search Bar",
     "icon": "https://files.raycast.com/h7amma1v9ri9r8lv8vga0gf0n54g",

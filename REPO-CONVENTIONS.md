@@ -28,8 +28,10 @@ workflow) — you never touch the website.
 > **Raycast extensions** are the one exception to the topic model: they live as
 > subdirectories of the `raycast/extensions` monorepo, so there's no kud-owned
 > repo to tag. Instead their slugs are curated in `scripts/sync-content.js`
-> (`RAYCAST_SLUGS`) — the analogue of a `kud-site` topic. The sync enriches each
-> from the Raycast store API and renders its **monorepo README** (tracked on
+> (`RAYCAST_SLUGS`, the canonical Raycast store slugs) — the analogue of a
+> `kud-site` topic. Pages live at `/projects/raycast-<slug>` (namespaced so an
+> extension can't collide with a kud repo of the same name). The sync enriches
+> each from the Raycast store API and renders its **monorepo README** (tracked on
 > `main`) as the landing; there's no docs route. Improve the content by opening a
 > PR on `raycast/extensions` — never override it on the website — and it shows on
 > both the Raycast Store and kud.io. New extension → add one slug.
