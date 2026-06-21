@@ -35,14 +35,17 @@ export const Contributions = async () => {
                 <span className={styles.icon} aria-hidden />
               )}
               <span className={styles.body}>
-                <a
-                  className={styles.name}
-                  href={item.storeUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {item.title}
-                </a>
+                <span className={styles.head}>
+                  <a
+                    className={styles.name}
+                    href={item.storeUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {item.title}
+                  </a>
+                  <span className={styles.rayTag}>Raycast extension</span>
+                </span>
                 {item.description ? (
                   <span className={styles.note}>{item.description}</span>
                 ) : null}
