@@ -16,7 +16,7 @@ documentation lives in `docs/`.
 | Topic              | Effect                                                                                               |
 | ------------------ | ---------------------------------------------------------------------------------------------------- |
 | `kud-site`         | **Required.** Includes the repo on kud.io/projects.                                                  |
-| `kud-site-<group>` | Section. One of: `app`, `cli`, `mcp`, `claude`, `ui`, `vscode`, `theme`, `other`.                    |
+| `kud-site-<group>` | Section. One of: `app`, `cli`, `mcp`, `claude`, `lib`, `ui`, `vscode`, `theme`, `other`.             |
 | `kud-site-app`     | A deployed web app — gets the icon launcher tile + an app landing (uses `app.json`, not the README). |
 | `kud-site-readme`  | Flag: the README **is** the product (curated lists) — rendered in full, no docs route.               |
 | `kud-site-tag-*`   | Content tags (e.g. `kud-site-tag-ai`) — surfaced as filterable chips.                                |

@@ -19,66 +19,67 @@ export const metadata: Metadata = {
     "Open-source command-line tools, MCP servers, and terminal design systems designed and maintained by Erwann Mest (kud).",
 }
 
-// Label, ordering, and an orienting one-liner for each `kud-site-<key>` topic.
-// Membership is driven entirely by the repo topics on GitHub — this map only
-// labels, orders, and describes the groups.
-const CATEGORY_META: Record<
-  string,
-  { name: string; order: number; blurb: string }
-> = {
+// Label and an orienting one-liner for each `kud-site-<key>` topic. Section
+// order follows the declaration order below — to reorder or insert a group,
+// just move or add it here; there's nothing to renumber. Membership is driven
+// entirely by the repo topics on GitHub.
+const CATEGORY_META: Record<string, { name: string; blurb: string }> = {
   app: {
     name: "Apps",
-    order: 0,
     blurb:
       "Web apps I design and ship end to end — open them straight from here, or read the story behind each one.",
   },
   cli: {
     name: "CLIs & Tools",
-    order: 1,
     blurb:
       "Command-line tools I reach for daily, for files, git, cloud APIs, and the macOS desktop.",
   },
   mcp: {
     name: "MCP Servers",
-    order: 2,
     blurb:
       "Model Context Protocol servers that connect Claude and other AI assistants to the tools you already use.",
   },
   claude: {
     name: "Claude Code",
-    order: 3,
     blurb:
       "Companions for Claude Code: session managers, live dashboards, and curated plugin collections.",
   },
+  lib: {
+    name: "Libraries",
+    blurb:
+      "Reusable packages that other projects build on — protocol implementations, API clients, and framework-agnostic cores, published to npm.",
+  },
   ui: {
     name: "UI & Design Systems",
-    order: 4,
     blurb:
       "Design systems and component libraries for building polished, consistent terminal interfaces.",
   },
   vscode: {
     name: "VS Code Extensions",
-    order: 5,
     blurb:
       "Extensions that bring code review and AI workflows directly into VS Code.",
   },
   theme: {
     name: "VS Code Themes",
-    order: 6,
     blurb: "Colour schemes for VS Code, tuned for long sessions in the dark.",
   },
   raycast: {
     name: "Raycast Extensions",
-    order: 7,
     blurb:
       "Extensions for Raycast that bring file sharing, domains, fonts, and more into the launcher — published to the Raycast Store.",
   },
   other: {
     name: "Lists & Resources",
-    order: 8,
     blurb:
       "Curated lists and references for people who love a beautiful terminal.",
   },
+}
+
+// Section order is simply the declaration order above; unknown keys sort last.
+const CATEGORY_ORDER = Object.keys(CATEGORY_META)
+const orderOf = (key: string) => {
+  const index = CATEGORY_ORDER.indexOf(key)
+  return index === -1 ? CATEGORY_ORDER.length : index
 }
 
 const labelFor = (key: string) =>
@@ -93,11 +94,7 @@ const groupByCategory = (projects: Project[]) => {
       blurb: CATEGORY_META[key]?.blurb ?? null,
       items: projects.filter((project) => project.category === key),
     }))
-    .sort(
-      (a, b) =>
-        (CATEGORY_META[a.key]?.order ?? 99) -
-        (CATEGORY_META[b.key]?.order ?? 99),
-    )
+    .sort((a, b) => orderOf(a.key) - orderOf(b.key))
 }
 
 const AVATAR =
