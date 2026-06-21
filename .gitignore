@@ -13,3 +13,6 @@ next-env.d.ts
 *.tsbuildinfo
 .vercel
 .DS_Store
+
+# playwright mcp scratch
+/.playwright-mcp
