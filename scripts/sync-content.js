@@ -50,7 +50,12 @@ const api = async (url) => {
 const rawFile = async (slug, path) => {
   const res = await fetch(
     `https://raw.githubusercontent.com/${OWNER}/${slug}/HEAD/${path}`,
-    { headers: token ? { Authorization: `Bearer ${token}` } : {} },
+    {
+      headers: {
+        "Cache-Control": "no-cache",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    },
   )
   return res.ok ? res.text() : null
 }
