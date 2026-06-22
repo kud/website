@@ -7,6 +7,7 @@
 // `npm run build` and never fails the build.
 import { mkdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
+import ora from "ora"
 
 const OWNER = "kud"
 const TOPIC = "kud-site"
@@ -398,10 +399,11 @@ const syncRaycastExtension = async (slug) => {
 
 // Sync every curated Raycast extension; writes content/raycast.json and returns
 // a slug → icon-URL map to fold into icons.json.
-const syncRaycast = async () => {
+const syncRaycast = async (spinner) => {
   const records = []
   const icons = {}
   for (const slug of RAYCAST_SLUGS) {
+    spinner.text = `raycast-${slug}`
     const result = await syncRaycastExtension(slug)
     if (!result) continue
     records.push(result.record)
@@ -409,16 +411,18 @@ const syncRaycast = async () => {
   }
   if (records.length > 0) {
     await writeFile(RAYCAST_FILE, `${JSON.stringify(records, null, 2)}\n`)
-    console.log(`[sync] synced ${records.length} raycast extension(s)`)
   }
   return icons
 }
 
 const main = async () => {
+  const start = Date.now()
+  const spinner = ora("fetching repos…").start()
+
   const search = await api(
     `https://api.github.com/search/repositories?q=user:${OWNER}+topic:${TOPIC}&per_page=100`,
   ).catch((error) => {
-    console.warn(`[sync] github topic search failed: ${error.message}`)
+    spinner.warn(`github topic search failed: ${error.message}`)
     return { items: [] }
   })
   const repos = search.items ?? []
@@ -428,12 +432,13 @@ const main = async () => {
   const icons = await readJson(join(CONTENT_DIR, "icons.json"))
   const synced = []
   for (const repo of repos) {
+    spinner.text = repo.name
     const { slug, icon } = await syncRepo(repo)
     synced.push(slug)
     if (icon) icons[slug] = icon
   }
 
-  const raycastIcons = await syncRaycast()
+  const raycastIcons = await syncRaycast(spinner)
   Object.assign(icons, raycastIcons)
 
   // Sorted keys keep icons.json diffs stable across runs (the GitHub search
@@ -447,10 +452,10 @@ const main = async () => {
     join(CONTENT_DIR, "icons.json"),
     `${JSON.stringify(sorted, null, 2)}\n`,
   )
-  console.log(
-    `[sync] ${synced.length} repo(s), ${
-      Object.keys(raycastIcons).length
-    } raycast extension(s), ${Object.keys(sorted).length} icon(s)`,
+
+  const elapsed = ((Date.now() - start) / 1000).toFixed(1)
+  spinner.succeed(
+    `synced ${synced.length} repos, ${Object.keys(raycastIcons).length} extensions, ${Object.keys(sorted).length} icons in ${elapsed}s`,
   )
 }
 
@@ -471,6 +476,6 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   try {
     await main()
   } catch (error) {
-    console.warn(`[sync] skipped: ${error.message}`)
+    ora().fail(`sync failed: ${error.message}`)
   }
 }
