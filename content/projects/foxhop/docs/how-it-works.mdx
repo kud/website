@@ -1,0 +1,16 @@
+---
+title: 🌉 How it works
+description: The bridge between the foxhop CLI, a native host, and the Firefox extension.
+---
+
+Firefox exposes no AppleScript on macOS, so you can't select its tabs with `osascript`, and `open -a Firefox <url>` opens a _duplicate_ rather than focusing the existing tab. The only API that can activate an arbitrary tab by URL is the WebExtension `tabs` API — but an extension can't open a listening socket, so an external trigger needs a bridge.
+
+```
+caller ──► foxhop CLI ──► unix socket ──► native host ──► Firefox extension
+(hotkey/Raycast/term)     ~/.foxhop.sock   (cli/)         tabs.update + windows.update
+                                                          fallback: tabs.create
+```
+
+The **CLI and the Firefox extension are one inseparable unit** (the bridge), so they live in the same repo (`cli/` + `extension/`). The **Raycast extension is a separate client** on top, published in the `raycast/extensions` monorepo.
+
+Because a WebExtension can raise its own window but not its whole app, the CLI foregrounds Firefox via `open -a "$FOXHOP_BROWSER"` after a successful focus.

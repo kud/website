@@ -1,0 +1,35 @@
+---
+title: ⚙️ Configuration
+description: The tabs.json target format.
+---
+
+`~/.config/foxhop/tabs.json` is the single source of truth — editable by hand, by the `foxhop` CLI (`add` / `remove`), or from the Raycast extension.
+
+```json
+{
+  "$schema": "./tabs.schema.json",
+  "targets": [
+    {
+      "name": "chatgpt",
+      "title": "ChatGPT",
+      "match": "chatgpt.com",
+      "url": "https://chatgpt.com"
+    },
+    {
+      "name": "todoist",
+      "title": "Todoist",
+      "match": "todoist.com",
+      "pick": "pinned"
+    }
+  ]
+}
+```
+
+| Field      | Meaning                                                                          |
+| ---------- | -------------------------------------------------------------------------------- |
+| `name`     | id used by `foxhop focus <name>`                                                 |
+| `title`    | human label (shown in Raycast)                                                   |
+| `match`    | substring matched against tab URLs                                               |
+| `url`      | opened if no tab matches                                                         |
+| `strategy` | how to match: `hostname` (default) · `prefix` · `exact` · `search` (url + title) |
+| `pick`     | which tab when several match: `recent` (default) · `first` · `pinned`            |

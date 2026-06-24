@@ -1,0 +1,19 @@
+---
+title: ⚡ Usage
+description: The foxhop CLI commands.
+---
+
+Targets live in `~/.config/foxhop/tabs.json` (see [Configuration](/projects/foxhop/docs/configuration)). Run `foxhop init` to seed an example config.
+
+```sh
+foxhop focus chatgpt          # focus a saved target (foregrounds Firefox)
+foxhop focus --match figma.com --url https://figma.com   # ad-hoc, no config entry
+foxhop list                   # saved targets (--json for machine output)
+foxhop tabs                   # currently open Firefox tabs (--json)
+foxhop add gmail --match mail.google.com --url https://mail.google.com --title Gmail
+foxhop remove gmail
+foxhop sync                   # generate per-tab Raycast hotkey scripts
+foxhop install                # (re)register the native messaging host manifest
+```
+
+Set `FOXHOP_BROWSER` if you don't run Firefox Nightly (e.g. `FOXHOP_BROWSER=Firefox`).
