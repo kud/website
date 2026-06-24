@@ -1,0 +1,50 @@
+---
+title: ⚙️ Configuration
+description: Connecting an MCP client to mcp-qobuz and the two ways to authenticate.
+---
+
+## Connecting a client
+
+Add the server to your MCP client's config (for example `.mcp.json`). The published package runs straight from npm:
+
+```json
+{
+  "mcpServers": {
+    "mcp-qobuz": {
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-qobuz"]
+    }
+  }
+}
+```
+
+## Authentication
+
+The server resolves credentials in two ways and prefers environment variables when both are present.
+
+### Keychain (local macOS)
+
+On the same Mac, the server reads the `qobuz` / `default` Keychain entry — the same one used by [qobuz-cli](https://kud.io/projects/qobuz-cli) and the Raycast extension. Log in once via the CLI and the MCP server picks it up automatically. No extra config needed.
+
+### Environment variables (headless / remote)
+
+Where the macOS Keychain isn't available (most non-Mac MCP hosts), provide credentials via `QOBUZ_TOKEN` and `QOBUZ_APP_ID`. Pass them through the client's `env` block:
+
+```json
+{
+  "mcpServers": {
+    "mcp-qobuz": {
+      "command": "npx",
+      "args": ["-y", "@kud/mcp-qobuz"],
+      "env": {
+        "QOBUZ_TOKEN": "your-token",
+        "QOBUZ_APP_ID": "your-app-id"
+      }
+    }
+  }
+}
+```
+
+## Now playing — macOS only
+
+The `now-playing` tool reads the Qobuz desktop app's local player state, so it only works when the server runs on the same Mac as a running Qobuz app. On other platforms, or when no track is playing, it returns a clear explanatory error rather than failing.

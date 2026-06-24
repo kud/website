@@ -1,0 +1,29 @@
+---
+title: ⚡ Usage
+description: The tools mcp-qobuz exposes to an MCP client, grouped by what they do.
+---
+
+Once connected, the server advertises its tools to the MCP client. You don't call them directly — you ask the assistant in natural language ("search Qobuz for Radiohead", "what's playing?") and it selects the right tool. Every result that maps to a Qobuz entity carries an openable `open.qobuz.com` deep link.
+
+## Read tools
+
+| Tool              | Purpose                                                                                                                                                     |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `search`          | Search the catalogue by query, with an optional type filter (`albums` / `artists` / `tracks`).                                                              |
+| `get-track`       | Fetch a single track by ID.                                                                                                                                 |
+| `get-album`       | Fetch an album by ID.                                                                                                                                       |
+| `get-artist`      | Fetch an artist by ID.                                                                                                                                      |
+| `get-playlist`    | Fetch a playlist (with its tracks) by ID.                                                                                                                   |
+| `list-playlists`  | List your playlists.                                                                                                                                        |
+| `list-favourites` | List your favourite albums, artists, or tracks.                                                                                                             |
+| `now-playing`     | Report the current track from the Qobuz desktop app. **macOS only** — the server must run on the same Mac as Qobuz, and returns a graceful error otherwise. |
+
+## Write tools
+
+Writes are gated behind an explicit `confirm: true` flag, so an assistant cannot mutate your library on a vague request.
+
+| Tool                          | Purpose                             |
+| ----------------------------- | ----------------------------------- |
+| `create-playlist`             | Create a new playlist.              |
+| `add-to-playlist`             | Add tracks to an existing playlist. |
+| `update-playlist-description` | Update a playlist's description.    |
