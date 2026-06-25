@@ -365,8 +365,9 @@ const Cv = ({ avatar }: { avatar: string | null }) => (
 
       <Text style={styles.sectionLabel}>Experience</Text>
 
-      {/* A forward-looking "open role" at the top of the timeline — a dashed dot
-          marks it as the next, not-yet-written entry. */}
+      {/* Hidden for now — a forward-looking "open role" at the top of the
+          timeline, with a dashed dot marking it as the next, not-yet-written
+          entry. Uncomment to bring it back.
       <View style={styles.tlRow} wrap={false}>
         <View style={styles.tlRail}>
           <View style={[styles.tlDot, styles.tlDotNext]} />
@@ -383,6 +384,7 @@ const Cv = ({ avatar }: { avatar: string | null }) => (
           </Text>
         </View>
       </View>
+      */}
 
       {experience.map((item, index) => (
         <View
