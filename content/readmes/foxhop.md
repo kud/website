@@ -18,7 +18,10 @@ npm install -g @kud/foxhop-cli
 foxhop install        # register the native messaging host with Firefox
 ```
 
-Then load the Firefox extension: open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on**, and select `extension/manifest.json` from this repo. For a permanent install, the extension will be available on AMO once listed.
+Then install the Firefox extension:
+
+- **Permanent** — download the signed [`foxhop-1.0.1.xpi`](https://github.com/kud/foxhop/releases/download/extension-v1.0.1/foxhop-1.0.1.xpi) and open it in Firefox (or drag it onto a Firefox window).
+- **Temporary (development)** — open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on**, and select `extension/manifest.json` from this repo.
 
 ## Usage
 
