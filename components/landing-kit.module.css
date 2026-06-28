@@ -411,6 +411,10 @@
   margin: 0;
 }
 
+.featureBody :global(p + p) {
+  margin-top: 14px;
+}
+
 /* Showcase (side-by-side command → output) ----------------------------------*/
 .showcase {
   display: flex;
