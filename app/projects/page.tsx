@@ -31,6 +31,11 @@ const CATEGORY_META: Record<string, { name: string; blurb: string }> = {
     blurb:
       "Web apps I design and ship end to end — open them straight from here, or read the story behind each one.",
   },
+  ecosystem: {
+    name: "Ecosystems",
+    blurb:
+      "Tools that aren't a single app but a whole ecosystem — several surfaces over one shared core, so you reach the same thing from wherever you are.",
+  },
   desktop: {
     name: "Desktop Apps",
     blurb:
